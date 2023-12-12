@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,9 +15,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,48 +34,63 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brillect.jobportal.Home
+import com.brillect.jobportal.ApplierHome
 import com.brillect.jobportal.R
+import com.brillect.jobportal.RecruiterHome
+import com.brillect.jobportal.UIComponents.customTextFieldForPassword
+import com.brillect.jobportal.UIComponents.customTextFieldSingleLine
+import com.brillect.jobportal.UIComponents.radioButtonRecruiterApplier
+import com.brillect.jobportal.UIComponents.Text_18_PrimaryColor
+import com.brillect.jobportal.UIComponents.Text_18_White
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
-import com.brillect.jobportal.ui.theme.TextFieldColor
 
 class Register : ComponentActivity() {
+    lateinit var selectedProfile: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JobPortalTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
                     color = BackgroundColor
                 ) {
                     Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
                         BackRegister {
-                            onBackPressed()
+                            startActivity(Intent(this@Register, Login::class.java))
+                            finish()
                         }
                         Spacer(modifier = Modifier.height(26.dp))
                         RegisterTxt()
                         RegisterDetails()
+                        Spacer(modifier = Modifier.height(22.dp))
+                        selectedProfile = radioButtonRecruiterApplier()
                         Spacer(modifier = Modifier.height(60.dp))
                         BtnRegister {
-                            startActivity(Intent(this@Register, Home::class.java))
-                            finish()
+//                            Toast.makeText(this@Register, "Profile: $selectedProfile", Toast.LENGTH_SHORT).show()
+                            if (selectedProfile == "Recruiter") {
+                                startActivity(Intent(this@Register, RecruiterHome::class.java))
+                                finish()
+                            } else if (selectedProfile == "Applier") {
+                                startActivity(Intent(this@Register, ApplierHome::class.java))
+                            }
                         }
-                        Spacer(modifier = Modifier.height(124.dp))
+                        Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun BackRegister(onBackPressed: () -> Unit) {
@@ -93,21 +107,10 @@ fun BackRegister(onBackPressed: () -> Unit) {
                 contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = "Back",
-                color = PrimaryColor,
-                fontSize = 18.sp,
-                fontFamily = textFontFamily
-            )
+            Text_18_PrimaryColor(textToShow = "Back to login")
         }
         Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "Hello...",
-            color = Color.White,
-            fontSize = 18.sp,
-            fontFamily = textFontFamily,
-            fontWeight = FontWeight(700)
-        )
+        Text_18_White(textToShow = "Hello...")
     }
 }
 
@@ -148,121 +151,23 @@ fun RegisterDetails() {
         Spacer(modifier = Modifier.height(22.dp))
         Text(text = "Full Name", color = Color.White, fontFamily = textFontFamily)
         Spacer(modifier = Modifier.height(22.dp))
-        Box(
-            modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .fillMaxWidth()
-            ) {
-                BasicTextField(
-                    value = fullName,
-                    onValueChange = { fullName = it },
-                    modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                        .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
-                    textStyle = TextStyle(
-                        color = PrimaryColor, fontFamily = textFontFamily,
-                        fontSize = 22.sp
-                    ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                )
-            }
-        }
+        customTextFieldSingleLine()
 
         Spacer(modifier = Modifier.height(22.dp))
+
         Text(text = "Email", color = Color.White, fontFamily = textFontFamily)
         Spacer(modifier = Modifier.height(22.dp))
-
-        Box(
-            modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .fillMaxWidth()
-            ) {
-                BasicTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                        .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
-                    textStyle = TextStyle(
-                        color = PrimaryColor, fontFamily = textFontFamily,
-                        fontSize = 22.sp
-                    ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-                )
-            }
-        }
+        customTextFieldSingleLine()
 
         Spacer(modifier = Modifier.height(22.dp))
         Text(text = "Password", color = Color.White, fontFamily = textFontFamily)
         Spacer(modifier = Modifier.height(22.dp))
-
-        Box(
-            modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .fillMaxWidth()
-            ) {
-                BasicTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                        .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
-                    textStyle = TextStyle(
-                        color = PrimaryColor, fontFamily = textFontFamily,
-                        fontSize = 22.sp
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                )
-            }
-        }
+        customTextFieldForPassword()
 
         Spacer(modifier = Modifier.height(22.dp))
         Text(text = "Confirm Password", color = Color.White, fontFamily = textFontFamily)
         Spacer(modifier = Modifier.height(22.dp))
-
-        Box(
-            modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .fillMaxWidth()
-            ) {
-                BasicTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                        .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
-                    textStyle = TextStyle(
-                        color = PrimaryColor, fontFamily = textFontFamily,
-                        fontSize = 22.sp
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                )
-            }
-        }
+        customTextFieldForPassword()
     }
 }
 
@@ -299,3 +204,4 @@ fun BtnRegister(onLogin: () -> Unit) {
         }
     }
 }
+

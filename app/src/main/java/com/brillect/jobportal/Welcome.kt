@@ -55,6 +55,7 @@ class Welcome : ComponentActivity() {
                         Spacer(modifier = Modifier.height(44.dp))
                         BtnStartSearching {
                             startActivity(Intent(this@Welcome, Login::class.java))
+                            finish()
                         }
                         Spacer(modifier = Modifier.height(24.dp))
                         ImgCompanies()

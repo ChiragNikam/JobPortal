@@ -46,8 +46,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brillect.jobportal.Home
+import com.brillect.jobportal.ApplierHome
 import com.brillect.jobportal.R
+import com.brillect.jobportal.Welcome
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
@@ -68,19 +69,23 @@ class Login : ComponentActivity() {
                     color = BackgroundColor
                 ) {
                     Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
-                        BackLogin { onBackPressed() }
+                        BackLogin {
+                            startActivity(Intent(this@Login, Welcome::class.java))
+                            finish()
+                        }
                         Spacer(modifier = Modifier.height(26.dp))
                         LoginTxt()
                         Spacer(modifier = Modifier.height(26.dp))
                         LoginEmail()
                         Spacer(modifier = Modifier.height(40.dp))
                         BtnLogin {
-                            startActivity(Intent(this@Login, Home::class.java))
+                            startActivity(Intent(this@Login, ApplierHome::class.java))
                             finish()
                         }
                         Spacer(modifier = Modifier.height(36.dp))
                         DontHaveAccount {
                             startActivity(Intent(this@Login, Register::class.java))
+                            finish()
                         }
                     }
                 }
@@ -95,7 +100,8 @@ fun BackLogin(onBackPressed: () -> Unit) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.clickable { onBackPressed() }) {
-            Image(painter = painterResource(id = R.drawable.icon_back),
+            Image(
+                painter = painterResource(id = R.drawable.icon_back),
                 contentDescription = "Back Button",
                 modifier = Modifier
                     .height(24.dp)
