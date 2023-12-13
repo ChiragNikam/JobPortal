@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178125120778",
+    "project_id": "job-portal-19260",
+    "storage_bucket": "job-portal-19260.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178125120778:android:36a9e5a646cba69f2d46f3",
+        "android_client_info": {
+          "package_name": "com.brillect.jobportal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTD9VUoywmzkzYtBgvY8tJFZ_FfEzaVcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

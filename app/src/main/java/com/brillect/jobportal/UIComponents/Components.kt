@@ -41,21 +41,36 @@ import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
 @Composable
-fun SingleLineTextField(description: String) {
+fun SingleLineTextField(description: String): String {
+    var textEntered = ""
     Column(modifier = Modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
-        customTextFieldSingleLine()
+        textEntered = customTextFieldSingleLine()
     }
+    return textEntered
 }
 
 @Composable
-fun MultiLineTextField(description: String) {
+fun MultiLineTextField(description: String): String {
+    var textEntered = ""
     Column(modifier = Modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
-        customTextFieldMultiLine()
+        textEntered = customTextFieldMultiLine()
     }
+    return textEntered
+}
+
+@Composable
+fun passwordTextField(description: String): String {
+    var password = ""
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text_18_White(textToShow = description, 400)
+        Spacer(modifier = Modifier.height(22.dp))
+        password = customTextFieldForPassword()
+    }
+    return password
 }
 
 @Composable

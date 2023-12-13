@@ -17,11 +17,7 @@
             android:exported="true"
             android:label="@string/title_activity_recruiter"
             android:theme="@style/Theme.JobPortal" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Auth.Register"
@@ -37,11 +33,17 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Auth.Login"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_login"
             android:parentActivityName=".Welcome"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Welcome"
             android:exported="true"

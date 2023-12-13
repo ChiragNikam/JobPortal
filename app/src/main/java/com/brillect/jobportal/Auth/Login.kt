@@ -2,6 +2,8 @@ package com.brillect.jobportal.Auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -48,15 +50,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.ApplierHome
 import com.brillect.jobportal.R
+import com.brillect.jobportal.UIComponents.SingleLineTextField
+import com.brillect.jobportal.UIComponents.customTextFieldForPassword
+import com.brillect.jobportal.UIComponents.passwordTextField
 import com.brillect.jobportal.Welcome
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 val textFontFamily = FontFamily(Font(R.font.product_sans))
 
 class Login : ComponentActivity() {
+    var email = ""
+    var password = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -74,13 +84,13 @@ class Login : ComponentActivity() {
                             finish()
                         }
                         Spacer(modifier = Modifier.height(26.dp))
-                        LoginTxt()
-                        Spacer(modifier = Modifier.height(26.dp))
-                        LoginEmail()
+                        email = SingleLineTextField(description = "Login")
+                        Spacer(modifier = Modifier.height(24.dp))
+                        password = passwordTextField("Password")
                         Spacer(modifier = Modifier.height(40.dp))
                         BtnLogin {
-                            startActivity(Intent(this@Login, ApplierHome::class.java))
-                            finish()
+                            Log.i("login_details", "email: $email, pass: $password")
+                            login(email, password)
                         }
                         Spacer(modifier = Modifier.height(36.dp))
                         DontHaveAccount {
@@ -92,13 +102,34 @@ class Login : ComponentActivity() {
             }
         }
     }
+
+    fun login(email: String, password: String) {
+        val auth: FirebaseAuth
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    startActivity(Intent(this@Login, ApplierHome::class.java))
+                    finish()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.e("login_error", "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+
+    }
 }
 
 @Composable
 fun BackLogin(onBackPressed: () -> Unit) {
     Column {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Row(verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.clickable { onBackPressed() }) {
             Image(
                 painter = painterResource(id = R.drawable.icon_back),
@@ -110,10 +141,7 @@ fun BackLogin(onBackPressed: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = "Back",
-                color = PrimaryColor,
-                fontSize = 18.sp,
-                fontFamily = textFontFamily
+                text = "Back", color = PrimaryColor, fontSize = 18.sp, fontFamily = textFontFamily
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
@@ -126,123 +154,17 @@ fun BackLogin(onBackPressed: () -> Unit) {
     }
 }
 
-@Preview
-@Composable
-fun LoginTxt() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Login",
-            color = Color.White,
-            style = TextStyle(
-                fontFamily = textFontFamily,
-                fontWeight = FontWeight(700),
-                fontSize = 48.sp
-            ),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun LoginEmail() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 22.dp)
-    ) {
-        var email by remember { mutableStateOf("") }
-        var password by remember {
-            mutableStateOf("")
-        }
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text = "Email", color = Color.White, fontFamily = textFontFamily)
-        Spacer(modifier = Modifier.height(22.dp))
-
-        Box(
-            modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .fillMaxWidth()
-            ) {
-                BasicTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                        .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
-                    textStyle = TextStyle(
-                        color = PrimaryColor, fontFamily = textFontFamily,
-                        fontSize = 22.sp
-                    ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text = "Password", color = Color.White, fontFamily = textFontFamily)
-        Spacer(modifier = Modifier.height(22.dp))
-
-        Box(
-            modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .fillMaxWidth()
-            ) {
-                BasicTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    modifier = Modifier
-                        .height(44.dp)
-                        .fillMaxWidth()
-                        .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
-                    textStyle = TextStyle(
-                        color = PrimaryColor, fontFamily = textFontFamily,
-                        fontSize = 22.sp
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 22.dp), horizontalAlignment = Alignment.End
-        ) {
-            Text(text = "Forget Password?", color = PrimaryColor, fontFamily = textFontFamily)
-        }
-    }
-
-}
-
 @Composable
 fun BtnLogin(onLogin: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { onLogin() },
-            modifier = Modifier
+            onClick = { onLogin() }, modifier = Modifier
                 .width(160.dp)
                 .height(56.dp)
                 .background(
-                    color = PrimaryColor,
-                    shape = RoundedCornerShape(size = 8.dp)
+                    color = PrimaryColor, shape = RoundedCornerShape(size = 8.dp)
                 )
                 .shadow(
                     elevation = 0.dp,
@@ -266,12 +188,10 @@ fun BtnLogin(onLogin: () -> Unit) {
 @Composable
 fun DontHaveAccount(onRegister: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
     ) {
         Text(text = "Don't have an account yet?", fontFamily = textFontFamily, color = Color.White)
-        Text(
-            text = " Register here",
+        Text(text = " Register here",
             fontFamily = textFontFamily,
             color = PrimaryColor,
             modifier = Modifier.clickable(enabled = true) { onRegister() })
