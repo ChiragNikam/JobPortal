@@ -81,6 +81,17 @@ fun Text_18_White(textToShow: String, weight: Int) {
 }
 
 @Composable
+fun TextCustom(textToShow: String, weight: Int, fontSize: Int) {
+    Text(
+        text = textToShow,
+        color = Color.White,
+        fontSize = fontSize.sp,
+        fontFamily = textFontFamily,
+        fontWeight = FontWeight(weight)
+    )
+}
+
+@Composable
 fun Text_18_PrimaryColor(textToShow: String) {
     Text(
         text = textToShow,
@@ -250,4 +261,26 @@ fun HelloUserNameProfilePhoto() {
         }
 
     }
+}
+
+@Composable
+fun InfoBlock(label: String, description: String){
+        Box(
+            modifier = Modifier
+                .background(Color.Black, shape = RoundedCornerShape(8.dp))
+                .padding(bottom = 1.dp, end = 1.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Column {
+                    TextCustom(textToShow = label, weight = 400, fontSize = 14)
+                    Spacer(modifier = Modifier.height(12.dp))
+                    TextCustom(textToShow = description, weight = 400, fontSize = 12)
+                }
+            }
+        }
 }

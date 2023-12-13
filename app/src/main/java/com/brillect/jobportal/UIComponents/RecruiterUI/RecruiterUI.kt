@@ -57,6 +57,8 @@ fun RecruiterUI() {
                         JobPostForm()
                     } else if(selectedState.value == 2){
                         ApplicantsInfo()
+                    } else if(selectedState.value == 3){
+                        CompanyProfile()
                     }
                 }
             }
