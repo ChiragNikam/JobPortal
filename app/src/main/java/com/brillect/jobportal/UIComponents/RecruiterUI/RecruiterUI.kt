@@ -1,5 +1,6 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,8 @@ fun RecruiterUI() {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             color = BackgroundColor
         ) {
             // for remembering the state and opening the view accordingly
@@ -48,8 +50,7 @@ fun RecruiterUI() {
                 Spacer(modifier = Modifier.height(24.dp))
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState()),
+                        .fillMaxSize(),
                     color = BackgroundColor
                 ) {
                     if (selectedState.value == 1) {

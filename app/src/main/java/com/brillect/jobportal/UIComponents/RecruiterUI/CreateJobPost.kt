@@ -48,6 +48,6 @@ fun JobPostForm() {
         Column(modifier = Modifier.fillMaxWidth().padding(end = 112.dp)) {
             BtnCustom(onClicking = { }, text = "Create Job", 0, 112)
         }
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(200.dp))
     }
 }
