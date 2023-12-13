@@ -2,6 +2,8 @@ package com.brillect.jobportal.Auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -38,22 +40,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.ApplierHome
+import com.brillect.jobportal.Data.RegisterData
+import com.brillect.jobportal.Data.RegisterDataWithConfirmPass
 import com.brillect.jobportal.R
 import com.brillect.jobportal.RecruiterHome
+import com.brillect.jobportal.UIComponents.BtnCustom
+import com.brillect.jobportal.UIComponents.SingleLineTextField
+import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.customTextFieldForPassword
 import com.brillect.jobportal.UIComponents.customTextFieldSingleLine
 import com.brillect.jobportal.UIComponents.radioButtonRecruiterApplier
 import com.brillect.jobportal.UIComponents.Text_18_PrimaryColor
 import com.brillect.jobportal.UIComponents.Text_18_White
+import com.brillect.jobportal.UIComponents.passwordTextField
+import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
 
 class Register : ComponentActivity() {
-    lateinit var selectedProfile: String
+    private lateinit var selectedProfile: String    // for choice of profile among Applier or Recruiter
+    private lateinit var checkRegisterDetails: RegisterDataWithConfirmPass  // to validate input
+    private lateinit var viewModelAuth: AuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModelAuth = ViewModelProvider(this)[AuthViewModel::class.java]
         setContent {
             JobPortalTheme {
                 // A surface container using the 'background' color from the theme
@@ -70,23 +83,72 @@ class Register : ComponentActivity() {
                         }
                         Spacer(modifier = Modifier.height(26.dp))
                         RegisterTxt()
-                        RegisterDetails()
+                        checkRegisterDetails = registerDetails()
                         Spacer(modifier = Modifier.height(22.dp))
                         selectedProfile = radioButtonRecruiterApplier()
                         Spacer(modifier = Modifier.height(60.dp))
-                        BtnRegister {
-//                            Toast.makeText(this@Register, "Profile: $selectedProfile", Toast.LENGTH_SHORT).show()
-                            if (selectedProfile == "Recruiter") {
-                                startActivity(Intent(this@Register, RecruiterHome::class.java))
-                                finish()
-                            } else if (selectedProfile == "Applier") {
-                                startActivity(Intent(this@Register, ApplierHome::class.java))
-                            }
-                        }
+                        BtnCustom(
+                            onClicking = {
+                                registerUser(
+                                    checkRegisterDetails,
+                                    RegisterData(
+                                        checkRegisterDetails.fullName,
+                                        checkRegisterDetails.email,
+                                        checkRegisterDetails.password
+                                    ), selectedProfile
+                                )
+
+
+                            },
+                            text = "Register",
+                            padStart = 65,
+                            padEnd = 87
+                        )
                         Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
             }
+        }
+    }
+
+    private fun registerUser(
+        validateDetails: RegisterDataWithConfirmPass,
+        registerDetails: RegisterData,
+        profile: String
+    ) {
+        if (viewModelAuth.isReadyToRegister(validateDetails) == "yes") {
+            auth.createUserWithEmailAndPassword(registerDetails.email, registerDetails.password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // save user details to realtime database
+                        viewModelAuth.registerUser(
+                            registerDetails,
+                            profile
+                        )
+
+                        // move to activity according to selected profile type(among recruiter/applier)
+                        if (selectedProfile == "Recruiter") {
+                            startActivity(Intent(this@Register, RecruiterHome::class.java))
+                            finish()
+                        } else if (selectedProfile == "Applier") {
+                            startActivity(Intent(this@Register, ApplierHome::class.java))
+                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.e("login_error", "createUserWithEmail:failure", task.exception)
+                        Toast.makeText(
+                            baseContext,
+                            "Authentication failed|${task.exception?.message}",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+        } else {
+            Toast.makeText(
+                this,
+                viewModelAuth.isReadyToRegister(validateDetails),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
@@ -134,74 +196,33 @@ fun RegisterTxt() {
     }
 }
 
-
-@Preview(showSystemUi = true)
 @Composable
-fun RegisterDetails() {
+fun registerDetails(): RegisterDataWithConfirmPass {
+    val registerData = RegisterDataWithConfirmPass()
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(end = 22.dp)
     ) {
-        var fullName by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-        var confirmPassword by remember { mutableStateOf("") }
+        Spacer(modifier = Modifier.height(22.dp))
+        // Name
+        registerData.fullName = SingleLineTextField(description = "Full Name")
 
         Spacer(modifier = Modifier.height(22.dp))
-        Text(text = "Full Name", color = Color.White, fontFamily = textFontFamily)
-        Spacer(modifier = Modifier.height(22.dp))
-        customTextFieldSingleLine()
+        // Email
+        registerData.email = SingleLineTextField(description = "Email")
 
         Spacer(modifier = Modifier.height(22.dp))
-
-        Text(text = "Email", color = Color.White, fontFamily = textFontFamily)
+        // Password
+        registerData.password = passwordTextField(description = "Password")
+        TextCustom(
+            textToShow = "      * Password should be more then 6 characters",
+            weight = 400,
+            fontSize = 11
+        )
         Spacer(modifier = Modifier.height(22.dp))
-        customTextFieldSingleLine()
-
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text = "Password", color = Color.White, fontFamily = textFontFamily)
-        Spacer(modifier = Modifier.height(22.dp))
-        customTextFieldForPassword()
-
-        Spacer(modifier = Modifier.height(22.dp))
-        Text(text = "Confirm Password", color = Color.White, fontFamily = textFontFamily)
-        Spacer(modifier = Modifier.height(22.dp))
-        customTextFieldForPassword()
+        // Confirm Password
+        registerData.confirmPassword = passwordTextField(description = "Confirm Password")
     }
+    return registerData
 }
-
-@Composable
-fun BtnRegister(onLogin: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = { onLogin() },
-            modifier = Modifier
-                .width(160.dp)
-                .height(56.dp)
-                .background(
-                    color = PrimaryColor,
-                    shape = RoundedCornerShape(size = 8.dp)
-                )
-                .shadow(
-                    elevation = 0.dp,
-                    spotColor = Color(0x80000000),
-                    ambientColor = Color(0x80000000)
-                )
-
-        ) {
-            Text(
-                text = "Register",
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontFamily = textFontFamily,
-                fontWeight = FontWeight(700)
-            )
-        }
-    }
-}
-

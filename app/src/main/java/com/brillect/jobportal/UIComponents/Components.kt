@@ -29,17 +29,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brillect.jobportal.Auth.textFontFamily
 import com.brillect.jobportal.R
 import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
+val textFontFamily = FontFamily(Font(R.font.product_sans))
 @Composable
 fun SingleLineTextField(description: String): String {
     var textEntered = ""

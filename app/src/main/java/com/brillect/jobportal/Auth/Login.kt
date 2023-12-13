@@ -50,9 +50,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.ApplierHome
 import com.brillect.jobportal.R
+import com.brillect.jobportal.RecruiterHome
+import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.customTextFieldForPassword
 import com.brillect.jobportal.UIComponents.passwordTextField
+import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.Welcome
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
@@ -62,13 +65,28 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
-val textFontFamily = FontFamily(Font(R.font.product_sans))
+// Initialize Firebase Auth
+val auth = Firebase.auth
+val currentUser = auth.currentUser  // for current user
 
 class Login : ComponentActivity() {
-    var email = ""
-    var password = ""
+    private var email = ""
+    private var password = ""
+
+    override fun onStart() {
+        super.onStart()
+
+        if (auth.currentUser != null) {
+            startActivity(Intent(this, RecruiterHome::class.java))
+        }
+//        to sign out
+//        Firebase.auth.signOut()
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             JobPortalTheme {
                 // A surface container using the 'background' color from the theme
@@ -88,15 +106,29 @@ class Login : ComponentActivity() {
                         Spacer(modifier = Modifier.height(24.dp))
                         password = passwordTextField("Password")
                         Spacer(modifier = Modifier.height(40.dp))
-                        BtnLogin {
-                            if(email.isNotEmpty() && password.isNotEmpty()){
-                                login(email, password)
-                            } else if(email.isEmpty()){
-                                Toast.makeText(this@Login, "Please enter e-mail id", Toast.LENGTH_SHORT).show()
-                            } else if(password.isEmpty()){
-                                Toast.makeText(this@Login, "Please enter you password", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        BtnCustom(
+                            onClicking = {
+                                if (email.isNotEmpty() && password.isNotEmpty()) {
+                                    login(email, password)
+                                } else if (email.isEmpty()) {
+                                    Toast.makeText(
+                                        this@Login,
+                                        "Please enter e-mail id",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else if (password.isEmpty()) {
+                                    Toast.makeText(
+                                        this@Login,
+                                        "Please enter you password",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            },
+                            text = "Login",
+                            padStart = 45,
+                            padEnd = 67
+                        )
+
                         Spacer(modifier = Modifier.height(24.dp))
                         Column(
                             modifier = Modifier
@@ -117,10 +149,8 @@ class Login : ComponentActivity() {
         }
     }
 
-    fun login(email: String, password: String) {
-        val auth: FirebaseAuth
-        // Initialize Firebase Auth
-        auth = Firebase.auth
+    private fun login(email: String, password: String) {
+
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
@@ -165,37 +195,6 @@ fun BackLogin(onBackPressed: () -> Unit) {
             fontSize = 18.sp,
             fontFamily = textFontFamily
         )
-    }
-}
-
-@Composable
-fun BtnLogin(onLogin: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = { onLogin() }, modifier = Modifier
-                .width(160.dp)
-                .height(56.dp)
-                .background(
-                    color = PrimaryColor, shape = RoundedCornerShape(size = 8.dp)
-                )
-                .shadow(
-                    elevation = 0.dp,
-                    spotColor = Color(0x80000000),
-                    ambientColor = Color(0x80000000)
-                )
-
-        ) {
-            Text(
-                text = "Login",
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontFamily = textFontFamily,
-                fontWeight = FontWeight(700)
-            )
-        }
     }
 }
 

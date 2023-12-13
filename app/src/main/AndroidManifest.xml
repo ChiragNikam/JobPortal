@@ -25,6 +25,7 @@
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.JobPortal"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ApplierHome"
             android:exported="false"
