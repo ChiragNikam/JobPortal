@@ -78,7 +78,7 @@ class Login : ComponentActivity() {
                         .verticalScroll(rememberScrollState()),
                     color = BackgroundColor
                 ) {
-                    Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
+                    Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 46.dp)) {
                         BackLogin {
                             startActivity(Intent(this@Login, Welcome::class.java))
                             finish()
@@ -89,9 +89,23 @@ class Login : ComponentActivity() {
                         password = passwordTextField("Password")
                         Spacer(modifier = Modifier.height(40.dp))
                         BtnLogin {
-                            Log.i("login_details", "email: $email, pass: $password")
-                            login(email, password)
+                            if(email.isNotEmpty() && password.isNotEmpty()){
+                                login(email, password)
+                            } else if(email.isEmpty()){
+                                Toast.makeText(this@Login, "Please enter e-mail id", Toast.LENGTH_SHORT).show()
+                            } else if(password.isEmpty()){
+                                Toast.makeText(this@Login, "Please enter you password", Toast.LENGTH_SHORT).show()
+                            }
                         }
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(
+                                    TextFieldColor
+                                )
+                        ) {}
                         Spacer(modifier = Modifier.height(36.dp))
                         DontHaveAccount {
                             startActivity(Intent(this@Login, Register::class.java))
@@ -108,20 +122,20 @@ class Login : ComponentActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    startActivity(Intent(this@Login, ApplierHome::class.java))
-                    finish()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e("login_error", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
+            if (task.isSuccessful) {
+                // Sign in success, update UI with the signed-in user's information
+                startActivity(Intent(this@Login, ApplierHome::class.java))
+                finish()
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.e("login_error", "createUserWithEmail:failure", task.exception)
+                Toast.makeText(
+                    baseContext,
+                    "Authentication failed|${task.exception?.message}",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
+        }
 
     }
 }
