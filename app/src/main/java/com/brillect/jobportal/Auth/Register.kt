@@ -59,11 +59,16 @@ import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
+import com.google.firebase.auth.FirebaseAuth
 
 class Register : ComponentActivity() {
     private lateinit var selectedProfile: String    // for choice of profile among Applier or Recruiter
     private lateinit var checkRegisterDetails: RegisterDataWithConfirmPass  // to validate input
     private lateinit var viewModelAuth: AuthViewModel
+
+    // Initialize Firebase Auth
+    val auth = FirebaseAuth.getInstance()
+    val currentUser = auth.currentUser  // for current user
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModelAuth = ViewModelProvider(this)[AuthViewModel::class.java]
@@ -92,13 +97,13 @@ class Register : ComponentActivity() {
                                 registerUser(
                                     checkRegisterDetails,
                                     RegisterData(
-                                        checkRegisterDetails.fullName,
-                                        checkRegisterDetails.email,
-                                        checkRegisterDetails.password
+                                        "test recruiter",
+                                        "testrecruiter00@gmail.com",
+                                        "12345678"
                                     ), selectedProfile
                                 )
-
-
+                                // test write
+                                viewModelAuth.testWriteToRealTimeDb()
                             },
                             text = "Register",
                             padStart = 65,
@@ -116,6 +121,7 @@ class Register : ComponentActivity() {
         registerDetails: RegisterData,
         profile: String
     ) {
+        // check weather the user input is not empty for eny of the field
         if (viewModelAuth.isReadyToRegister(validateDetails) == "yes") {
             auth.createUserWithEmailAndPassword(registerDetails.email, registerDetails.password)
                 .addOnCompleteListener(this) { task ->

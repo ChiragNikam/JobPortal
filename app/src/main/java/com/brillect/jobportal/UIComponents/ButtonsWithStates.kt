@@ -36,18 +36,13 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
         Button(
             onClick = { onClicking() },
             modifier = Modifier
-                .fillMaxWidth()
+                .height(56.dp).fillMaxWidth()
                 .padding(start = padStart.dp, end = padEnd.dp)
-                .background(
-                    color = PrimaryColor,
-                    shape = RoundedCornerShape(size = 8.dp)
-                )
                 .shadow(
                     elevation = 0.dp,
                     spotColor = Color(0x80000000),
                     ambientColor = Color(0x80000000)
-                )
-
+                ), shape = RoundedCornerShape(size = 8.dp)
         ) {
             Text(
                 text = text,

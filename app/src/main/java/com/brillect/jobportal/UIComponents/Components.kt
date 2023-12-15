@@ -129,6 +129,7 @@ fun TextUserName(name: String) {
     )
 }
 
+@Preview
 @Composable
 fun customTextFieldSingleLine(): String {
     var fullName by remember {

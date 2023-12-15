@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,10 +30,16 @@
 
         <activity
             android:name=".ApplierHome"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Auth.Login"
             android:exported="true"
@@ -39,11 +47,7 @@
             android:parentActivityName=".Welcome"
             android:theme="@style/Theme.JobPortal"
             android:windowSoftInputMode="adjustResize" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Welcome"

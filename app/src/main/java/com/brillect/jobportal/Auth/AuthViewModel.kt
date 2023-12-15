@@ -4,10 +4,16 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.brillect.jobportal.Data.RegisterData
 import com.brillect.jobportal.Data.RegisterDataWithConfirmPass
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class AuthViewModel : ViewModel() {
+
+    // Initialize Firebase Auth
+    val auth = FirebaseAuth.getInstance()
+    val currentUser = auth.currentUser  // for current user
+
     fun isReadyToRegister(details: RegisterDataWithConfirmPass): String {
         if (details.fullName.isEmpty()) {
             return "Please fill your Full Name"
@@ -34,6 +40,19 @@ class AuthViewModel : ViewModel() {
                 }
             }
         }
+    }
 
+    fun testWriteToRealTimeDb(){
+        val database = Firebase.database.reference
+        currentUser?.let { user -> // get the current user
+            database.child("user").child("test")
+                .setValue("Test Sucessful").addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("auth", "data saved successfully")
+                    } else {
+                        Log.e("auth_error", "Error: ${it.exception?.message.toString()}")
+                    }
+                }
+        }
     }
 }

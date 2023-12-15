@@ -65,22 +65,25 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
-// Initialize Firebase Auth
-val auth = Firebase.auth
-val currentUser = auth.currentUser  // for current user
+
 
 class Login : ComponentActivity() {
     private var email = ""
     private var password = ""
 
+    // Initialize Firebase Auth
+    val auth = FirebaseAuth.getInstance()
+    val currentUser = auth.currentUser  // for current user
+
     override fun onStart() {
         super.onStart()
-
-        if (auth.currentUser != null) {
-            startActivity(Intent(this, RecruiterHome::class.java))
-        }
+//
+//        if (currentUser != null) {
+//            startActivity(Intent(this, RecruiterHome::class.java))
+//        }
+//        Log.d("auth", "Current user: ${currentUser?.uid}")
 //        to sign out
-//        Firebase.auth.signOut()
+        Firebase.auth.signOut()
 
     }
 
