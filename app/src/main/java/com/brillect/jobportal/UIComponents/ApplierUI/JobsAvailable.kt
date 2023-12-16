@@ -82,7 +82,7 @@ fun AvailableCompanies() {
             TextCustom(textToShow = "Google", 400, 16)
             Spacer(modifier = Modifier.height(12.dp))
             TextCustom(textToShow = "Bangalore, India", weight = 400, fontSize = 14)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedInfoText(description = "50k/Year")
                 Spacer(modifier = Modifier.width(12.dp))

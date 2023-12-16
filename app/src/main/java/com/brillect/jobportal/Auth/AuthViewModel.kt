@@ -31,7 +31,7 @@ class AuthViewModel : ViewModel() {
     fun registerUser(registerDetails: RegisterData, profile: String) {
         val database = Firebase.database.reference
         currentUser?.let { user -> // get the current user
-            database.child("user").child(profile).child(user.uid).child("account")
+            database.child("user").child("Recruiter").child(user.uid).child("account")
                 .setValue(registerDetails).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.d("auth", "data saved successfully")
@@ -42,17 +42,17 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    fun testWriteToRealTimeDb(){
-        val database = Firebase.database.reference
-        currentUser?.let { user -> // get the current user
-            database.child("user").child("test")
-                .setValue("Test Sucessful").addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Log.d("auth", "data saved successfully")
-                    } else {
-                        Log.e("auth_error", "Error: ${it.exception?.message.toString()}")
-                    }
-                }
-        }
-    }
+//    fun testWriteToRealTimeDb() {
+//        val database = Firebase.database.reference
+//        currentUser?.let { user -> // get the current user
+//            database.child("user").child(user.uid)
+//                .setValue("Test Sucessful").addOnCompleteListener {
+//                    if (it.isSuccessful) {
+//                        Log.d("auth", "data saved successfully")
+//                    } else {
+//                        Log.e("auth_error", "Error: ${it.exception?.message.toString()}")
+//                    }
+//                }
+//        }
+//    }
 }

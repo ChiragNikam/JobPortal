@@ -97,13 +97,13 @@ class Register : ComponentActivity() {
                                 registerUser(
                                     checkRegisterDetails,
                                     RegisterData(
-                                        "test recruiter",
-                                        "testrecruiter00@gmail.com",
-                                        "12345678"
+                                        checkRegisterDetails.fullName,
+                                        checkRegisterDetails.email,
+                                        checkRegisterDetails.password
                                     ), selectedProfile
                                 )
                                 // test write
-                                viewModelAuth.testWriteToRealTimeDb()
+//                                viewModelAuth.testWriteToRealTimeDb()
                             },
                             text = "Register",
                             padStart = 65,

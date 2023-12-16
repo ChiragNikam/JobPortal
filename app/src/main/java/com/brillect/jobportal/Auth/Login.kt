@@ -77,13 +77,13 @@ class Login : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-//
-//        if (currentUser != null) {
-//            startActivity(Intent(this, RecruiterHome::class.java))
-//        }
-//        Log.d("auth", "Current user: ${currentUser?.uid}")
+
+        if (currentUser != null) {
+            startActivity(Intent(this, RecruiterHome::class.java))
+        }
+        Log.d("auth", "Current user: ${currentUser?.uid}")
 //        to sign out
-        Firebase.auth.signOut()
+//        Firebase.auth.signOut()
 
     }
 
@@ -100,10 +100,10 @@ class Login : ComponentActivity() {
                     color = BackgroundColor
                 ) {
                     Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 46.dp)) {
-                        BackLogin {
+                        BackToPrevious ({
                             startActivity(Intent(this@Login, Welcome::class.java))
                             finish()
-                        }
+                        }, "Back")
                         Spacer(modifier = Modifier.height(26.dp))
                         email = SingleLineTextField(description = "Login")
                         Spacer(modifier = Modifier.height(24.dp))
@@ -174,7 +174,7 @@ class Login : ComponentActivity() {
 }
 
 @Composable
-fun BackLogin(onBackPressed: () -> Unit) {
+fun BackToPrevious(onBackPressed: () -> Unit, description: String) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.clickable { onBackPressed() }) {
@@ -188,7 +188,7 @@ fun BackLogin(onBackPressed: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = "Back", color = PrimaryColor, fontSize = 18.sp, fontFamily = textFontFamily
+                text = description, color = PrimaryColor, fontSize = 18.sp, fontFamily = textFontFamily
             )
         }
         Spacer(modifier = Modifier.height(24.dp))

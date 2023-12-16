@@ -23,10 +23,12 @@
         </activity>
         <activity
             android:name=".Auth.Register"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize" >
+
+        </activity>
 
         <activity
             android:name=".ApplierHome"
@@ -34,11 +36,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.JobPortal"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Auth.Login"
@@ -47,7 +45,11 @@
             android:parentActivityName=".Welcome"
             android:theme="@style/Theme.JobPortal"
             android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Welcome"
