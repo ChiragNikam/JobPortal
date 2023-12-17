@@ -1,4 +1,4 @@
-package com.brillect.jobportal
+package com.brillect.jobportal.Recruiter
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

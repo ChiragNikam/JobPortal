@@ -2,6 +2,7 @@ package com.brillect.jobportal.UIComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,7 @@ import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
 val textFontFamily = FontFamily(Font(R.font.product_sans))
+
 @Composable
 fun SingleLineTextField(description: String): String {
     var textEntered = ""
@@ -155,7 +157,9 @@ fun customTextFieldSingleLine(): String {
                 textStyle = TextStyle(
                     color = PrimaryColor, fontFamily = textFontFamily,
                     fontSize = 14.sp
-                ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), singleLine = true
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                singleLine = true
             )
         }
     }
@@ -282,23 +286,43 @@ fun HelloUserNameProfilePhoto() {
 }
 
 @Composable
-fun InfoBlock(label: String, description: String){
+fun HelloUserNameProfilePhotoClickable(onClick: () -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = Modifier.weight(1f)) {
+            TextUserName(name = "Kabira")
+        }
+        Column {
+            Image(
+                painter = painterResource(id = R.drawable.icon_account),
+                contentDescription = "Companies",
+                modifier = Modifier
+                    .height(32.dp)
+                    .width(32.dp)
+                    .clip(CircleShape).clickable { onClick() }
+            )
+        }
+
+    }
+}
+
+@Composable
+fun InfoBlock(label: String, description: String) {
+    Box(
+        modifier = Modifier
+            .background(Color.Black, shape = RoundedCornerShape(8.dp))
+            .padding(bottom = 1.dp, end = 1.dp)
+    ) {
         Box(
             modifier = Modifier
-                .background(Color.Black, shape = RoundedCornerShape(8.dp))
-                .padding(bottom = 1.dp, end = 1.dp)
+                .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
-            Box(
-                modifier = Modifier
-                    .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                Column {
-                    TextCustom(textToShow = label, weight = 400, fontSize = 14)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextCustom(textToShow = description, weight = 400, fontSize = 12)
-                }
+            Column {
+                TextCustom(textToShow = label, weight = 400, fontSize = 14)
+                Spacer(modifier = Modifier.height(12.dp))
+                TextCustom(textToShow = description, weight = 400, fontSize = 12)
             }
         }
+    }
 }

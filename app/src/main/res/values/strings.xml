@@ -12,4 +12,6 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_recruiter">Recruiter</string>
+    <string name="title_activity_applier_profile">ApplierProfile</string>
+    <string name="title_activity_job_company_description">JobCompanyDescription</string>
 </resources>

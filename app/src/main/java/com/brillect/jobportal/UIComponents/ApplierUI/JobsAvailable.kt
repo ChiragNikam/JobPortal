@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.HelloUserNameProfilePhoto
+import com.brillect.jobportal.UIComponents.HelloUserNameProfilePhotoClickable
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.Text_18_White
@@ -39,9 +40,8 @@ import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
-@Preview
 @Composable
-fun AvailableJobs() {
+fun AvailableJobs(onClickSearch: () -> Unit, onImageClick: () -> Unit, modifierAvailCompanies: Modifier) {
     JobPortalTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -51,23 +51,26 @@ fun AvailableJobs() {
             color = BackgroundColor
         ) {
             Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
-                HelloUserNameProfilePhoto()
+                HelloUserNameProfilePhotoClickable{
+                    onImageClick()
+                }
                 Spacer(modifier = Modifier.height(35.dp))
                 SingleLineTextField(description = "Search by Company/Post")
                 Spacer(modifier = Modifier.height(16.dp))
-                BtnCustom(onClicking = { }, text = "Search", padStart = 0, padEnd = 220)
+                BtnCustom(onClicking = {
+                    onClickSearch()
+                }, text = "Search", padStart = 0, padEnd = 220)
                 Spacer(modifier = Modifier.height(30.dp))
-                AvailableCompanies()
+                AvailableCompaniesViews(modifierAvailCompanies)
             }
         }
     }
 }
 
-@Preview
 @Composable
-fun AvailableCompanies() {
+fun AvailableCompaniesViews(modifier: Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(color = Color.Black, shape = RoundedCornerShape(8.dp))
             .padding(bottom = 1.dp, end = 1.dp), contentAlignment = Alignment.BottomCenter
     ) {
@@ -101,7 +104,8 @@ fun AvailableCompanies() {
 @Composable
 fun OutlinedInfoText(description: String) {
     Box(
-        modifier = Modifier.border(1.dp, color = PrimaryColor, shape = RoundedCornerShape(10.dp))
+        modifier = Modifier
+            .border(1.dp, color = PrimaryColor, shape = RoundedCornerShape(10.dp))
             .padding(top = 2.dp, bottom = 2.dp, start = 16.dp, end = 16.dp)
     ) {
         TextCustom(textToShow = description, weight = 400, fontSize = 12)
