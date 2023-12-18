@@ -57,13 +57,12 @@ class Login : ComponentActivity() {
     override fun onStart() {
         super.onStart()
 
+        // check if user already exist
         if (currentUser != null) {
             startActivity(Intent(this, ApplierHome::class.java))
         }
         Log.d("auth", "Current user: ${currentUser?.uid}")
 
-//        to sign out
-//        Firebase.auth.signOut()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,7 +153,6 @@ class Login : ComponentActivity() {
                 ).show()
             }
         }
-
     }
 }
 

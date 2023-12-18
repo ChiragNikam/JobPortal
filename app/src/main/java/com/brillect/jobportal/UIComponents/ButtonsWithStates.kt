@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,5 +56,34 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
                 fontWeight = FontWeight(700)
             )
         }
+    }
+}
+
+
+@Composable
+fun BtnWithClickableState(onClicked: () -> Unit, btnText: String, clickedState: Boolean) {
+    var buttonColor by remember { mutableStateOf(Color(0xFFfcc636)) }
+    var textColor by remember { mutableStateOf(Color.Black) }
+    val isButtonClicked by remember { mutableStateOf(clickedState) }
+
+    Button(
+        onClick = {
+            buttonColor = if (isButtonClicked) Color(0xFF2B2B2B) else Color(0xFFfcc636)
+            textColor = if (isButtonClicked) Color.White else Color.Black
+            onClicked()
+        },
+        modifier = Modifier
+            .width(160.dp) // Set a fixed width
+            .height(60.dp) // Set a fixed height
+            .background(buttonColor, RoundedCornerShape(8.dp)),
+        colors = ButtonDefaults.buttonColors(if (clickedState) Color(0xFF2B2B2B) else Color(0xFFfcc636)),
+    ) {
+        Text(
+            text = btnText,
+            color = if (clickedState) Color.White else Color.Black,
+            fontSize = 16.sp,
+            fontFamily = textFontFamily,
+            fontWeight = FontWeight(700)
+        )
     }
 }

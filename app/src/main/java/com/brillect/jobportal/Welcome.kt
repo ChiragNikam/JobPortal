@@ -89,16 +89,12 @@ fun BtnStartSearching(onClick: () -> Unit) {
         modifier = Modifier
             .width(160.dp)
             .height(56.dp)
-            .background(
-                color = PrimaryColor,
-                shape = RoundedCornerShape(size = 8.dp)
-            )
             .shadow(
                 elevation = 0.dp,
                 spotColor = Color(0x80000000),
                 ambientColor = Color(0x80000000)
-            )
-
+            ),
+        shape = RoundedCornerShape(size = 8.dp)
     ) {
         Text(
             text = "Start Searching",

@@ -17,17 +17,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brillect.jobportal.Auth.BackToPrevious
 import com.brillect.jobportal.R
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.InfoBlock
@@ -51,25 +48,8 @@ fun JobCompanyDesc() {
         ) {
             val clickedState = remember { mutableIntStateOf(1) }
             Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
-                // to go back
-                Column {
-                    //
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable {  }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_back),
-                            contentDescription = "Back Button",
-                            modifier = Modifier
-                                .height(24.dp)
-                                .width(24.dp),
-                            contentScale = ContentScale.FillBounds
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = "Back", color = PrimaryColor, fontSize = 18.sp, fontFamily = textFontFamily
-                        )
-                    }
-                }
+                // go back
+                SimpleBack{}
                 Spacer(modifier = Modifier.height(26.dp))
 
                 // show details of clicked job in this view
@@ -99,9 +79,7 @@ fun JobCompanyDesc() {
                         .background(TextFieldColor)
                 ) { }
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = BackgroundColor
+                    modifier = Modifier.fillMaxSize(), color = BackgroundColor
                 ) {
                     if (clickedState.intValue == 1) {   // if clicked Job Description
                         JobDescription()
@@ -118,11 +96,33 @@ fun JobCompanyDesc() {
 }
 
 @Composable
-fun JobDescription(){
-    val description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+fun JobDescription() {
+    val description =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
     Column(horizontalAlignment = Alignment.Start) {
         Spacer(modifier = Modifier.height(22.dp))
         InfoBlock(label = "About Company", description = description)
         Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+fun SimpleBack(onBack: ()-> Unit) {
+    // to go back
+    Column {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { onBack() }) {
+            Image(
+                painter = painterResource(id = R.drawable.icon_back),
+                contentDescription = "Back Button",
+                modifier = Modifier
+                    .height(24.dp)
+                    .width(24.dp),
+                contentScale = ContentScale.FillBounds
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = "Back", color = PrimaryColor, fontSize = 18.sp, fontFamily = textFontFamily
+            )
+        }
     }
 }
