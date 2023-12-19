@@ -21,6 +21,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,19 +51,20 @@ import com.brillect.jobportal.UIComponents.passwordTextField
 import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
 class Register : ComponentActivity() {
     private lateinit var selectedProfile: String    // for choice of profile among Applier or Recruiter
     private lateinit var checkRegisterDetails: RegisterDataWithConfirmPass  // to validate input
-    private lateinit var viewModelAuth: AuthViewModel
+    private val viewModelAuth: AuthViewModel by lazy { ViewModelProvider(this)[AuthViewModel::class.java] }
 
     // Initialize Firebase Auth
     val auth = FirebaseAuth.getInstance()
     val currentUser = auth.currentUser  // for current user
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModelAuth = ViewModelProvider(this)[AuthViewModel::class.java]
+        FirebaseApp.initializeApp(this)
         setContent {
             JobPortalTheme {
                 // A surface container using the 'background' color from the theme
@@ -102,6 +106,7 @@ class Register : ComponentActivity() {
                     }
                 }
             }
+
         }
     }
 
@@ -112,32 +117,28 @@ class Register : ComponentActivity() {
     ) {
         // check weather the user input is not empty for eny of the field
         if (viewModelAuth.isReadyToRegister(validateDetails) == "yes") {
-            auth.createUserWithEmailAndPassword(registerDetails.email, registerDetails.password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // save user details to realtime database
-                        viewModelAuth.registerUser(
-                            registerDetails,
-                            profile
-                        )
-
-                        // move to activity according to selected profile type(among recruiter/applier)
-                        if (selectedProfile == "Recruiter") {
-                            startActivity(Intent(this@Register, RecruiterHome::class.java))
-                            finish()
-                        } else if (selectedProfile == "Applier") {
-                            startActivity(Intent(this@Register, ApplierHome::class.java))
-                        }
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.e("login_error", "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed|${task.exception?.message}",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+            val auth = AuthRepo()
+            auth.registerUser(registerDetails.email, registerDetails.password) { task ->
+                if(task.isSuccessful){
+                    viewModelAuth.writeUserToDb(registerDetails, profile)
+                    // move to activity according to selected profile type(among recruiter/applier)
+                    if (selectedProfile == "Recruiter") {
+                        startActivity(Intent(this@Register, RecruiterHome::class.java))
+                        finish()
+                    } else if (selectedProfile == "Applier") {
+                        startActivity(Intent(this@Register, ApplierHome::class.java))
+                        finish()
                     }
+                }else{
+                    // If sign in fails, display a message to the user.
+                    Log.e("login_error", "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed|${task.exception?.message}",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+            }
         } else {
             Toast.makeText(
                 this,
