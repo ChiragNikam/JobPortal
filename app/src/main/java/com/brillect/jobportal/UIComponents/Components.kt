@@ -264,9 +264,9 @@ fun radioButtonRecruiterApplier(): String {
     return selectedOption.value
 }
 
-@Preview(showSystemUi = true)
+
 @Composable
-fun HelloUserNameProfilePhoto() {
+fun HelloUserNameProfilePhoto(onImageClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.weight(1f)) {
             TextUserName(name = "Kabira")
@@ -279,6 +279,7 @@ fun HelloUserNameProfilePhoto() {
                     .height(32.dp)
                     .width(32.dp)
                     .clip(CircleShape)
+                    .clickable { onImageClick()}
             )
         }
 
@@ -298,7 +299,8 @@ fun HelloUserNameProfilePhotoClickable(onClick: () -> Unit) {
                 modifier = Modifier
                     .height(32.dp)
                     .width(32.dp)
-                    .clip(CircleShape).clickable { onClick() }
+                    .clip(CircleShape)
+                    .clickable { onClick() }
             )
         }
 

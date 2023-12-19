@@ -14,4 +14,6 @@
     <string name="title_activity_recruiter">Recruiter</string>
     <string name="title_activity_applier_profile">ApplierProfile</string>
     <string name="title_activity_job_company_description">JobCompanyDescription</string>
+    <string name="title_dialog_logout">Logout</string>
+    <string name="text_dialog_logout">Are you sure you want to logout?</string>
 </resources>
