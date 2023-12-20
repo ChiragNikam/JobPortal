@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -42,11 +43,13 @@ fun RecruiterUI() {
             color = BackgroundColor
         ) {
             // for remembering the state and opening the view accordingly
-            val selectedState = remember { mutableStateOf(0) }
-            val logoutState = remember { mutableStateOf(false) }
+            val selectedState =
+                remember { mutableStateOf(1) }  // to record selected state among create-job-post, applications and company profile
+            val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
+
             Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
                 HelloUserNameProfilePhoto {// Top Bar with User name and
-                    logoutState.value = !logoutState.value
+                    showLogoutDialog.value = !showLogoutDialog.value
                 }
                 Spacer(modifier = Modifier.height(24.dp))
                 BtnCustom(onClicking = {
@@ -75,19 +78,15 @@ fun RecruiterUI() {
                     }
                 }
             }
-            if (logoutState.value) {
-                LogoutDialog()
+            if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
+                LogoutDialog(showLogoutDialog)
             }
         }
     }
 }
 
 @Composable
-private fun LogoutDialog(
-//    score: Int,
-//    onPlayAgain: () -> Unit,
-//    modifier: Modifier = Modifier
-) {
+private fun LogoutDialog(showDialog: MutableState<Boolean>) {
     val activity = (LocalContext.current as Activity)
 
     AlertDialog(
@@ -95,6 +94,7 @@ private fun LogoutDialog(
             // Dismiss the dialog when the user clicks outside the dialog or on the back
             // button. If you want to disable that functionality, simply use an empty
             // onCloseRequest.
+            showDialog.value = !showDialog.value
         },
         title = { Text(text = stringResource(R.string.title_dialog_logout)) },
         text = { Text(text = stringResource(R.string.text_dialog_logout)) },
@@ -102,7 +102,7 @@ private fun LogoutDialog(
         dismissButton = {
             TextButton(
                 onClick = {
-//                    activity.finish()
+                    showDialog.value = !showDialog.value
                 }
             ) {
                 Text(text = "Cancel")

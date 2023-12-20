@@ -17,6 +17,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +43,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.brillect.jobportal.Data.JobType
+import com.brillect.jobportal.Data.WorkPlace
 import com.brillect.jobportal.R
 import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
@@ -62,6 +69,17 @@ fun MultiLineTextField(description: String): String {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
         textEntered = customTextFieldMultiLine()
+    }
+    return textEntered
+}
+
+@Composable
+fun dropDownForJobType(description: String): String {
+    var textEntered = ""
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text_18_White(textToShow = description, 400)
+        Spacer(modifier = Modifier.height(22.dp))
+        textEntered = customTextFieldWithDropdownJobType()
     }
     return textEntered
 }
@@ -264,7 +282,6 @@ fun radioButtonRecruiterApplier(): String {
     return selectedOption.value
 }
 
-
 @Composable
 fun HelloUserNameProfilePhoto(onImageClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -279,7 +296,7 @@ fun HelloUserNameProfilePhoto(onImageClick: () -> Unit) {
                     .height(32.dp)
                     .width(32.dp)
                     .clip(CircleShape)
-                    .clickable { onImageClick()}
+                    .clickable { onImageClick() }
             )
         }
 
@@ -327,4 +344,133 @@ fun InfoBlock(label: String, description: String) {
             }
         }
     }
+}
+
+// custom text field with drop down
+@Composable
+fun customTextFieldWithDropdownJobType(): String {
+    var jobType by remember { mutableStateOf(JobType.FULL_TIME) }
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .background(Color.Black, shape = RoundedCornerShape(8.dp))
+            .padding(bottom = 1.dp, end = 1.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
+                .weight(1f)
+                .height(44.dp)
+                .clickable { isDropdownExpanded = true }
+                .padding(start = 16.dp, end = 16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = jobType.label,
+                    color = PrimaryColor,
+                    fontSize = 14.sp,
+                    fontFamily = textFontFamily
+                )
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        }
+
+        DropdownMenu(
+            expanded = isDropdownExpanded,
+            modifier = Modifier
+                .width(300.dp)
+                .align(Alignment.CenterVertically),
+            onDismissRequest = { isDropdownExpanded = false }
+        ) {
+            JobType.values().forEach { type ->
+                DropdownMenuItem(text = {
+                    Text(
+                        text = type.label,
+                        fontSize = 16.sp,
+                        fontFamily = textFontFamily
+                    )
+                }, onClick = {
+                    jobType = type
+                    isDropdownExpanded = false
+                })
+            }
+        }
+    }
+
+    return jobType.label
+}
+
+@Composable
+fun customTextFieldWithDropdownWorkplace(): String {
+    var workPlace by remember { mutableStateOf(WorkPlace.ON_SITE) }
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .background(Color.Black, shape = RoundedCornerShape(8.dp))
+            .padding(bottom = 1.dp, end = 1.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
+                .weight(1f)
+                .height(44.dp)
+                .clickable { isDropdownExpanded = true }
+                .padding(start = 16.dp, end = 16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = workPlace.label,
+                    color = PrimaryColor,
+                    fontSize = 14.sp,
+                    fontFamily = textFontFamily
+                )
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        }
+
+        DropdownMenu(
+            expanded = isDropdownExpanded,
+            modifier = Modifier
+                .width(300.dp)
+                .align(Alignment.CenterVertically),
+            onDismissRequest = { isDropdownExpanded = false }
+        ) {
+            WorkPlace.values().forEach { type ->
+                DropdownMenuItem(text = {
+                    Text(
+                        text = type.label,
+                        fontSize = 16.sp,
+                        fontFamily = textFontFamily
+                    )
+                }, onClick = {
+                    workPlace = type
+                    isDropdownExpanded = false
+                })
+            }
+        }
+    }
+
+    return workPlace.label
 }

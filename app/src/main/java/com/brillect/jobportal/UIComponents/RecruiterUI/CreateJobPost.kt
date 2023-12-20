@@ -15,6 +15,7 @@ import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.MultiLineTextField
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.Text_18_White
+import com.brillect.jobportal.UIComponents.customTextFieldWithDropdown
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
 @Preview(showSystemUi = true)
@@ -23,13 +24,13 @@ fun JobPostForm() {
     Column(horizontalAlignment = Alignment.Start) {
         Text_18_White(textToShow = "Wants to create job post?")
         Spacer(modifier = Modifier.height(24.dp))
-        SingleLineTextField(description = "Job Position")
+        val jobPosition = SingleLineTextField(description = "Job Position*")
         Spacer(modifier = Modifier.height(22.dp))
-        MultiLineTextField(description = "Job Description")
+        val jobDescription = MultiLineTextField(description = "Job Description")
         Spacer(modifier = Modifier.height(22.dp))
-        MultiLineTextField(description = "Requirements")
+        val requirements = MultiLineTextField(description = "Requirements*")
         Spacer(modifier = Modifier.height(22.dp))
-        MultiLineTextField(description = "Facilities & Other")
+        val facilitiesAndOther = MultiLineTextField(description = "Facilities & Other")
         Spacer(modifier = Modifier.height(16.dp))
         Spacer(
             modifier = Modifier
@@ -37,15 +38,19 @@ fun JobPostForm() {
                 .background(TextFieldColor)
         )
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Job Location")
+        val jobLocation = SingleLineTextField(description = "Job Location*")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Salary in Rupee per year")
+        val salary = SingleLineTextField(description = "Salary in Rupee per year*")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Select Job Type")
+        val jobType = SingleLineTextField(description = "Select Job Type")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Select type of workplace")
+        val workPlace = SingleLineTextField(description = "Select type of workplace")
         Spacer(modifier = Modifier.height(16.dp))
-        Column(modifier = Modifier.fillMaxWidth().padding(end = 112.dp)) {
+        customTextFieldWithDropdown()
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 112.dp)) {
             BtnCustom(onClicking = { }, text = "Create Job", 0, 112)
         }
         Spacer(modifier = Modifier.height(200.dp))
