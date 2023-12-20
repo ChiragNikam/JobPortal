@@ -1,5 +1,6 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,15 +8,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.brillect.jobportal.Data.JobType
+import com.brillect.jobportal.Data.WorkPlace
 import com.brillect.jobportal.UIComponents.BtnCustom
+import com.brillect.jobportal.UIComponents.CustomTextFieldWithDropdownJobType
 import com.brillect.jobportal.UIComponents.MultiLineTextField
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.Text_18_White
-import com.brillect.jobportal.UIComponents.customTextFieldWithDropdown
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
 @Preview(showSystemUi = true)
@@ -42,16 +49,51 @@ fun JobPostForm() {
         Spacer(modifier = Modifier.height(22.dp))
         val salary = SingleLineTextField(description = "Salary in Rupee per year*")
         Spacer(modifier = Modifier.height(22.dp))
-        val jobType = SingleLineTextField(description = "Select Job Type")
+
+        // drop down for job type
+        // Create a mutable state to hold the selected job type
+        var selectedJobType by remember { mutableStateOf(JobType.FULL_TIME) }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text_18_White(textToShow = "Select Job Type", 400)
+            Spacer(modifier = Modifier.height(22.dp))
+
+            // dropdown implementation
+            CustomTextFieldWithDropdownJobType(
+                items = JobType.values().toList(),
+                selectedItem = selectedJobType,
+                onItemSelected = { selectedJobType = it },
+                extractLabel = { it.label }
+            )
+            Log.d("label", "label is : ${selectedJobType.label}")
+        }
+
         Spacer(modifier = Modifier.height(22.dp))
-        val workPlace = SingleLineTextField(description = "Select type of workplace")
+
+        // drop down for workplace
+        // Create a mutable state to hold the selected job type
+        var workPlace by remember { mutableStateOf(WorkPlace.ON_SITE) }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text_18_White(textToShow = "Select type of workplace", 400)
+            Spacer(modifier = Modifier.height(22.dp))
+
+            // dropdown implementation
+            CustomTextFieldWithDropdownJobType(
+                items = WorkPlace.values().toList(),
+                selectedItem = workPlace,
+                onItemSelected = { workPlace = it },
+                extractLabel = { it.label }
+            )
+            Log.d("label", "label is : ${workPlace.label}")
+        }
         Spacer(modifier = Modifier.height(16.dp))
-        customTextFieldWithDropdown()
-        Spacer(modifier = Modifier.height(16.dp))
+
+        // button to finally create job post
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(end = 112.dp)) {
-            BtnCustom(onClicking = { }, text = "Create Job", 0, 112)
+            BtnCustom(onClicking = {
+
+            }, text = "Create Job", 0, 112)
         }
         Spacer(modifier = Modifier.height(200.dp))
     }

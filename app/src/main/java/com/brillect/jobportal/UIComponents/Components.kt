@@ -74,17 +74,6 @@ fun MultiLineTextField(description: String): String {
 }
 
 @Composable
-fun dropDownForJobType(description: String): String {
-    var textEntered = ""
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text_18_White(textToShow = description, 400)
-        Spacer(modifier = Modifier.height(22.dp))
-        textEntered = customTextFieldWithDropdownJobType()
-    }
-    return textEntered
-}
-
-@Composable
 fun passwordTextField(description: String): String {
     var password = ""
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -348,8 +337,12 @@ fun InfoBlock(label: String, description: String) {
 
 // custom text field with drop down
 @Composable
-fun customTextFieldWithDropdownJobType(): String {
-    var jobType by remember { mutableStateOf(JobType.FULL_TIME) }
+fun <T> CustomTextFieldWithDropdownJobType(
+    items: List<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit,
+    extractLabel: (T) -> String
+){
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
     Row(
@@ -373,7 +366,7 @@ fun customTextFieldWithDropdownJobType(): String {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = jobType.label,
+                    text = extractLabel(selectedItem),
                     color = PrimaryColor,
                     fontSize = 14.sp,
                     fontFamily = textFontFamily
@@ -393,22 +386,21 @@ fun customTextFieldWithDropdownJobType(): String {
                 .align(Alignment.CenterVertically),
             onDismissRequest = { isDropdownExpanded = false }
         ) {
-            JobType.values().forEach { type ->
+            items.forEach { item ->
                 DropdownMenuItem(text = {
                     Text(
-                        text = type.label,
+                        text = extractLabel(item),
                         fontSize = 16.sp,
                         fontFamily = textFontFamily
                     )
                 }, onClick = {
-                    jobType = type
+                    onItemSelected(item)
                     isDropdownExpanded = false
                 })
             }
         }
     }
 
-    return jobType.label
 }
 
 @Composable
