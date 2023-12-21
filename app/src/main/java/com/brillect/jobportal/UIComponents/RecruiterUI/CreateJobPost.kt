@@ -1,6 +1,8 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
+import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +35,8 @@ import com.google.firebase.auth.auth
 
 @Composable
 fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
+
+    val activity = (LocalContext.current as Activity)
 
     Column(horizontalAlignment = Alignment.Start) {
         Text_18_White(textToShow = "Wants to create job post?")
@@ -109,9 +114,12 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
                     salary,
                 )
                 // validate form
-                if (viewModelJobPost.validateJobPostDetails(jobPost) == "yes") {
+                val result = viewModelJobPost.validateJobPostDetails(jobPost)
+                if (result == "yes") {
                     // write job post data to realtime db
                     viewModelJobPost.writeJobPostToRealDb(jobPost)
+                } else{
+                    Toast.makeText(activity, result, Toast.LENGTH_SHORT).show()
                 }
             }, text = "Create Job", 0, 112)
         }
