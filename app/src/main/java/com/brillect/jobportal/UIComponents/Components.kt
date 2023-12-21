@@ -198,9 +198,9 @@ fun customTextFieldMultiLine(): String {
                     .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
                 textStyle = TextStyle(
                     color = PrimaryColor, fontFamily = textFontFamily,
-                    fontSize = 22.sp
+                    fontSize = 14.sp
                 ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                maxLines = 4
+                singleLine = false, maxLines = 4
             )
         }
     }

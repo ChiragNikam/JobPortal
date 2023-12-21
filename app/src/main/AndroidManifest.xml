@@ -28,12 +28,9 @@
             android:name=".Recruiter.RecruiterHome"
             android:exported="true"
             android:label="@string/title_activity_recruiter"
-            android:theme="@style/Theme.JobPortal" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/Theme.JobPortal"
+            android:windowSoftInputMode="adjustResize">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Auth.Register"
@@ -58,7 +55,11 @@
             android:parentActivityName=".Welcome"
             android:theme="@style/Theme.JobPortal"
             android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Welcome"

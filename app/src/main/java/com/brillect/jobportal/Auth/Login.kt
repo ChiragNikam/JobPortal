@@ -1,5 +1,6 @@
 package com.brillect.jobportal.Auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -59,7 +60,16 @@ class Login : ComponentActivity() {
 
         // check if user already exist
         if (currentUser != null) {
-            startActivity(Intent(this, ApplierHome::class.java))
+//            startActivity(Intent(this, ApplierHome::class.java))
+            // Get the shared preferences instance
+            val sharedPreferences = getSharedPreferences("UserType", Context.MODE_PRIVATE)
+            val userType = sharedPreferences.getString("type", "")
+            if(userType == "applier"){
+                startActivity(Intent(this, ApplierHome::class.java))
+            } else if(userType == "recruiter"){
+                startActivity(Intent(this, RecruiterHome::class.java))
+            }
+
         }
         Log.d("auth", "Current user: ${currentUser?.uid}")
 
@@ -78,7 +88,7 @@ class Login : ComponentActivity() {
                     color = BackgroundColor
                 ) {
                     Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 46.dp)) {
-                        BackToPrevious ({
+                        BackToPrevious({
                             startActivity(Intent(this@Login, Welcome::class.java))
                             finish()
                         }, "Back")
@@ -135,6 +145,9 @@ class Login : ComponentActivity() {
 
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                // write to shared preference
+                writeToSharedPreference(selectedProfile.lowercase())
+
                 // Sign in success, update UI with the signed-in user's information
                 // move to activity according to selected profile type(among recruiter/applier)
                 if (selectedProfile == "Recruiter") {
@@ -154,6 +167,20 @@ class Login : ComponentActivity() {
             }
         }
     }
+
+    private fun writeToSharedPreference(userType: String) {
+        // Get the shared preferences instance
+        val sharedPreferences = getSharedPreferences("UserType", Context.MODE_PRIVATE)
+
+        // Get an editor to modify shared preferences
+        val editor = sharedPreferences.edit()
+
+        // Save data to shared preferences
+        editor.putString("type", userType)
+
+        // Apply changes
+        editor.apply()
+    }
 }
 
 @Composable
@@ -171,7 +198,10 @@ fun BackToPrevious(onBackPressed: () -> Unit, description: String) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = description, color = PrimaryColor, fontSize = 18.sp, fontFamily = textFontFamily
+                text = description,
+                color = PrimaryColor,
+                fontSize = 18.sp,
+                fontFamily = textFontFamily
             )
         }
         Spacer(modifier = Modifier.height(24.dp))

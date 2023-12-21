@@ -16,18 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.JobType
 import com.brillect.jobportal.Data.WorkPlace
+import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.CustomTextFieldWithDropdownJobType
 import com.brillect.jobportal.UIComponents.MultiLineTextField
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.Text_18_White
 import com.brillect.jobportal.ui.theme.TextFieldColor
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
-@Preview(showSystemUi = true)
 @Composable
-fun JobPostForm() {
+fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
+
     Column(horizontalAlignment = Alignment.Start) {
         Text_18_White(textToShow = "Wants to create job post?")
         Spacer(modifier = Modifier.height(24.dp))
@@ -88,11 +93,26 @@ fun JobPostForm() {
         Spacer(modifier = Modifier.height(16.dp))
 
         // button to finally create job post
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 112.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 112.dp)
+        ) {
             BtnCustom(onClicking = {
-
+                val jobPost = CreateJobPost(
+                    Firebase.auth.uid.toString(),
+                    jobPosition,
+                    jobDescription,
+                    requirements,
+                    facilitiesAndOther,
+                    jobLocation,
+                    salary,
+                )
+                // validate form
+                if (viewModelJobPost.validateJobPostDetails(jobPost) == "yes") {
+                    // write job post data to realtime db
+                    viewModelJobPost.writeJobPostToRealDb(jobPost)
+                }
             }, text = "Create Job", 0, 112)
         }
         Spacer(modifier = Modifier.height(200.dp))

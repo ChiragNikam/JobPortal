@@ -23,8 +23,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.Auth.Login
 import com.brillect.jobportal.R
+import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.HelloUserNameProfilePhoto
 import com.brillect.jobportal.ui.theme.BackgroundColor
@@ -33,7 +35,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 @Composable
-fun RecruiterUI() {
+fun RecruiterUI(viewModel: RecruiterViewModel) {
     JobPortalTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -70,7 +72,7 @@ fun RecruiterUI() {
                     color = BackgroundColor
                 ) {
                     if (selectedState.value == 1) {
-                        JobPostForm()
+                        JobPostForm(viewModel)
                     } else if (selectedState.value == 2) {
                         ApplicantsInfo()
                     } else if (selectedState.value == 3) {
@@ -86,7 +88,7 @@ fun RecruiterUI() {
 }
 
 @Composable
-private fun LogoutDialog(showDialog: MutableState<Boolean>) {
+fun LogoutDialog(showDialog: MutableState<Boolean>) {
     val activity = (LocalContext.current as Activity)
 
     AlertDialog(

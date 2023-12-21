@@ -10,7 +10,7 @@ data class CreateJobPost (
     val salary: String = "",
     val jobType: String = "",
     val workplace: String = "",
-    val validTill: MyDateFormat
+//    val validTill: MyDateFormat
 )
 
 data class MyDateFormat(

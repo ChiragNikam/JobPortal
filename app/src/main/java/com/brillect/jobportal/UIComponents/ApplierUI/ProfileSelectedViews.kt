@@ -1,5 +1,6 @@
 package com.brillect.jobportal.UIComponents.ApplierUI
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.BtnStartSearching
@@ -99,6 +101,7 @@ fun EditProfileView() {
 @Preview(showSystemUi = true)
 @Composable
 fun ConfirmLogoutView() {
+    val activity = (LocalContext.current as Activity)
     Column(modifier = Modifier.background(color = BackgroundColor, shape = RoundedCornerShape(8.dp))) {
         TextCustom(textToShow = "Are you sure? Do you want to logout?", weight = 700, fontSize = 18)
         Spacer(modifier = Modifier.height(22.dp))

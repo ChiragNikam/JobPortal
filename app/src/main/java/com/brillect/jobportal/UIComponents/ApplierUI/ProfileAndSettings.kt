@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.R
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.BtnWithClickableState
+import com.brillect.jobportal.UIComponents.RecruiterUI.LogoutDialog
 import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
@@ -110,7 +111,10 @@ fun ProfileAndSettings() {
                     } else if(clickedState == 2){
                         EditProfileView()
                     } else if(clickedState == 3){
-                        ConfirmLogoutView()
+                        val dialogShowState = remember {
+                            mutableStateOf(true)
+                        }
+                        LogoutDialog(dialogShowState)
                     }
                 }
             }
