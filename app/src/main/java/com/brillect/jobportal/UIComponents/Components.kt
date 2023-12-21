@@ -192,15 +192,16 @@ fun customTextFieldMultiLine(): String {
             BasicTextField(
                 value = fullName,
                 onValueChange = { fullName = it },
+                maxLines = 4,
                 modifier = Modifier
-                    .height(44.dp)
-                    .fillMaxSize()
+                    .height(88.dp)
+                    .fillMaxWidth()
                     .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
                 textStyle = TextStyle(
                     color = PrimaryColor, fontFamily = textFontFamily,
                     fontSize = 14.sp
                 ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                singleLine = false, maxLines = 4
+                singleLine = false
             )
         }
     }
