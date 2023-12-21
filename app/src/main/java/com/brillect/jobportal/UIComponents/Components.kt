@@ -343,7 +343,7 @@ fun <T> CustomTextFieldWithDropdownJobType(
     selectedItem: T,
     onItemSelected: (T) -> Unit,
     extractLabel: (T) -> String
-){
+) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
     Row(

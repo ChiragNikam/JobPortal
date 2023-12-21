@@ -60,14 +60,18 @@ class Login : ComponentActivity() {
 
         // check if user already exist
         if (currentUser != null) {
-//            startActivity(Intent(this, ApplierHome::class.java))
+
             // Get the shared preferences instance
             val sharedPreferences = getSharedPreferences("UserType", Context.MODE_PRIVATE)
             val userType = sharedPreferences.getString("type", "")
+
+            // check user type and move user accordingly
             if(userType == "applier"){
                 startActivity(Intent(this, ApplierHome::class.java))
+                finish()
             } else if(userType == "recruiter"){
                 startActivity(Intent(this, RecruiterHome::class.java))
+                finish()
             }
 
         }
@@ -168,6 +172,7 @@ class Login : ComponentActivity() {
         }
     }
 
+    // write user type(recruiter/applier) to shared preference
     private fun writeToSharedPreference(userType: String) {
         // Get the shared preferences instance
         val sharedPreferences = getSharedPreferences("UserType", Context.MODE_PRIVATE)
