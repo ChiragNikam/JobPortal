@@ -15,7 +15,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -44,9 +47,7 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
                 .verticalScroll(rememberScrollState()),
             color = BackgroundColor
         ) {
-            // for remembering the state and opening the view accordingly
-            val selectedState =
-                remember { mutableStateOf(1) }  // to record selected state among create-job-post, applications and company profile
+            val selectedState = viewModel.selectedState.collectAsState(initial = 1) // selected state for views
             val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
 
             Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
@@ -55,15 +56,15 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
                 }
                 Spacer(modifier = Modifier.height(24.dp))
                 BtnCustom(onClicking = {
-                    selectedState.value = 1
+                    viewModel._selectedState.value = 1
                 }, "Create Job Post", 45, 67)
                 Spacer(modifier = Modifier.height(10.dp))
                 BtnCustom(onClicking = {
-                    selectedState.value = 2
+                    viewModel._selectedState.value = 2
                 }, text = "Applications", 45, 67)
                 Spacer(modifier = Modifier.height(10.dp))
                 BtnCustom(onClicking = {
-                    selectedState.value = 3
+                    viewModel._selectedState.value = 3
                 }, text = "Company Profile", 45, 67)
                 Spacer(modifier = Modifier.height(24.dp))
                 Surface(
@@ -76,7 +77,7 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
                     } else if (selectedState.value == 2) {
                         ApplicantsInfo()
                     } else if (selectedState.value == 3) {
-                        CompanyProfile()
+                        CompanyProfile(viewModel)
                     }
                 }
             }

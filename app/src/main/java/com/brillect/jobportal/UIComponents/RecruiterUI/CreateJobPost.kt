@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +63,7 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
 
         // drop down for job type
         // Create a mutable state to hold the selected job type
-        var selectedJobType by remember { mutableStateOf(JobType.FULL_TIME) }
+        var selectedJobType by rememberSaveable { mutableStateOf(JobType.FULL_TIME) }
         Column(modifier = Modifier.fillMaxWidth()) {
             Text_18_White(textToShow = "Select Job Type", 400)
             Spacer(modifier = Modifier.height(22.dp))
@@ -81,7 +82,7 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
 
         // drop down for workplace
         // Create a mutable state to hold the selected job type
-        var workPlace by remember { mutableStateOf(WorkPlace.ON_SITE) }
+        var workPlace by rememberSaveable { mutableStateOf(WorkPlace.ON_SITE) }
         Column(modifier = Modifier.fillMaxWidth()) {
             Text_18_White(textToShow = "Select type of workplace", 400)
             Spacer(modifier = Modifier.height(22.dp))

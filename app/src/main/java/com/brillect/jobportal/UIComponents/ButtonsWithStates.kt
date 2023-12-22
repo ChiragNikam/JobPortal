@@ -39,7 +39,7 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
         Button(
             onClick = { onClicking() },
             modifier = Modifier
-                .height(56.dp).fillMaxWidth()
+                .height(56.dp).width(300.dp)
                 .padding(start = padStart.dp, end = padEnd.dp)
                 .shadow(
                     elevation = 0.dp,
