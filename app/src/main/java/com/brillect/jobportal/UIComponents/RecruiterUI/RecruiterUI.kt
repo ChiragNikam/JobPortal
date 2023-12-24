@@ -39,52 +39,44 @@ import com.google.firebase.auth.auth
 
 @Composable
 fun RecruiterUI(viewModel: RecruiterViewModel) {
-    JobPortalTheme {
-        // A surface container using the 'background' color from the theme
+
+    val selectedState =
+        viewModel.selectedState.collectAsState(initial = 1) // selected state for views
+    val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
+
+    Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
+        HelloUserNameProfilePhoto {// Top Bar with User name and
+            showLogoutDialog.value = !showLogoutDialog.value
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+        BtnCustom(onClicking = {
+            viewModel._selectedState.value = 1
+        }, "Create Job Post", 45, 67)
+        Spacer(modifier = Modifier.height(10.dp))
+        BtnCustom(onClicking = {
+            viewModel._selectedState.value = 2
+        }, text = "Applications", 45, 67)
+        Spacer(modifier = Modifier.height(10.dp))
+        BtnCustom(onClicking = {
+            viewModel._selectedState.value = 3
+        }, text = "Company Profile", 45, 67)
+        Spacer(modifier = Modifier.height(24.dp))
         Surface(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .fillMaxSize(),
             color = BackgroundColor
         ) {
-            val selectedState = viewModel.selectedState.collectAsState(initial = 1) // selected state for views
-            val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
-
-            Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
-                HelloUserNameProfilePhoto {// Top Bar with User name and
-                    showLogoutDialog.value = !showLogoutDialog.value
-                }
-                Spacer(modifier = Modifier.height(24.dp))
-                BtnCustom(onClicking = {
-                    viewModel._selectedState.value = 1
-                }, "Create Job Post", 45, 67)
-                Spacer(modifier = Modifier.height(10.dp))
-                BtnCustom(onClicking = {
-                    viewModel._selectedState.value = 2
-                }, text = "Applications", 45, 67)
-                Spacer(modifier = Modifier.height(10.dp))
-                BtnCustom(onClicking = {
-                    viewModel._selectedState.value = 3
-                }, text = "Company Profile", 45, 67)
-                Spacer(modifier = Modifier.height(24.dp))
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = BackgroundColor
-                ) {
-                    if (selectedState.value == 1) {
-                        JobPostForm(viewModel)
-                    } else if (selectedState.value == 2) {
-                        ApplicantsInfo()
-                    } else if (selectedState.value == 3) {
-                        CompanyProfile(viewModel)
-                    }
-                }
-            }
-            if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
-                LogoutDialog(showLogoutDialog)
+            if (selectedState.value == 1) {
+                JobPostForm(viewModel)
+            } else if (selectedState.value == 2) {
+                ApplicantsInfo()
+            } else if (selectedState.value == 3) {
+                CompanyProfile(viewModel)
             }
         }
+    }
+    if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
+        LogoutDialog(showLogoutDialog)
     }
 }
 

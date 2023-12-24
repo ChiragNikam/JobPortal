@@ -1,5 +1,7 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.brillect.jobportal.Data.Company
+import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.InfoBlock
@@ -67,30 +72,51 @@ fun CompanyProfile(viewModel: RecruiterViewModel) {
 
 @Composable
 fun CreateCompany() {
+
+    val activity = (LocalContext.current as Activity)
+
     Column(horizontalAlignment = Alignment.Start) {
         Text_18_White(textToShow = "Wants to create company?")
         Spacer(modifier = Modifier.height(32.dp))
-        SingleLineTextField(description = "Company Logo Upload")
+        val companyLogoUrl = SingleLineTextField(description = "Company Logo Upload*")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Company Name")
+        val companyName = SingleLineTextField(description = "Company Name*")
         Spacer(modifier = Modifier.height(22.dp))
-        MultiLineTextField(description = "About Company")
+        val aboutCompany = MultiLineTextField(description = "About Company*")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Website")
+        val website = SingleLineTextField(description = "Website*")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Industry")
+        val industry = SingleLineTextField(description = "Industry")    // tech or non-tech
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Employee Size")
+        val empSize = SingleLineTextField(description = "Employee Size")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Head Office")
+        val headOffice = SingleLineTextField(description = "Head Office")
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Type")
+        val since = SingleLineTextField(description = "Since")  // Apply Date Picker
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Since")  // Apply Date Picker
-        Spacer(modifier = Modifier.height(22.dp))
-        MultiLineTextField(description = "Specialization")
+        val specialization = MultiLineTextField(description = "Specialization")
         Spacer(modifier = Modifier.height(24.dp))
-        BtnCustom(onClicking = { }, text = "Create Company", padStart = 0, padEnd = 152)
+        BtnCustom(onClicking = {
+            val companyDetails = Company(
+                companyLogoUrl,
+                companyName,
+                aboutCompany,
+                website,
+                industry,
+                empSize,
+                headOffice,
+                since, specialization
+            )
+            val validationResult = RecruiterViewModel().validateCreateCompany(
+                companyDetails
+            )
+            if (validationResult == "yes"){
+                FirebaseWrite().writeCompanyDetails(companyDetails)
+                Toast.makeText(activity, "Company Details Saved Sucessfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, validationResult, Toast.LENGTH_SHORT).show()
+            }
+        }, text = "Create Company", padStart = 0, padEnd = 152)
         Spacer(modifier = Modifier.height(100.dp))
     }
 }
@@ -103,7 +129,7 @@ fun CompanyDetails() {
         Spacer(modifier = Modifier.height(22.dp))
         InfoBlock(label = "About Company", description = description)
         Spacer(modifier = Modifier.height(24.dp))
-        BtnCustom(onClicking = {  }, text = "Remove Company", padStart = 0, padEnd = 152)
+        BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
         Spacer(modifier = Modifier.height(150.dp))
     }
 }

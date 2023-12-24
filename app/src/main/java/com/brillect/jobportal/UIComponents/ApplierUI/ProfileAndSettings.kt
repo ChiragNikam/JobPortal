@@ -33,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.R
 import com.brillect.jobportal.UIComponents.BtnCustom
-import com.brillect.jobportal.UIComponents.BtnWithClickableState
 import com.brillect.jobportal.UIComponents.RecruiterUI.LogoutDialog
 import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.ui.theme.BackgroundColor

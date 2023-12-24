@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.JobType
 import com.brillect.jobportal.Data.WorkPlace
+import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.CustomTextFieldWithDropdownJobType
@@ -118,8 +119,10 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
                 val result = viewModelJobPost.validateJobPostDetails(jobPost)
                 if (result == "yes") {
                     // write job post data to realtime db
-                    viewModelJobPost.writeJobPostToRealDb(jobPost)
-                } else{
+                    val jobPostSaved = FirebaseWrite().writeJobPostToRealDb(jobPost)
+
+                    Toast.makeText(activity, jobPostSaved, Toast.LENGTH_SHORT).show()
+                } else {
                     Toast.makeText(activity, result, Toast.LENGTH_SHORT).show()
                 }
             }, text = "Create Job", 0, 112)

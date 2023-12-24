@@ -29,18 +29,19 @@ import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.PrimaryColor
 
-
 @Composable
 fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = padStart.dp, end = padEnd.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = { onClicking() },
             modifier = Modifier
-                .height(56.dp).width(300.dp)
-                .padding(start = padStart.dp, end = padEnd.dp)
+                .height(56.dp)
+                .fillMaxWidth()
                 .shadow(
                     elevation = 0.dp,
                     spotColor = Color(0x80000000),
@@ -56,34 +57,5 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
                 fontWeight = FontWeight(700)
             )
         }
-    }
-}
-
-
-@Composable
-fun BtnWithClickableState(onClicked: () -> Unit, btnText: String, clickedState: Boolean) {
-    var buttonColor by remember { mutableStateOf(Color(0xFFfcc636)) }
-    var textColor by remember { mutableStateOf(Color.Black) }
-    val isButtonClicked by remember { mutableStateOf(clickedState) }
-
-    Button(
-        onClick = {
-            buttonColor = if (isButtonClicked) Color(0xFF2B2B2B) else Color(0xFFfcc636)
-            textColor = if (isButtonClicked) Color.White else Color.Black
-            onClicked()
-        },
-        modifier = Modifier
-            .width(160.dp) // Set a fixed width
-            .height(60.dp) // Set a fixed height
-            .background(buttonColor, RoundedCornerShape(8.dp)),
-        colors = ButtonDefaults.buttonColors(if (clickedState) Color(0xFF2B2B2B) else Color(0xFFfcc636)),
-    ) {
-        Text(
-            text = btnText,
-            color = if (clickedState) Color.White else Color.Black,
-            fontSize = 16.sp,
-            fontFamily = textFontFamily,
-            fontWeight = FontWeight(700)
-        )
     }
 }
