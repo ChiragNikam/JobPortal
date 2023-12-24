@@ -1,6 +1,7 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,12 +15,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.Data.Company
+import com.brillect.jobportal.FirebaseRead
 import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
@@ -110,9 +113,10 @@ fun CreateCompany() {
             val validationResult = RecruiterViewModel().validateCreateCompany(
                 companyDetails
             )
-            if (validationResult == "yes"){
+            if (validationResult == "yes") {
                 FirebaseWrite().writeCompanyDetails(companyDetails)
-                Toast.makeText(activity, "Company Details Saved Sucessfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Company Details Saved Sucessfully", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 Toast.makeText(activity, validationResult, Toast.LENGTH_SHORT).show()
             }
@@ -123,11 +127,28 @@ fun CreateCompany() {
 
 @Composable
 fun CompanyDetails() {
-    val description =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+    var companyDetails by remember { mutableStateOf(Company()) }
+    FirebaseRead().getCompany { details ->
+        companyDetails = details
+        Log.d("company_details", companyDetails.toString())
+    }
     Column(horizontalAlignment = Alignment.Start) {
         Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "About Company", description = description)
+        InfoBlock(label = "Name", description = companyDetails.companyName)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "About Company", description = companyDetails.aboutCompany)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Industry", description = companyDetails.website)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Employee Size", description = companyDetails.employeeSize)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Head Office", description = companyDetails.headOffice)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Since", description = companyDetails.since)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Specialization", description = companyDetails.specialization)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Website", description = companyDetails.website)
         Spacer(modifier = Modifier.height(24.dp))
         BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
         Spacer(modifier = Modifier.height(150.dp))

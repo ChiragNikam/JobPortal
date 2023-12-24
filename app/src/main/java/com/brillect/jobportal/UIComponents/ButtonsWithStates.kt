@@ -41,7 +41,7 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
             onClick = { onClicking() },
             modifier = Modifier
                 .height(56.dp)
-                .fillMaxWidth()
+                .width(300.dp)
                 .shadow(
                     elevation = 0.dp,
                     spotColor = Color(0x80000000),
