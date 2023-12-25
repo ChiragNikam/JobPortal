@@ -29,6 +29,7 @@ import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.InfoBlock
 import com.brillect.jobportal.UIComponents.MultiLineTextField
 import com.brillect.jobportal.UIComponents.SingleLineTextField
+import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.Text_18_White
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
@@ -128,29 +129,49 @@ fun CreateCompany() {
 @Composable
 fun CompanyDetails() {
     var companyDetails by remember { mutableStateOf(Company()) }
-    FirebaseRead().getCompany { details ->
-        companyDetails = details
-        Log.d("company_details", companyDetails.toString())
+    var companyAvailable by rememberSaveable {
+        mutableStateOf(false)
     }
-    Column(horizontalAlignment = Alignment.Start) {
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Name", description = companyDetails.companyName)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "About Company", description = companyDetails.aboutCompany)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Industry", description = companyDetails.website)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Employee Size", description = companyDetails.employeeSize)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Head Office", description = companyDetails.headOffice)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Since", description = companyDetails.since)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Specialization", description = companyDetails.specialization)
-        Spacer(modifier = Modifier.height(22.dp))
-        InfoBlock(label = "Website", description = companyDetails.website)
-        Spacer(modifier = Modifier.height(24.dp))
-        BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
-        Spacer(modifier = Modifier.height(150.dp))
+    FirebaseRead().getCompany { isCompanyAvailable, details ->
+        if (isCompanyAvailable == "yes") {
+            companyAvailable = true
+            companyDetails = details
+        } else{
+            companyAvailable = false
+        }
+    }
+    if (companyAvailable) {
+        Column(horizontalAlignment = Alignment.Start) {
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Name", description = companyDetails.companyName)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "About Company", description = companyDetails.aboutCompany)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Industry", description = companyDetails.website)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Employee Size", description = companyDetails.employeeSize)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Head Office", description = companyDetails.headOffice)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Since", description = companyDetails.since)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Specialization", description = companyDetails.specialization)
+            Spacer(modifier = Modifier.height(22.dp))
+            InfoBlock(label = "Website", description = companyDetails.website)
+            Spacer(modifier = Modifier.height(24.dp))
+            BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
+            Spacer(modifier = Modifier.height(150.dp))
+        }
+    } else{
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.height(24.dp))
+            TextCustom(
+                textToShow = "You had not added company yet. Create Company first.",
+                weight = 400,
+                fontSize = 20
+            )
+        }
+
     }
 }

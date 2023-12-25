@@ -13,11 +13,25 @@ import com.google.firebase.ktx.Firebase
 class FirebaseRead {
     // Initialize Firebase Auth
     val auth = FirebaseAuth.getInstance()
-    val currentUser = auth.currentUser  // for current user
-    val database = Firebase.database.reference
-    fun getCompany(companyDetails: (Company) -> Unit): Company {
-        var company = Company()
+    private val currentUser = auth.currentUser  // for current user
+    private val database = Firebase.database.reference
+    fun getCompany(isCompanyAvailable: (String, Company) -> Unit) {
 
+        getCompanyId { companyId ->
+            if(companyId.toString().isEmpty()) {
+                isCompanyAvailable("company_not_available", Company())
+            } else if (companyId != null) {
+
+                getCompanyDetails(companyId) { company ->
+                    isCompanyAvailable("yes", company)
+                }
+            }
+        }
+
+    }
+
+    // get company id
+    fun getCompanyId(onIdPassed: (String?) -> Unit) {
         // get id of company from recruiter node
         currentUser.let { user ->
             if (user != null)
@@ -26,17 +40,14 @@ class FirebaseRead {
                         object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (snapshot.exists()) {
-                                    snapshot.getValue(String::class.java)
-                                        ?.let { companyId ->
-                                            Log.d("company_id", companyId)
-
-                                            // pass company id to get details about company
-                                            getCompanyDetails(companyId) {
-//                                                Log.d("company_details", it.toString())
-                                                companyDetails(it)
-                                            }
-                                        }
-
+                                    val companyId = snapshot.getValue(String::class.java)
+                                    // after getting id pass it
+                                    if (companyId != null) {
+                                        Log.d("company_id", companyId)
+                                        onIdPassed(companyId)
+                                    } else {
+                                        onIdPassed("")
+                                    }
                                 }
                             }
 
@@ -49,11 +60,10 @@ class FirebaseRead {
                     )
         }
 
-        return company
     }
 
-    // get company details by it id
-    fun getCompanyDetails(companyId: String, onDataSuccess: (Company) -> Unit) {
+    // get company details by it's id
+    private fun getCompanyDetails(companyId: String, onDataSuccess: (Company) -> Unit) {
         currentUser.let {
             database.child("companies").child(companyId)
                 .addValueEventListener(object : ValueEventListener {

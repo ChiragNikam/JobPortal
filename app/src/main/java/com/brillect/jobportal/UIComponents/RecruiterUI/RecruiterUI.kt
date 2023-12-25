@@ -74,6 +74,7 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
                 CompanyProfile(viewModel)
             }
         }
+
     }
     if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
         LogoutDialog(showLogoutDialog)

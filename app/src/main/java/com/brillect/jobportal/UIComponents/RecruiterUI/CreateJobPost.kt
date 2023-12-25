@@ -9,10 +9,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,6 +31,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.JobType
 import com.brillect.jobportal.Data.WorkPlace
+import com.brillect.jobportal.FirebaseRead
 import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
@@ -34,11 +42,17 @@ import com.brillect.jobportal.UIComponents.Text_18_White
 import com.brillect.jobportal.ui.theme.TextFieldColor
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.launch
 
 @Composable
 fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
 
     val activity = (LocalContext.current as Activity)
+
+    // for snack bar visibility
+    var snackBarVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     Column(horizontalAlignment = Alignment.Start) {
         Text_18_White(textToShow = "Wants to create job post?")
@@ -118,15 +132,46 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
                 // validate form
                 val result = viewModelJobPost.validateJobPostDetails(jobPost)
                 if (result == "yes") {
-                    // write job post data to realtime db
-                    val jobPostSaved = FirebaseWrite().writeJobPostToRealDb(jobPost)
 
-                    Toast.makeText(activity, jobPostSaved, Toast.LENGTH_SHORT).show()
+                    FirebaseRead().getCompanyId { companyId ->
+                        if (!companyId.isNullOrEmpty()) {
+                            // write job post data to realtime db
+                            val jobPostSaved = FirebaseWrite().writeJobPostToRealDb(jobPost)
+
+                            Toast.makeText(activity, jobPostSaved, Toast.LENGTH_SHORT).show()
+                        } else {
+                            // implement snackbar
+                        }
+                    }
+
                 } else {
                     Toast.makeText(activity, result, Toast.LENGTH_SHORT).show()
                 }
             }, text = "Create Job", 0, 112)
         }
         Spacer(modifier = Modifier.height(200.dp))
+    }
+
+}
+
+// show snack bar
+@Composable
+fun ShowSnackBar(message: String, snackBarVisible: Boolean, snackBarClick: () -> Unit) {
+    // Show the Snackbar based on snackbarVisible state
+    if (snackBarVisible) {
+        Snackbar(
+            modifier = Modifier.padding(16.dp),
+            content = { Text(message) },
+            action = {
+                // Your action button, if needed
+                TextButton(
+                    onClick = {
+                        snackBarClick()
+                    }
+                ) {
+                    Text("Create")
+                }
+            }
+        )
     }
 }
