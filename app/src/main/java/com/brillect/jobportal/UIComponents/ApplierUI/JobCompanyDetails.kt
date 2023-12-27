@@ -53,7 +53,7 @@ fun JobCompanyDesc() {
                 Spacer(modifier = Modifier.height(26.dp))
 
                 // show details of clicked job in this view
-                AvailableCompaniesViews(modifier = Modifier)
+//                AvailableCompaniesViews(modifier = Modifier)
                 Spacer(modifier = Modifier.height(24.dp))
 
                 BtnCustom(  // Job Description Button

@@ -2,9 +2,11 @@ package com.brillect.jobportal
 
 import android.util.Log
 import com.brillect.jobportal.Data.Company
+import com.brillect.jobportal.Data.CreateJobPost
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
@@ -18,7 +20,7 @@ class FirebaseRead {
     fun getCompany(isCompanyAvailable: (String, Company) -> Unit) {
 
         getCompanyId { companyId ->
-            if(companyId.toString().isEmpty()) {
+            if (companyId.isEmpty()) {
                 isCompanyAvailable("company_not_available", Company())
             } else if (companyId != null) {
 
@@ -31,11 +33,11 @@ class FirebaseRead {
     }
 
     // get company id
-    fun getCompanyId(onIdPassed: (String?) -> Unit) {
+    fun getCompanyId(id: String = currentUser?.uid.toString(),onIdPassed: (String) -> Unit) {
         // get id of company from recruiter node
         currentUser.let { user ->
             if (user != null)
-                database.child("user").child("recruiter").child(user.uid).child("company_id")
+                database.child("user").child("recruiter").child(id).child("company_id")
                     .addValueEventListener(
                         object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
@@ -63,7 +65,7 @@ class FirebaseRead {
     }
 
     // get company details by it's id
-    private fun getCompanyDetails(companyId: String, onDataSuccess: (Company) -> Unit) {
+    fun getCompanyDetails(companyId: String, onDataSuccess: (Company) -> Unit) {
         currentUser.let {
             database.child("companies").child(companyId)
                 .addValueEventListener(object : ValueEventListener {
@@ -80,6 +82,28 @@ class FirebaseRead {
 
                 })
         }
+    }
+
+    fun getJobPostsList(jobPost:(List<CreateJobPost>)-> Unit) {
+
+        database.child("job_posts").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val listForJobPost = mutableListOf<CreateJobPost>()
+                if (snapshot.exists()) {
+                    for (data in snapshot.children) {
+                        val jobPost = data.getValue(CreateJobPost::class.java)
+                        if (jobPost != null)
+                            listForJobPost.add(jobPost)
+                    }
+                    jobPost(listForJobPost)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("error_job_post", error.message)
+            }
+
+        })
     }
 }
 

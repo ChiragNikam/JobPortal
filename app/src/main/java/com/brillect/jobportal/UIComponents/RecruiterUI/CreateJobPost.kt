@@ -79,6 +79,7 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
         // drop down for job type
         // Create a mutable state to hold the selected job type
         var selectedJobType by rememberSaveable { mutableStateOf(JobType.FULL_TIME) }
+        val jobTypeLabel = selectedJobType.label
         Column(modifier = Modifier.fillMaxWidth()) {
             Text_18_White(textToShow = "Select Job Type", 400)
             Spacer(modifier = Modifier.height(22.dp))
@@ -128,6 +129,8 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
                     facilitiesAndOther,
                     jobLocation,
                     salary,
+                    jobType = selectedJobType.label,
+                    workplace = workPlace.label
                 )
                 // validate form
                 val result = viewModelJobPost.validateJobPostDetails(jobPost)

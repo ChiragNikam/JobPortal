@@ -15,7 +15,7 @@ import com.brillect.jobportal.ui.theme.JobPortalTheme
 
 class RecruiterHome : ComponentActivity() {
     // view model instance
-    val viewModel: RecruiterViewModel by lazy { ViewModelProvider(this)[RecruiterViewModel::class.java] }
+    private val viewModel: RecruiterViewModel by lazy { ViewModelProvider(this)[RecruiterViewModel::class.java] }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
