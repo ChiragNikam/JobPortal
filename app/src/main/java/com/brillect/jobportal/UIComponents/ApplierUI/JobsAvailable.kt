@@ -63,8 +63,7 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 fun AvailableJobs(
     viewModel: ApplierViewModel,
     onClickSearch: () -> Unit,
-    onImageClick: () -> Unit,
-    modifierAvailCompanies: Modifier
+    onImageClick: () -> Unit
 ) {
     JobPortalTheme {
         // A surface container using the 'background' color from the theme
@@ -88,7 +87,7 @@ fun AvailableJobs(
                 }, text = "Search", padStart = 0, padEnd = 220)
                 Spacer(modifier = Modifier.height(30.dp))
 
-                AvailableCompaniesList(modifierAvailCompanies, viewModel)
+                AvailableCompaniesList(viewModel)
             }
         }
     }
@@ -96,7 +95,7 @@ fun AvailableJobs(
 
 
 @Composable
-fun AvailableCompaniesList(modifier: Modifier, viewModel: ApplierViewModel) {
+fun AvailableCompaniesList(viewModel: ApplierViewModel) {
     // Get the current context
     val context = LocalContext.current
 
@@ -112,6 +111,11 @@ fun AvailableCompaniesList(modifier: Modifier, viewModel: ApplierViewModel) {
                     Log.d("job_id", job.jobId)
                 })
             }, job = job)
+        }
+
+        // Add an empty space after the last item
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 

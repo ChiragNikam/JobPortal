@@ -29,9 +29,7 @@ class ApplierHome : ComponentActivity() {
                     )
                 },
                 onImageClick = { startActivity(Intent(this, ApplierProfile::class.java)) },
-                Modifier.clickable {
-
-                })
+            )
         }
     }
 }

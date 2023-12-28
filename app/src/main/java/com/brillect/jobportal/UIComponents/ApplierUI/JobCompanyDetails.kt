@@ -1,6 +1,7 @@
 package com.brillect.jobportal.UIComponents.ApplierUI
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,28 +29,40 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.Applier.ApplierViewModel
+import com.brillect.jobportal.Data.Application
+import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.JobPostsApplier
+import com.brillect.jobportal.Data.MyDateFormat
 import com.brillect.jobportal.FirebaseRead
+import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.R
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.InfoBlock
 import com.brillect.jobportal.UIComponents.RecruiterUI.CompanyDetails
+import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
+import java.util.Calendar
 
 @Composable
 fun JobCompanyDesc(viewModel: ApplierViewModel, jobId: String, onBack: () -> Unit) {
     val jobDetails by viewModel.jobDetails.collectAsState()
     val jobDescription by viewModel.jobDetails.collectAsState()
+    val companyDetails by viewModel.companyDetails.collectAsState()
+
+    // Get the current context
+    val context = LocalContext.current
+
     JobPortalTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -106,11 +119,26 @@ fun JobCompanyDesc(viewModel: ApplierViewModel, jobId: String, onBack: () -> Uni
                     if (clickedState.intValue == 1) {   // if clicked Job Description
                         JobDescription(jobDescription)
                     } else if (clickedState.intValue == 2) {    // if clicked Company Details
-                        CompanyDetails()
+                        CompanyDetailsApplier(companyDetails)
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                BtnCustom(onClicking = { /*TODO*/ }, text = "Apply", padStart = 70, padEnd = 70)
+                BtnCustom(onClicking = {
+                    val calendar = Calendar.getInstance()
+                    val dd = calendar.get(Calendar.DATE)
+                    val mm = calendar.get(Calendar.MONTH)
+                    val yyyy = calendar.get(Calendar.YEAR)
+
+                    FirebaseWrite().writeApplicationToJobPost(
+                        jobPostId = jobDetails.jobPostId,
+                        Application(
+                            jobPostId = jobDetails.jobPostId,
+                            applicationDate = MyDateFormat(dd, mm, yyyy)
+                        )
+                    )
+
+                    Toast.makeText(context, "Application Saved Successfully", Toast.LENGTH_SHORT).show()
+                }, text = "Apply", padStart = 70, padEnd = 70)
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
@@ -153,4 +181,29 @@ fun SimpleBack(onBack: () -> Unit) {
             )
         }
     }
+}
+
+@Composable
+fun CompanyDetailsApplier(companyDetails: Company) {
+    Column(horizontalAlignment = Alignment.Start) {
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Name", description = companyDetails.companyName)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "About Company", description = companyDetails.aboutCompany)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Industry", description = companyDetails.website)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Employee Size", description = companyDetails.employeeSize)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Head Office", description = companyDetails.headOffice)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Since", description = companyDetails.since)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Specialization", description = companyDetails.specialization)
+        Spacer(modifier = Modifier.height(22.dp))
+        InfoBlock(label = "Website", description = companyDetails.website)
+        Spacer(modifier = Modifier.height(24.dp))
+
+    }
+
 }
