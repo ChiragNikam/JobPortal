@@ -70,7 +70,7 @@ fun ProfileAndSettings() {
                 ) {
                     // button your profile
                     BtnCustom(
-                        onClicking = { clickedState = 1},
+                        onClicking = { clickedState = 1 },
                         text = "Your Profile",
                         padStart = 45,
                         padEnd = 67
@@ -78,7 +78,7 @@ fun ProfileAndSettings() {
                     Spacer(modifier = Modifier.height(10.dp))
                     // button edit profiel
                     BtnCustom(
-                        onClicking = { clickedState = 2},
+                        onClicking = { clickedState = 2 },
                         text = "Edit Profile",
                         padStart = 45,
                         padEnd = 67
@@ -88,8 +88,6 @@ fun ProfileAndSettings() {
                     BtnCustom(
                         onClicking = {
                             clickedState = 3
-                            // to sign out
-                            Firebase.auth.signOut()
                         },
                         text = "Logout",
                         padStart = 45,
@@ -105,15 +103,16 @@ fun ProfileAndSettings() {
                 ) {}
                 Spacer(modifier = Modifier.height(24.dp))
                 Surface(modifier = Modifier.fillMaxSize(), shape = RoundedCornerShape(8.dp)) {
-                    if(clickedState == 1){
+                    if (clickedState == 1) {
                         YourProfileView()
-                    } else if(clickedState == 2){
+                    } else if (clickedState == 2) {
                         EditProfileView()
-                    } else if(clickedState == 3){
+                    } else if (clickedState == 3) {
                         val dialogShowState = remember {
                             mutableStateOf(true)
                         }
-                        LogoutDialog(dialogShowState)
+                        if (dialogShowState.value)
+                            LogoutDialog(dialogShowState)
                     }
                 }
             }

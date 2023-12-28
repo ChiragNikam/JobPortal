@@ -20,6 +20,7 @@ class FirebaseWrite {
         currentUser?.let { user -> // get the current user
             val node_key = database.child("job_posts").push().key
             if (node_key != null) {
+                jobPost.jobPostId = node_key
                 database.child("job_posts").child(node_key)
                     .setValue(jobPost).addOnCompleteListener {
                         writeToDbSuccess = if (it.isSuccessful) {

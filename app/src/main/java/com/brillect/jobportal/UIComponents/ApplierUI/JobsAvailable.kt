@@ -1,6 +1,7 @@
 package com.brillect.jobportal.UIComponents.ApplierUI
 
 import android.adservices.customaudience.CustomAudience
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -26,6 +27,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,11 +37,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.Applier.ApplierViewModel
+import com.brillect.jobportal.Applier.JobCompanyDescription
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.JobPostsApplier
 import com.brillect.jobportal.FirebaseRead
@@ -94,49 +99,33 @@ fun AvailableJobs(
                     mutableStateOf("")
                 }
 
-                FirebaseRead().getJobPostsList { _jobList ->
-                    jobList = _jobList
-                    jobList.forEach { job ->
-                        val firebaseRead = FirebaseRead()
-
-                        firebaseRead.getCompanyId {
-                            companyId = it
-                            firebaseRead.getCompanyDetails(companyId) {
-                                companyName = it.companyName
-                                Log.d("company_name", companyName)
-                            }
-                        }
-
-                        _showJobPost.add(
-                            JobPostsApplier(
-                                jobPosition = job.jobPosition,
-                                companyName = companyName,
-                                jobLocation = job.jobLocation,
-                                salary = job.salary,
-                                jobType = job.jobType,
-                                workplace = job.workplace
-                            )
-                        )
-                        Log.d("job_post", _showJobPost.toString())
-                    }
-                    showJobPost = _showJobPost
-                }
-                AvailableCompaniesList(modifierAvailCompanies, showJobPost)
+                AvailableCompaniesList(modifierAvailCompanies, viewModel)
             }
         }
     }
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AvailableCompaniesList(modifier: Modifier, jobList: List<JobPostsApplier>) {
+fun AvailableCompaniesList(modifier: Modifier, viewModel: ApplierViewModel) {
+    // Get the current context
+    val context = LocalContext.current
+
+    val jobList by viewModel.showJobPost.collectAsState()
+
+    Log.d("job_list", jobList.toString())
     LazyColumn(verticalArrangement = Arrangement.spacedBy(22.dp)) {
         items(jobList) { job ->
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .background(color = Color.Black, shape = RoundedCornerShape(8.dp))
-                    .padding(bottom = 1.dp, end = 1.dp), contentAlignment = Alignment.BottomCenter
+                    .padding(bottom = 1.dp, end = 1.dp).clickable {
+                        // show complete details of job
+                        context.startActivity(Intent(context, JobCompanyDescription::class.java).apply {
+                            putExtra("job_id", job.jobId)
+                            Log.d("job_id", job.jobId)
+                        })
+                    }, contentAlignment = Alignment.BottomCenter
             ) {
                 Column(
                     modifier = Modifier
@@ -163,6 +152,12 @@ fun AvailableCompaniesList(modifier: Modifier, jobList: List<JobPostsApplier>) {
                     OutlinedInfoText(description = "Expired on 25/08/2000")
                 }
             }
+        }
+    }
+    
+    DisposableEffect(key1 = Unit) {
+        viewModel.loadJobPosts()
+        onDispose {
         }
     }
 }

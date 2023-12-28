@@ -21,16 +21,17 @@ class ApplierHome : ComponentActivity() {
             AvailableJobs(
                 viewModel,
                 onClickSearch = {
-                    AuthViewModel().testWriteToRealTimeDb()
-                },
-                onImageClick = { startActivity(Intent(this, ApplierProfile::class.java)) },
-                Modifier.clickable {
+//                    AuthViewModel().testWriteToRealTimeDb()
                     startActivity(
                         Intent(
                             this,
                             JobCompanyDescription::class.java
                         )
                     )
+                },
+                onImageClick = { startActivity(Intent(this, ApplierProfile::class.java)) },
+                Modifier.clickable {
+
                 })
         }
     }

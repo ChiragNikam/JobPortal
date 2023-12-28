@@ -139,6 +139,7 @@ fun JobPostForm(viewModelJobPost: RecruiterViewModel) {
                     FirebaseRead().getCompanyId { companyId ->
                         if (!companyId.isNullOrEmpty()) {
                             // write job post data to realtime db
+                            jobPost.companyId = companyId   // add company id to job post
                             val jobPostSaved = FirebaseWrite().writeJobPostToRealDb(jobPost)
 
                             Toast.makeText(activity, jobPostSaved, Toast.LENGTH_SHORT).show()

@@ -10,6 +10,9 @@ data class CreateJobPost (
     val salary: String = "",
     val jobType: String = "",
     val workplace: String = "",
+    var companyId: String = "",
+    var jobPostId: String = "",
+    var companyName: String = ""
 //    val validTill: MyDateFormat
 )
 
