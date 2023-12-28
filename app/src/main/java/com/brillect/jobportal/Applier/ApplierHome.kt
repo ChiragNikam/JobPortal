@@ -21,7 +21,6 @@ class ApplierHome : ComponentActivity() {
             AvailableJobs(
                 viewModel,
                 onClickSearch = {
-//                    AuthViewModel().testWriteToRealTimeDb()
                     startActivity(
                         Intent(
                             this,

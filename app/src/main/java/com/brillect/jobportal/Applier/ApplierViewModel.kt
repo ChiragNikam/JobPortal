@@ -17,9 +17,13 @@ class ApplierViewModel : ViewModel() {
 
     private val _companyNames = MutableStateFlow(mutableListOf<String>())
 
+    private var _companyDetails = MutableStateFlow(Company())
+    val companyDetails: StateFlow<Company> = _companyDetails
 
-    fun loadJobPosts() {
+    private var _jobDetails = MutableStateFlow(CreateJobPost())
+    val jobDetails: StateFlow<CreateJobPost> = _jobDetails
 
+    fun loadJobPosts() {    // Load the list of Job Posts
         val companyNames = mutableListOf<String>()
         FirebaseRead().getJobPostsList { _jobList ->
             val updatedList = _jobList.map { job ->
@@ -45,17 +49,27 @@ class ApplierViewModel : ViewModel() {
 
             // Update the StateFlow with the new list
             _showJobPosts.value = updatedList.toMutableList()
-            if (companyNames.isNotEmpty())
-                setCompanyNames(companyNames)
 
             Log.d("job_post", _showJobPosts.value.toString())
-
         }
     }
 
-    private fun setCompanyNames(companyNames: MutableList<String>) {
-        for (i in 0.._companyNames.value.size) {
-            _showJobPosts.value[i].companyName = companyNames[i]
+    fun loadCompanyDetails(companyId: String, jobDetails: CreateJobPost, onDataPassed: () -> Unit) {
+        FirebaseRead().getCompanyDetails(companyId) { companyDetails ->
+            _companyDetails.value = companyDetails
+            jobDetails.companyName = companyDetails.companyName
+            onDataPassed()
+            Log.d("company", _companyDetails.value.toString())
         }
     }
+
+    fun loadJobCompanyDetails(jobId: String) {
+        FirebaseRead().getJobPostById(jobId) { jobDetails ->
+            loadCompanyDetails(jobDetails.companyId, jobDetails){
+                _jobDetails.value = jobDetails
+            }
+            Log.d("job", _jobDetails.value.toString())
+        }
+    }
+
 }

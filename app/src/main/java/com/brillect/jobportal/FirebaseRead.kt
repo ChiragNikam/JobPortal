@@ -33,7 +33,7 @@ class FirebaseRead {
     }
 
     // get company id
-    fun getCompanyId(id: String = currentUser?.uid.toString(),onIdPassed: (String) -> Unit) {
+    fun getCompanyId(id: String = currentUser?.uid.toString(), onIdPassed: (String) -> Unit) {
         // get id of company from recruiter node
         currentUser.let { user ->
             if (user != null)
@@ -84,7 +84,7 @@ class FirebaseRead {
         }
     }
 
-    fun getJobPostsList(jobPost:(List<CreateJobPost>)-> Unit) {
+    fun getJobPostsList(jobPost: (List<CreateJobPost>) -> Unit) {
 
         database.child("job_posts").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -104,6 +104,22 @@ class FirebaseRead {
             }
 
         })
+    }
+
+    fun getJobPostById(postId: String, jobPostPassed: (CreateJobPost)-> Unit) {
+        database.child("job_posts").child(postId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val jobPost = snapshot.getValue(CreateJobPost::class.java)
+                    if (jobPost != null) {
+                        jobPostPassed(jobPost)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("job_post_error", error.message)
+                }
+            })
     }
 }
 

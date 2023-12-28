@@ -87,17 +87,6 @@ fun AvailableJobs(
                     onClickSearch()
                 }, text = "Search", padStart = 0, padEnd = 220)
                 Spacer(modifier = Modifier.height(30.dp))
-                var jobList by rememberSaveable { mutableStateOf(listOf<CreateJobPost>()) }
-                var showJobPost by rememberSaveable { mutableStateOf(listOf<JobPostsApplier>()) }
-                val _showJobPost = mutableListOf<JobPostsApplier>()
-
-                var companyId by rememberSaveable {
-                    mutableStateOf("")
-                }
-
-                var companyName by rememberSaveable {
-                    mutableStateOf("")
-                }
 
                 AvailableCompaniesList(modifierAvailCompanies, viewModel)
             }
@@ -116,48 +105,54 @@ fun AvailableCompaniesList(modifier: Modifier, viewModel: ApplierViewModel) {
     Log.d("job_list", jobList.toString())
     LazyColumn(verticalArrangement = Arrangement.spacedBy(22.dp)) {
         items(jobList) { job ->
-            Box(
-                modifier = Modifier
-                    .background(color = Color.Black, shape = RoundedCornerShape(8.dp))
-                    .padding(bottom = 1.dp, end = 1.dp).clickable {
-                        // show complete details of job
-                        context.startActivity(Intent(context, JobCompanyDescription::class.java).apply {
-                            putExtra("job_id", job.jobId)
-                            Log.d("job_id", job.jobId)
-                        })
-                    }, contentAlignment = Alignment.BottomCenter
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = TextFieldColor, shape = RoundedCornerShape(8.dp))
-                        .padding(16.dp)
-                ) {
-                    Text_18_White(textToShow = job.jobPosition)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextCustom(textToShow = job.companyName, 400, 16)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextCustom(textToShow = job.jobLocation, weight = 400, fontSize = 14)
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        OutlinedInfoText(description = job.salary)
-                        Spacer(modifier = Modifier.width(12.dp))
-                        OutlinedInfoText(description = job.workplace)
-                    }
-                    Spacer(modifier = Modifier.height(12.dp))
-                    OutlinedInfoText(description = job.jobType)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    OutlinedInfoText(description = "Posted on 16/08/2000")
-                    Spacer(modifier = Modifier.height(12.dp))
-                    OutlinedInfoText(description = "Expired on 25/08/2000")
-                }
-            }
+            AvailableCompanyView(modifier = Modifier.clickable {
+                // show complete details of job
+                context.startActivity(Intent(context, JobCompanyDescription::class.java).apply {
+                    putExtra("job_id", job.jobId)
+                    Log.d("job_id", job.jobId)
+                })
+            }, job = job)
         }
     }
-    
+
     DisposableEffect(key1 = Unit) {
         viewModel.loadJobPosts()
         onDispose {
+        }
+    }
+}
+
+@Composable
+fun AvailableCompanyView(modifier: Modifier, job: JobPostsApplier) {
+    Box(
+        modifier = modifier
+            .background(color = Color.Black, shape = RoundedCornerShape(8.dp))
+            .padding(bottom = 1.dp, end = 1.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = TextFieldColor, shape = RoundedCornerShape(8.dp))
+                .padding(16.dp)
+        ) {
+            Text_18_White(textToShow = job.jobPosition)
+            Spacer(modifier = Modifier.height(12.dp))
+            TextCustom(textToShow = job.companyName, 400, 16)
+            Spacer(modifier = Modifier.height(12.dp))
+            TextCustom(textToShow = job.jobLocation, weight = 400, fontSize = 14)
+            Spacer(modifier = Modifier.height(15.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                OutlinedInfoText(description = job.salary)
+                Spacer(modifier = Modifier.width(12.dp))
+                OutlinedInfoText(description = job.workplace)
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedInfoText(description = job.jobType)
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedInfoText(description = "Posted on 16/08/2000")
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedInfoText(description = "Expired on 25/08/2000")
         }
     }
 }

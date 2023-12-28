@@ -330,9 +330,9 @@ fun InfoBlock(label: String, description: String) {
                 .fillMaxWidth()
         ) {
             Column {
-                TextCustom(textToShow = label, weight = 400, fontSize = 14)
+                TextCustom(textToShow = label, weight = 400, fontSize = 18)
                 Spacer(modifier = Modifier.height(12.dp))
-                TextCustom(textToShow = description, weight = 400, fontSize = 12)
+                TextCustom(textToShow = description, weight = 400, fontSize = 16)
             }
         }
     }

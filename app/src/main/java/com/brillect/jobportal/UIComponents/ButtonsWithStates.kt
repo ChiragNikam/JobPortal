@@ -41,7 +41,7 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
             onClick = { onClicking() },
             modifier = Modifier
                 .height(56.dp)
-                .width(300.dp)
+                .width(250.dp)
                 .shadow(
                     elevation = 0.dp,
                     spotColor = Color(0x80000000),
@@ -52,7 +52,7 @@ fun BtnCustom(onClicking: () -> Unit, text: String, padStart: Int, padEnd: Int) 
                 text = text,
                 textAlign = TextAlign.Center,
                 color = Color.Black,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontFamily = textFontFamily,
                 fontWeight = FontWeight(700)
             )
