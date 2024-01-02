@@ -126,7 +126,7 @@ fun JobCompanyDesc(viewModel: ApplierViewModel, jobId: String, onBack: () -> Uni
                 BtnCustom(onClicking = {
                     val calendar = Calendar.getInstance()
                     val dd = calendar.get(Calendar.DATE)
-                    val mm = calendar.get(Calendar.MONTH)
+                    val mm = calendar.get(Calendar.MONTH) + 1
                     val yyyy = calendar.get(Calendar.YEAR)
 
                     FirebaseWrite().writeApplicationToJobPost(

@@ -51,11 +51,11 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
         Spacer(modifier = Modifier.height(24.dp))
         BtnCustom(onClicking = {
             viewModel._selectedState.value = 1
-        }, "Create Job Post", 45, 67)
+        }, "Applications", 45, 67)
         Spacer(modifier = Modifier.height(10.dp))
         BtnCustom(onClicking = {
             viewModel._selectedState.value = 2
-        }, text = "Applications", 45, 67)
+        }, text = "Create Job Post", 45, 67)
         Spacer(modifier = Modifier.height(10.dp))
         BtnCustom(onClicking = {
             viewModel._selectedState.value = 3
@@ -67,9 +67,9 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
             color = BackgroundColor
         ) {
             if (selectedState.value == 1) {
-                JobPostForm(viewModel)
-            } else if (selectedState.value == 2) {
                 ApplicantsInfo()
+            } else if (selectedState.value == 2) {
+                JobPostForm(viewModel)
             } else if (selectedState.value == 3) {
                 CompanyProfile(viewModel)
             }

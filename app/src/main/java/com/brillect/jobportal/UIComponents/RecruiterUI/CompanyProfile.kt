@@ -68,9 +68,11 @@ fun CompanyProfile(viewModel: RecruiterViewModel) {
             if (selectedState.value == 1) {
                 CreateCompany()
             } else if (selectedState.value == 2) {
-                CompanyDetails()
-                BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
-                Spacer(modifier = Modifier.height(24.dp))
+                Column {
+                    CompanyDetails()
+                    BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
             }
         }
     }

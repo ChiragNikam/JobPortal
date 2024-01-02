@@ -6,3 +6,8 @@ data class Application(
     val jobPostId: String = "",
     val applicationDate: MyDateFormat
 )
+
+data class ApplicationForJobPost(
+    var applierId: String = "",
+    var applicationDate: MyDateFormat
+)

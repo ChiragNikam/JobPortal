@@ -17,6 +17,8 @@ class FirebaseRead {
     val auth = FirebaseAuth.getInstance()
     private val currentUser = auth.currentUser  // for current user
     private val database = Firebase.database.reference
+
+    // get company info
     fun getCompany(isCompanyAvailable: (String, Company) -> Unit) {
 
         getCompanyId { companyId ->
@@ -106,7 +108,7 @@ class FirebaseRead {
         })
     }
 
-    fun getJobPostById(postId: String, jobPostPassed: (CreateJobPost)-> Unit) {
+    fun getJobPostById(postId: String, jobPostPassed: (CreateJobPost) -> Unit) {
         database.child("job_posts").child(postId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -121,5 +123,21 @@ class FirebaseRead {
                 }
             })
     }
+
+    // get all applied candidates(id's) to the job posts of company
+    fun getAllCandidatesId() {
+        val filteredJobPostsIds = mutableListOf<String>()
+        // get company id
+        getCompanyId { companyId ->
+            getJobPostsList { listJobPosts ->
+                for(jobPost in listJobPosts){
+                    if (jobPost.companyId == companyId){
+                        filteredJobPostsIds.add(jobPost.jobPostId)
+                    }
+                }
+            }
+        }
+    }
+
 }
 

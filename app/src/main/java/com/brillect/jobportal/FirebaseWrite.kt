@@ -2,8 +2,10 @@ package com.brillect.jobportal
 
 import android.util.Log
 import com.brillect.jobportal.Data.Application
+import com.brillect.jobportal.Data.ApplicationForJobPost
 import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
+import com.brillect.jobportal.Data.MyDateFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -88,7 +90,7 @@ class FirebaseWrite {
                     .setValue(applicationData).addOnCompleteListener {
                         if (it.isSuccessful) {
                             Log.d("application", "application saved successfully")
-                            writeJobPostIdToApplicant(jobPostId, applicationNode)
+                            writeJobPostIdToApplicant(jobPostId, applicationNode, applicationData)
                         } else{
                             Log.e("application_error", "Error: ${it.exception?.message.toString()}")
                         }
@@ -97,25 +99,32 @@ class FirebaseWrite {
         }
     }
 
-    private fun writeJobPostIdToApplicant(jobPostId: String, applicationNode: String) {
+    // write job post id to user(applier) node
+    private fun writeJobPostIdToApplicant(jobPostId: String, applicationNode: String, applicationData: Application) {
         currentUser?.let { user ->
             database.child("user").child("applier").child(user.uid).child("job_post_id")
                 .child(jobPostId)
                 .setValue(jobPostId).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("application", "job post id saved successfully")
-                        writeApplicationIdToJobPost(jobPostId, applicationNode)
+                        writeApplierIdToJobPost(jobPostId, applicationNode, applicationData)
                     }
                 }
         }
     }
 
-    private fun writeApplicationIdToJobPost(jobPostId: String, applierId: String) {
-        database.child("job_posts").child(jobPostId).child("applications").child(applierId)
-            .setValue(applierId).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Log.d("application", "application id saved successfully")
+    // write applier user id to job post node under applications node
+    private fun writeApplierIdToJobPost(jobPostId: String, applierId: String, applicationData: Application) {
+        val applicationForJobPost = ApplicationForJobPost("", MyDateFormat(0, 0, 0))
+        applicationForJobPost.applierId = applicationData.applierId
+        applicationForJobPost.applicationDate = applicationData.applicationDate
+        currentUser?.let {user ->
+            database.child("job_posts").child(jobPostId).child("applications").child(user.uid)
+                .setValue(applicationForJobPost).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("application", "application id saved successfully")
+                    }
                 }
-            }
+        }
     }
 }
