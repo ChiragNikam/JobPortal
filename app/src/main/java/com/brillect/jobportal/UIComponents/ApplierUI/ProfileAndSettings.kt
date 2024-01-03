@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.brillect.jobportal.Applier.ApplierProfileViewModel
 import com.brillect.jobportal.R
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.RecruiterUI.LogoutDialog
@@ -42,9 +43,8 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
-@Preview(showSystemUi = true)
 @Composable
-fun ProfileAndSettings() {
+fun ProfileAndSettings(viewModel: ApplierProfileViewModel) {
     JobPortalTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -104,9 +104,9 @@ fun ProfileAndSettings() {
                 Spacer(modifier = Modifier.height(24.dp))
                 Surface(modifier = Modifier.fillMaxSize(), shape = RoundedCornerShape(8.dp)) {
                     if (clickedState == 1) {
-                        YourProfileView()
+                        YourProfileView(viewModel)
                     } else if (clickedState == 2) {
-                        EditProfileView()
+                        EditProfileView(viewModel)
                     } else if (clickedState == 3) {
                         val dialogShowState = remember {
                             mutableStateOf(true)

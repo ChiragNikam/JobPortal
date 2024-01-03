@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -102,7 +104,10 @@ fun AvailableCompaniesList(viewModel: ApplierViewModel) {
     val jobList by viewModel.showJobPost.collectAsState()
 
     Log.d("job_list", jobList.toString())
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(22.dp)) {
+    LazyColumn(
+        contentPadding = PaddingValues(bottom = 18.dp),
+        verticalArrangement = Arrangement.spacedBy(22.dp)
+    ) {
         items(jobList) { job ->
             AvailableCompanyView(modifier = Modifier.clickable {
                 // show complete details of job
@@ -111,11 +116,6 @@ fun AvailableCompaniesList(viewModel: ApplierViewModel) {
                     Log.d("job_id", job.jobId)
                 })
             }, job = job)
-        }
-
-        // Add an empty space after the last item
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 

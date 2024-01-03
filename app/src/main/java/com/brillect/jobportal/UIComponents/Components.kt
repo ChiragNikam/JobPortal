@@ -54,23 +54,23 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 val textFontFamily = FontFamily(Font(R.font.product_sans))
 
 @Composable
-fun SingleLineTextField(description: String): String {
+fun SingleLineTextField(description: String, textSingleLine: String = "", modifier: Modifier = Modifier): String {
     var textEntered = ""
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
-        textEntered = customTextFieldSingleLine()
+        textEntered = customTextFieldSingleLine(textSingleLine)
     }
     return textEntered
 }
 
 @Composable
-fun MultiLineTextField(description: String): String {
+fun MultiLineTextField(description: String, textMultiLine: String = ""): String {
     var textEntered = ""
     Column(modifier = Modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
-        textEntered = customTextFieldMultiLine()
+        textEntered = customTextFieldMultiLine(textMultiLine)
     }
     return textEntered
 }
@@ -142,9 +142,9 @@ fun TextUserName(name: String) {
 
 @Preview
 @Composable
-fun customTextFieldSingleLine(): String {
+fun customTextFieldSingleLine(textSingleLine: String = ""): String {
     var fullName by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(textSingleLine)
     }
     Box(
         modifier = Modifier
@@ -176,9 +176,9 @@ fun customTextFieldSingleLine(): String {
 }
 
 @Composable
-fun customTextFieldMultiLine(): String {
+fun customTextFieldMultiLine(textMultiLine: String = ""): String {
     var fullName by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(textMultiLine)
     }
     Box(
         modifier = Modifier

@@ -9,5 +9,10 @@ data class Application(
 
 data class ApplicationForJobPost(
     var applierId: String = "",
-    var applicationDate: MyDateFormat
+    var applicationDate: MyDateFormat = MyDateFormat(0, 0, 0)
+)
+
+data class AppliersByJob(
+    var jobName: String = "",
+    var listOfAppliers: MutableList<ApplicationForJobPost> = mutableListOf()
 )

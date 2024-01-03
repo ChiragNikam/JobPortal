@@ -79,7 +79,7 @@ class FirebaseWrite {
 
     // write applications to job post
     fun writeApplicationToJobPost(jobPostId: String, applicationData: Application) {
-        currentUser.let {user->
+        currentUser.let { user ->
             val applicationNode = database.child("applications").push().key
             if (applicationNode != null) {
                 applicationData.myId = applicationNode
@@ -91,7 +91,7 @@ class FirebaseWrite {
                         if (it.isSuccessful) {
                             Log.d("application", "application saved successfully")
                             writeJobPostIdToApplicant(jobPostId, applicationNode, applicationData)
-                        } else{
+                        } else {
                             Log.e("application_error", "Error: ${it.exception?.message.toString()}")
                         }
                     }
@@ -100,7 +100,11 @@ class FirebaseWrite {
     }
 
     // write job post id to user(applier) node
-    private fun writeJobPostIdToApplicant(jobPostId: String, applicationNode: String, applicationData: Application) {
+    private fun writeJobPostIdToApplicant(
+        jobPostId: String,
+        applicationNode: String,
+        applicationData: Application
+    ) {
         currentUser?.let { user ->
             database.child("user").child("applier").child(user.uid).child("job_post_id")
                 .child(jobPostId)
@@ -114,15 +118,21 @@ class FirebaseWrite {
     }
 
     // write applier user id to job post node under applications node
-    private fun writeApplierIdToJobPost(jobPostId: String, applierId: String, applicationData: Application) {
+    private fun writeApplierIdToJobPost(
+        jobPostId: String,
+        applierId: String,
+        applicationData: Application
+    ) {
         val applicationForJobPost = ApplicationForJobPost("", MyDateFormat(0, 0, 0))
         applicationForJobPost.applierId = applicationData.applierId
         applicationForJobPost.applicationDate = applicationData.applicationDate
-        currentUser?.let {user ->
+        currentUser?.let { user ->
             database.child("job_posts").child(jobPostId).child("applications").child(user.uid)
                 .setValue(applicationForJobPost).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("application", "application id saved successfully")
+                    } else {
+                        Log.e("application_error", "Error: ${it.exception?.message.toString()}")
                     }
                 }
         }

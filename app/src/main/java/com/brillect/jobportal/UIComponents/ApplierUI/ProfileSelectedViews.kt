@@ -2,6 +2,7 @@ package com.brillect.jobportal.UIComponents.ApplierUI
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,9 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.brillect.jobportal.Applier.ApplierProfileViewModel
 import com.brillect.jobportal.BtnStartSearching
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.InfoBlock
+import com.brillect.jobportal.UIComponents.MultiLineTextField
+import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.Text_18_White
 import com.brillect.jobportal.ui.theme.BackgroundColor
@@ -28,7 +32,7 @@ import com.google.firebase.auth.auth
 
 @Preview(showSystemUi = true)
 @Composable
-fun YourProfileView() {
+fun YourProfileView(viewModel: ApplierProfileViewModel) {
     Column(modifier = Modifier.background(color = BackgroundColor, shape = RoundedCornerShape(8.dp))) {
         // About User
         InfoBlock(
@@ -62,27 +66,19 @@ fun YourProfileView() {
     }
 }
 
-@Preview(showSystemUi = true)
 @Composable
-fun EditProfileView() {
+fun EditProfileView(viewModel: ApplierProfileViewModel) {
     Column(modifier = Modifier.background(color = BackgroundColor, shape = RoundedCornerShape(8.dp))) {
         // About User
-        InfoBlock(
-            label = "About Me",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-        )
+        SingleLineTextField(description = "Full Name", "")
         Spacer(modifier = Modifier.height(24.dp))
-        // Wrok Experience
-        InfoBlock(
-            label = "Work Experience", description = "Manager \nAmazon Inc\n" +
-                    "16/05/2033 to 22/07/2044"
-        )
+        // DOB
+        SingleLineTextField(description = "Data of Birth", "", Modifier.clickable {
+
+        })
         Spacer(modifier = Modifier.height(24.dp))
-        // Education
-        InfoBlock(
-            label = "Education", description = "Computer Science & Engineering \nIndian Institute of Technology\n" +
-                    "16/05/2033 to 22/07/2044"
-        )
+        // Gender
+        MultiLineTextField(description = "Email")
         Spacer(modifier = Modifier.height(24.dp))
         // Skills
         InfoBlock(
@@ -105,7 +101,9 @@ fun ConfirmLogoutView() {
     Column(modifier = Modifier.background(color = BackgroundColor, shape = RoundedCornerShape(8.dp))) {
         TextCustom(textToShow = "Are you sure? Do you want to logout?", weight = 700, fontSize = 18)
         Spacer(modifier = Modifier.height(22.dp))
-        Row(modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp)) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 24.dp, end = 24.dp)) {
             // Cancel Button, Don't want to logout
             Button(onClick = {  }, shape = RoundedCornerShape(8.dp), modifier = Modifier.weight(1f)) {
                 Text_18_White(textToShow = "Cancel", weight = 700)

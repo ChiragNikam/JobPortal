@@ -124,20 +124,5 @@ class FirebaseRead {
             })
     }
 
-    // get all applied candidates(id's) to the job posts of company
-    fun getAllCandidatesId() {
-        val filteredJobPostsIds = mutableListOf<String>()
-        // get company id
-        getCompanyId { companyId ->
-            getJobPostsList { listJobPosts ->
-                for(jobPost in listJobPosts){
-                    if (jobPost.companyId == companyId){
-                        filteredJobPostsIds.add(jobPost.jobPostId)
-                    }
-                }
-            }
-        }
-    }
-
 }
 

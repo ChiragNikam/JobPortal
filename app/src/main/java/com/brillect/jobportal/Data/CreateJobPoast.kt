@@ -17,9 +17,9 @@ data class CreateJobPost (
 )
 
 data class MyDateFormat(
-    val dd: Int ,
-    val mm: Int ,
-    val yyyy: Int
+    val dd: Int = 0 ,
+    val mm: Int = 0 ,
+    val yyyy: Int = 0
 )
 
 // class for job type to be set to the drop down

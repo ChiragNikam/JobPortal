@@ -10,14 +10,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.UIComponents.ApplierUI.ProfileAndSettings
 import com.brillect.jobportal.ui.theme.JobPortalTheme
 
 class ApplierProfile : ComponentActivity() {
+    val viewModel: ApplierProfileViewModel by lazy { ViewModelProvider(this)[ApplierProfileViewModel::class.java] }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           ProfileAndSettings()
+           ProfileAndSettings(viewModel)
         }
     }
 }
