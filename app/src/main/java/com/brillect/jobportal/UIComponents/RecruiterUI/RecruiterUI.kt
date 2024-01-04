@@ -45,9 +45,6 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
         viewModel.selectedState.collectAsState(initial = 1) // selected state for views
     val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
 
-    val listOfAppliersByJob by viewModel.showJobPost.collectAsState()
-    Log.d("applier_details", listOfAppliersByJob.toString())
-
     Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
         HelloUserNameProfilePhoto {// Top Bar with User name and
             showLogoutDialog.value = !showLogoutDialog.value
@@ -71,7 +68,7 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
             color = BackgroundColor
         ) {
             if (selectedState.value == 1) {
-                ApplicantsInfo()
+                ApplicantsInfo(viewModel)
             } else if (selectedState.value == 2) {
                 JobPostForm(viewModel)
             } else if (selectedState.value == 3) {
@@ -92,8 +89,7 @@ fun LogoutDialog(showDialog: MutableState<Boolean>) {
     AlertDialog(
         onDismissRequest = {
             // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onCloseRequest.
+            // button.
             showDialog.value = !showDialog.value
         },
         title = { Text(text = stringResource(R.string.title_dialog_logout)) },

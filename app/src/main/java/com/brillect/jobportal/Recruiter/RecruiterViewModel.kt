@@ -74,7 +74,7 @@ class RecruiterViewModel : ViewModel() {
 
     // get list of appliers who had applied to the job post by there job position name
     private var _appliedCandidatesToJobList = MutableStateFlow(mutableListOf<AppliersByJob>())
-    val showJobPost: StateFlow<List<AppliersByJob>> = _appliedCandidatesToJobList
+    val appliedCandidatesToJobList: StateFlow<List<AppliersByJob>> = _appliedCandidatesToJobList
 
     // get all applied candidates(id's) to the job posts of company
     fun getAllCandidatesId() {
@@ -96,10 +96,12 @@ class RecruiterViewModel : ViewModel() {
                     // add job position
                     applierByJobPost.jobName = job.jobPosition
 
+                    // get all applications to the job_posts
                     database.child("job_posts").child(job.jobPostId).child("applications")
                         .addValueEventListener(object :
                             ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
+//                                _appliedCandidatesToJobList.value.clear()
                                 if (snapshot.exists()) {
                                     for (data in snapshot.children) {
                                         val application =
@@ -123,4 +125,22 @@ class RecruiterViewModel : ViewModel() {
             }
         }
     }
+
+    // get applier name by it's node id
+    fun getApplierInfoById(applierId: String, namePassed: (String) -> Unit) {
+        database.child("user").child("applier").child(applierId).child("u_name")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userName = snapshot.getValue(String::class.java)
+                    Log.d("user_name", "User Name: $userName")
+                    namePassed(userName.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("user_name_error", error.message)
+                }
+            })
+
+    }
+
 }

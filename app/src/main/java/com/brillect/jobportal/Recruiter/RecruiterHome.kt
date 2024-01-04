@@ -22,7 +22,6 @@ class RecruiterHome : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         viewModel.getAllCandidatesId()
-
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
