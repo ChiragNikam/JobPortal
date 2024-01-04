@@ -79,7 +79,7 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         TextCustom(textToShow = appliersByJob.jobName, weight = 700, fontSize = 20)
     }
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(16.dp))
     // Applier's Details
     for (applier in appliersByJob.listOfAppliers) {
         Row(
@@ -111,9 +111,11 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
                 }
             }
 
-            Row(modifier = Modifier
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .align(Alignment.CenterVertically)
+            ) {
                 Button(
                     onClick = { },
                     shape = RoundedCornerShape(8.dp),
@@ -128,4 +130,12 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
             }
         }
     }
+
+    Spacer(modifier = Modifier.height(16.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(color = Color.Black)
+    ) {}
 }
