@@ -39,7 +39,7 @@ class AuthViewModel : ViewModel() {
     fun writeUserToDb(registerDetails: RegisterData, profile: String) {
         val database = Firebase.database.reference
         currentUser?.let { user -> // get the current user
-            database.child("user").child(profile.lowercase()).child(user.uid).child("account")
+            database.child("user").child(profile.lowercase()).child(user.uid)
                 .setValue(registerDetails).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.d("auth", "data saved successfully")

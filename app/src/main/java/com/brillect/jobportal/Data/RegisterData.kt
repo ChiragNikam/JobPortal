@@ -1,7 +1,7 @@
 package com.brillect.jobportal.Data
 
 data class RegisterData(
-    val fullName: String,
+    val u_name: String,
     val email: String,
     val password: String
 )

@@ -95,8 +95,6 @@ class Register : ComponentActivity() {
                                         checkRegisterDetails.password
                                     ), selectedProfile
                                 )
-                                // test write
-//                                viewModelAuth.testWriteToRealTimeDb()
                             },
                             text = "Register",
                             padStart = 65,
@@ -123,10 +121,22 @@ class Register : ComponentActivity() {
                     viewModelAuth.writeUserToDb(registerDetails, profile)
                     // move to activity according to selected profile type(among recruiter/applier)
                     if (selectedProfile == "Recruiter") {
-                        startActivity(Intent(this@Register, RecruiterHome::class.java))
+                        startActivity(Intent(this@Register, RecruiterHome::class.java).apply {
+                            // data to be inserted to the realtime db
+                            putExtra("email", registerDetails.email)
+                            putExtra("pass", registerDetails.password)
+                            putExtra("u_name", registerDetails.u_name)
+                            putExtra("register", true)
+                        })
                         finish()
                     } else if (selectedProfile == "Applier") {
-                        startActivity(Intent(this@Register, ApplierHome::class.java))
+                        startActivity(Intent(this@Register, ApplierHome::class.java).apply {
+                            // data to be inserted to the realtime db
+                            putExtra("email", registerDetails.email)
+                            putExtra("pass", registerDetails.password)
+                            putExtra("u_name", registerDetails.u_name)
+                            putExtra("register", true)
+                        })
                         finish()
                     }
                 }else{

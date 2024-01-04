@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -64,8 +67,13 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel = androidx.lifecycle.viewmodel.
         // observe and load all available applications to the job post
         val listOfAppliersByJob by viewModel.appliedCandidatesToJobList.collectAsState()
         Log.d("applier_details", listOfAppliersByJob.toString())
-        for (applier in listOfAppliersByJob) {  // bug - view's getting inserted multiple times when data changes, every time in realtime db
-            ApplicantDetails(viewModel, applier)
+        LazyColumn(
+            modifier = Modifier.height((listOfAppliersByJob.size * 250).dp),
+            userScrollEnabled = false
+        ) {
+            items(listOfAppliersByJob) { applierByJob ->
+                ApplicantDetails(viewModel, applierByJob)
+            }
         }
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -81,7 +89,7 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
     }
     Spacer(modifier = Modifier.height(16.dp))
     // Applier's Details
-    for (applier in appliersByJob.listOfAppliers) {
+    for (applier in appliersByJob.listOfAppliers.reversed()) {
         Row(
             modifier = Modifier
                 .background(
@@ -129,6 +137,8 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
     }
 
     Spacer(modifier = Modifier.height(16.dp))

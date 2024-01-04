@@ -54,7 +54,7 @@ class ApplierViewModel : ViewModel() {
         }
     }
 
-    fun loadCompanyDetails(companyId: String, jobDetails: CreateJobPost, onDataPassed: () -> Unit) {
+    private fun loadCompanyDetails(companyId: String, jobDetails: CreateJobPost, onDataPassed: () -> Unit) {
         FirebaseRead().getCompanyDetails(companyId) { companyDetails ->
             _companyDetails.value = companyDetails
             jobDetails.companyName = companyDetails.companyName
