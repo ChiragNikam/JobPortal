@@ -64,7 +64,7 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel = androidx.lifecycle.viewmodel.
         // observe and load all available applications to the job post
         val listOfAppliersByJob by viewModel.appliedCandidatesToJobList.collectAsState()
         Log.d("applier_details", listOfAppliersByJob.toString())
-        for (applier in listOfAppliersByJob) {
+        for (applier in listOfAppliersByJob) {  // bug - view's getting inserted multiple times when data changes, every time in realtime db
             ApplicantDetails(viewModel, applier)
         }
         Spacer(modifier = Modifier.height(40.dp))
