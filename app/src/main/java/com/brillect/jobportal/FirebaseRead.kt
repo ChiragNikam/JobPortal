@@ -1,6 +1,7 @@
 package com.brillect.jobportal
 
 import android.util.Log
+import com.brillect.jobportal.Data.ApplierProfile
 import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
 import com.google.firebase.auth.FirebaseAuth
@@ -18,7 +19,6 @@ class FirebaseRead {
 
     // get company info
     fun getCompany(isCompanyAvailable: (String, Company) -> Unit) {
-
         getCompanyId { companyId ->
             if (companyId.isEmpty()) {
                 isCompanyAvailable("company_not_available", Company())
@@ -137,6 +137,27 @@ class FirebaseRead {
                 }
             })
 
+    }
+
+    // get applier profile
+    fun getApplierProfile(
+        id: String = currentUser?.uid.toString(),
+        profilePassed: (ApplierProfile) -> Unit
+    ) {
+        database.child("user").child("applier").child(id)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val profile = snapshot.getValue(ApplierProfile::class.java)
+                    if(profile!=null){
+                        profilePassed(profile)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("read_profile_error", error.message)
+                }
+
+            })
     }
 }
 

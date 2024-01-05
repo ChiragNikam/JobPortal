@@ -19,6 +19,13 @@ import com.brillect.jobportal.ui.theme.JobPortalTheme
 
 class ApplierProfile : ComponentActivity() {
     val viewModel: ApplierProfileViewModel by lazy { ViewModelProvider(this)[ApplierProfileViewModel::class.java] }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.setUserProfileFromDb()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -40,36 +42,37 @@ fun YourProfileView(viewModel: ApplierProfileViewModel) {
             shape = RoundedCornerShape(8.dp)
         )
     ) {
+        val userProfile by viewModel.userProfile.collectAsState()
+
         // About User
         InfoBlock(
             label = "About Me",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+            description = userProfile.aboutMe
         )
         Spacer(modifier = Modifier.height(24.dp))
-        // Wrok Experience
+        // Work Experience
         InfoBlock(
-            label = "Work Experience", description = "Manager \nAmazon Inc\n" +
-                    "16/05/2033 to 22/07/2044"
+            label = "Work Experience", description = userProfile.workExperience
         )
         Spacer(modifier = Modifier.height(24.dp))
         // Education
         InfoBlock(
             label = "Education",
-            description = "Computer Science & Engineering \nIndian Institute of Technology\n" +
-                    "16/05/2033 to 22/07/2044"
+            description = userProfile.workExperience
         )
         Spacer(modifier = Modifier.height(24.dp))
         // Skills
         InfoBlock(
             label = "Skills",
-            description = "C++ Data Science , C , Python , Devops , C++ Data Science , C , Python , Devops , C++ Data Science , C , Python , Devops , C++ Data Science , C , Python , Devops , "
+            description = userProfile.skills
         )
         Spacer(modifier = Modifier.height(24.dp))
-        // Language
-        InfoBlock(label = "Language", description = "English Hindi")
-        Spacer(modifier = Modifier.height(24.dp))
+
         // Resume
         InfoBlock(label = "Resume", description = "")
+
+        Spacer(modifier = Modifier.height(24.dp))
+
     }
 }
 
@@ -81,37 +84,39 @@ fun EditProfileView(viewModel: ApplierProfileViewModel) {
             shape = RoundedCornerShape(8.dp)
         )
     ) {
+        val applierProfile by viewModel.userProfile.collectAsState()
+
         val context = LocalContext.current
 
         TextCustom(textToShow = "Wants to edit your profile?", weight = 700, fontSize = 18)
         Spacer(modifier = Modifier.height(22.dp))
 
         // User Name
-        val u_name = SingleLineTextField(description = "Full Name", "")
+        val u_name = SingleLineTextField(description = "Full Name", applierProfile.u_name)
         Spacer(modifier = Modifier.height(24.dp))
         // Email
-        val email = SingleLineTextField(description = "Email")
+        val email = SingleLineTextField(description = "Email", applierProfile.email)
         Spacer(modifier = Modifier.height(24.dp))
         // Phone No
-        val phoneNo = SingleLineTextField(description = "Phone No.")
+        val phoneNo = SingleLineTextField(description = "Phone No.", applierProfile.phone)
         Spacer(modifier = Modifier.height(24.dp))
         // Location
-        val location = SingleLineTextField(description = "Location")
+        val location = SingleLineTextField(description = "Location", applierProfile.location)
         Spacer(modifier = Modifier.height(24.dp))
         // Profile heading
-        val profileHeading = SingleLineTextField(description = "Profile Heading")
+        val profileHeading = SingleLineTextField(description = "Profile Heading", applierProfile.profileHeading)
         Spacer(modifier = Modifier.height(24.dp))
         // About Me
-        val aboutMe = MultiLineTextField(description = "About Me")
+        val aboutMe = MultiLineTextField(description = "About Me", applierProfile.aboutMe)
         Spacer(modifier = Modifier.height(24.dp))
         // Work Experience
-        val workExperience = MultiLineTextField(description = "Work Experience")
+        val workExperience = MultiLineTextField(description = "Work Experience", applierProfile.workExperience)
         Spacer(modifier = Modifier.height(24.dp))
         // Education
-        val education = MultiLineTextField(description = "Education")
+        val education = MultiLineTextField(description = "Education", applierProfile.education)
         Spacer(modifier = Modifier.height(24.dp))
         // Skills
-        val skills = MultiLineTextField(description = "Skills")
+        val skills = MultiLineTextField(description = "Skills", applierProfile.skills)
         Spacer(modifier = Modifier.height(24.dp))
         // Resume
         InfoBlock(label = "Resume", description = "")
