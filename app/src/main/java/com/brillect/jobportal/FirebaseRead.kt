@@ -6,9 +6,7 @@ import com.brillect.jobportal.Data.CreateJobPost
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -124,5 +122,21 @@ class FirebaseRead {
             })
     }
 
+    // get applier name by it's node id
+    fun getApplierNameById(applierId: String, namePassed: (String) -> Unit) {
+        database.child("user").child("applier").child(applierId).child("u_name")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userName = snapshot.getValue(String::class.java)
+                    Log.d("user_name", "User Name: $userName")
+                    namePassed(userName.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("user_name_error", error.message)
+                }
+            })
+
+    }
 }
 

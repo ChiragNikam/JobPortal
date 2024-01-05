@@ -3,6 +3,7 @@ package com.brillect.jobportal
 import android.util.Log
 import com.brillect.jobportal.Data.Application
 import com.brillect.jobportal.Data.ApplicationForJobPost
+import com.brillect.jobportal.Data.ApplierProfile
 import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.MyDateFormat
@@ -17,7 +18,7 @@ class FirebaseWrite {
     val database = Firebase.database.reference
 
     // write user to realtime db
-    fun writeUserToDb(){
+    fun writeUserToDb() {
 
     }
 
@@ -140,6 +141,22 @@ class FirebaseWrite {
                         Log.e("application_error", "Error: ${it.exception?.message.toString()}")
                     }
                 }
+        }
+    }
+
+    // write profile details of applier
+    fun writeProfileDetails(profileDetails: ApplierProfile, writeStatus: (Boolean, String) -> Unit) {
+        currentUser.let { user ->
+            if (user != null) {
+                database.child("user").child("applier").child(user.uid).setValue(profileDetails)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            writeStatus(true, "")
+                        } else {
+                            writeStatus(false, task.exception?.message.toString())
+                        }
+                    }
+            }
         }
     }
 }

@@ -18,36 +18,31 @@
             android:name=".Applier.JobCompanyDescription"
             android:exported="false"
             android:label="@string/title_activity_applier_profile"
-            android:theme="@style/Theme.JobPortal" />
+            android:theme="@style/Theme.JobPortal"/>
         <activity
             android:name=".Applier.ApplierProfile"
             android:exported="false"
             android:label="@string/title_activity_applier_profile"
-            android:theme="@style/Theme.JobPortal" />
+            android:theme="@style/Theme.JobPortal"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Recruiter.RecruiterHome"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_recruiter"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Auth.Register"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize" >
-
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Applier.ApplierHome"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Auth.Login"
             android:exported="true"

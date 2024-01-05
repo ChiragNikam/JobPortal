@@ -1,26 +1,21 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
 import android.util.Log
-import android.widget.ImageButton
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,14 +29,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.Data.AppliersByJob
+import com.brillect.jobportal.FirebaseRead
 import com.brillect.jobportal.R
 import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.Text_18_White
-import com.brillect.jobportal.ui.theme.BackgroundColor
-import com.brillect.jobportal.ui.theme.PrimaryColor
 
 @Preview(showSystemUi = true)
 @Composable
@@ -103,7 +97,7 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
                     val applierName = rememberSaveable {
                         mutableStateOf("")
                     }
-                    viewModel.getApplierInfoById(applier.applierId) { applierN ->
+                    FirebaseRead().getApplierNameById(applier.applierId) { applierN ->
                         applierName.value = applierN
                     }
                     // applier name

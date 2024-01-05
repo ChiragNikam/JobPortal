@@ -98,7 +98,6 @@ fun AvailableJobs(
                 if (progressIndicator) {    // only show if content is loaded
                     LinearProgressIndicator(
                         modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally),
-                        color = PrimaryColor,
                         trackColor = BackgroundColor
                     )
                 }
@@ -109,7 +108,6 @@ fun AvailableJobs(
         }
     }
 }
-
 
 @Composable
 fun AvailableCompaniesList(viewModel: ApplierViewModel) {
