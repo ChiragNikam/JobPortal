@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -61,7 +62,7 @@ fun ProfileAndSettings(viewModel: ApplierProfileViewModel, onBack: () -> Unit) {
                 }
                 Spacer(modifier = Modifier.height(24.dp))
 
-                ApplierNameAndHeadingView()
+                ApplierNameAndHeadingView(viewModel)
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -121,9 +122,8 @@ fun ProfileAndSettings(viewModel: ApplierProfileViewModel, onBack: () -> Unit) {
     }
 }
 
-@Preview(showSystemUi = true)
 @Composable
-fun ApplierNameAndHeadingView() {
+fun ApplierNameAndHeadingView(viewModel: ApplierProfileViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,18 +148,13 @@ fun ApplierNameAndHeadingView() {
             )
             Spacer(modifier = Modifier.width(10.dp))
             Column {
-
-                var userName by rememberSaveable {
-                    mutableStateOf("")
-                }
-                val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
-                FirebaseRead().getApplierNameById(userId) { name ->
-                    userName = name
-                }
-                TextCustom(textToShow = userName, weight = 700, fontSize = 18)
+                val userDetails by viewModel.userProfile.collectAsState()
+                // user name
+                TextCustom(textToShow = userDetails.u_name, weight = 700, fontSize = 18)
                 Spacer(modifier = Modifier.height(10.dp))
+                // Profile Heading: A short desc about the user in a line
                 TextCustom(
-                    textToShow = "TypeScript Expert | Mern Developer",
+                    textToShow = userDetails.profileHeading,
                     weight = 400,
                     fontSize = 14
                 )

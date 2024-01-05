@@ -38,7 +38,6 @@ class ApplierViewModel : ViewModel() {
         val companyNames = mutableListOf<String>()
         FirebaseRead().getJobPostsList { _jobList ->
             val updatedList = _jobList.map { job ->
-
                 JobPostsApplier(
                     jobId = job.jobPostId,
                     jobPosition = job.jobPosition,
@@ -54,6 +53,9 @@ class ApplierViewModel : ViewModel() {
 
             Log.d("job_post", _showJobPosts.value.toString())
 
+            if(_showJobPosts.value.isEmpty()){
+                _progressIndicator.value = false
+            }
             // don't display progress bar if job posts loaded successfully
             _progressIndicator.value = false
         }

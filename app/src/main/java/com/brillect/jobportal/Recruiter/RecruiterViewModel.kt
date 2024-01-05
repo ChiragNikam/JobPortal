@@ -42,6 +42,15 @@ class RecruiterViewModel : ViewModel() {
     val selectedStateCompany: Flow<Int>
         get() = _selectedStateCompany.asStateFlow()
 
+    // progress bar status
+    private val _progressIndicatorAppliedCan = MutableStateFlow(true)
+    val progressIndicatorAppliedCan : StateFlow<Boolean> = _progressIndicatorAppliedCan
+
+    // update progress status
+    fun updateProgressStatus(status: Boolean){
+        _progressIndicatorAppliedCan.value = status
+    }
+
     // validate for creating job post
     fun validateJobPostDetails(postDetails: CreateJobPost): String {
         if (postDetails.jobPosition.isEmpty()) {
@@ -112,6 +121,11 @@ class RecruiterViewModel : ViewModel() {
                                     newList.add(applierByJobPost)
                                     // update the list
                                     _appliedCandidatesToJobList.value = newList
+
+                                    updateProgressStatus(false)
+
+                                } else{
+                                    updateProgressStatus(false)
                                 }
                             }
 

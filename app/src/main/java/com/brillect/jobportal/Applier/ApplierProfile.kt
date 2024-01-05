@@ -35,6 +35,7 @@ class ApplierProfile : ComponentActivity() {
             val writeStatus by viewModel.writeStatusProfile.collectAsState()
             if (writeStatus) {
                 Toast.makeText(this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show()
+                viewModel.writeStatus(false)
             }
         }
 

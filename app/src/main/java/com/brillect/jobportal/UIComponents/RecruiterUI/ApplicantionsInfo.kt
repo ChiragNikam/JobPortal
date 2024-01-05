@@ -16,7 +16,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,10 +39,10 @@ import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.SingleLineTextField
 import com.brillect.jobportal.UIComponents.TextCustom
 import com.brillect.jobportal.UIComponents.Text_18_White
+import com.brillect.jobportal.ui.theme.BackgroundColor
 
-@Preview(showSystemUi = true)
 @Composable
-fun ApplicantsInfo(viewModel: RecruiterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ApplicantsInfo(viewModel: RecruiterViewModel) {
     Column(horizontalAlignment = Alignment.Start) {
         Spacer(modifier = Modifier.height(22.dp))
         SingleLineTextField(description = "Search Applicants")
@@ -57,6 +60,13 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel = androidx.lifecycle.viewmodel.
                 .height(2.dp)
                 .background(color = Color.Black, shape = RectangleShape)
         )
+        val progressBarStatus by viewModel.progressIndicatorAppliedCan.collectAsState()
+        if (progressBarStatus){
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally),
+                trackColor = BackgroundColor
+            )
+        }
 
         // observe and load all available applications to the job post
         val listOfAppliersByJob by viewModel.appliedCandidatesToJobList.collectAsState()
@@ -70,6 +80,12 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel = androidx.lifecycle.viewmodel.
             }
         }
         Spacer(modifier = Modifier.height(40.dp))
+
+        DisposableEffect(key1 = Unit){
+            viewModel.getAllCandidatesId()
+
+            onDispose {  }
+        }
 
     }
 }

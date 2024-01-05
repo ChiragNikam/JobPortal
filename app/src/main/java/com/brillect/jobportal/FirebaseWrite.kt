@@ -17,11 +17,6 @@ class FirebaseWrite {
     val currentUser = auth.currentUser  // for current user
     val database = Firebase.database.reference
 
-    // write user to realtime db
-    fun writeUserToDb() {
-
-    }
-
     // write job post details to the realtime database
     fun writeJobPostToRealDb(jobPost: CreateJobPost): String {
 

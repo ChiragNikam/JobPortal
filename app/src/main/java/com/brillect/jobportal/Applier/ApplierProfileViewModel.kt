@@ -19,9 +19,10 @@ class ApplierProfileViewModel : ViewModel() {
     fun updateUserProfileObj(profile: ApplierProfile) {
         _userProfile.value = profile
     }
-    private fun writeStatus(status: Boolean){
+    fun writeStatus(status: Boolean){
         _writeStatusProfile.value = status
     }
+
     fun uploadProfileDetails() {
         FirebaseWrite().writeProfileDetails(_userProfile.value) { status, message ->
             writeStatus(status)

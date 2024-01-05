@@ -31,7 +31,6 @@ class RecruiterHome : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.getAllCandidatesId()
 
         if (register) { // if user just created account save it to db on coming to this activity
             AuthViewModel().writeUserToDb(RegisterData(uName, email, pass), profile)
