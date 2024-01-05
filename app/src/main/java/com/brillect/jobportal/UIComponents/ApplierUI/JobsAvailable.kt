@@ -24,6 +24,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -71,7 +74,8 @@ fun AvailableJobs(
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             color = BackgroundColor
         ) {
             Column(
@@ -89,6 +93,17 @@ fun AvailableJobs(
                 }, text = "Search", padStart = 0, padEnd = 220)
                 Spacer(modifier = Modifier.height(30.dp))
 
+                // progress bar
+                val progressIndicator by viewModel.progressIndicator.collectAsState()
+                if (progressIndicator) {    // only show if content is loaded
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally),
+                        color = PrimaryColor,
+                        trackColor = BackgroundColor
+                    )
+                }
+
+                // load all available jobs
                 AvailableCompaniesList(viewModel)
             }
         }
@@ -106,7 +121,9 @@ fun AvailableCompaniesList(viewModel: ApplierViewModel) {
     Log.d("job_list", jobList.toString())
     LazyColumn(
         contentPadding = PaddingValues(bottom = 18.dp),
-        verticalArrangement = Arrangement.spacedBy(22.dp)
+        verticalArrangement = Arrangement.spacedBy(22.dp),
+        modifier = Modifier.height((jobList.size * 210).dp),
+        userScrollEnabled = false
     ) {
         items(jobList) { job ->
             AvailableCompanyView(modifier = Modifier.clickable {
@@ -115,7 +132,7 @@ fun AvailableCompaniesList(viewModel: ApplierViewModel) {
                     putExtra("job_id", job.jobId)
                     Log.d("job_id", job.jobId)
                 })
-            }, job = job)
+            }, job = job, viewModel)
         }
     }
 
@@ -127,7 +144,11 @@ fun AvailableCompaniesList(viewModel: ApplierViewModel) {
 }
 
 @Composable
-fun AvailableCompanyView(modifier: Modifier, job: JobPostsApplier) {
+fun AvailableCompanyView(
+    modifier: Modifier,
+    job: JobPostsApplier,
+    viewModel: ApplierViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     Box(
         modifier = modifier
             .background(color = Color.Black, shape = RoundedCornerShape(8.dp))
@@ -142,8 +163,19 @@ fun AvailableCompanyView(modifier: Modifier, job: JobPostsApplier) {
         ) {
             Text_18_White(textToShow = job.jobPosition)
             Spacer(modifier = Modifier.height(12.dp))
-            TextCustom(textToShow = job.companyName, 400, 16)
+
+            // getting company name
+            var companyName by rememberSaveable {
+                mutableStateOf("")
+            }
+            viewModel.getCompanyName(job.jobId) { name ->
+                companyName = name
+            }
+
+            // company name
+            TextCustom(textToShow = companyName, 400, 16)
             Spacer(modifier = Modifier.height(12.dp))
+            // job location
             TextCustom(textToShow = job.jobLocation, weight = 400, fontSize = 14)
             Spacer(modifier = Modifier.height(15.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -153,10 +185,6 @@ fun AvailableCompanyView(modifier: Modifier, job: JobPostsApplier) {
             }
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedInfoText(description = job.jobType)
-            Spacer(modifier = Modifier.height(12.dp))
-            OutlinedInfoText(description = "Posted on 16/08/2000")
-            Spacer(modifier = Modifier.height(12.dp))
-            OutlinedInfoText(description = "Expired on 25/08/2000")
         }
     }
 }

@@ -6,6 +6,13 @@ import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.JobPostsApplier
 import com.brillect.jobportal.FirebaseRead
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,20 +30,15 @@ class ApplierViewModel : ViewModel() {
     private var _jobDetails = MutableStateFlow(CreateJobPost())
     val jobDetails: StateFlow<CreateJobPost> = _jobDetails
 
+    // progress bar indicator
+    private var _progressIndicator = MutableStateFlow(true)
+    val progressIndicator: StateFlow<Boolean> = _progressIndicator
+
     fun loadJobPosts() {    // Load the list of Job Posts
         val companyNames = mutableListOf<String>()
         FirebaseRead().getJobPostsList { _jobList ->
             val updatedList = _jobList.map { job ->
 
-                FirebaseRead().getCompanyId { companyId ->
-                    FirebaseRead().getCompanyDetails(companyId) { companyDetails ->
-                        companyNames.add(companyDetails.companyName)
-                        Log.d("company_name", companyNames.toString())
-                    }
-                }
-                _companyNames.value = companyNames
-
-                Log.d("company_name", _companyNames.value.toString())
                 JobPostsApplier(
                     jobId = job.jobPostId,
                     jobPosition = job.jobPosition,
@@ -51,10 +53,17 @@ class ApplierViewModel : ViewModel() {
             _showJobPosts.value = updatedList.toMutableList()
 
             Log.d("job_post", _showJobPosts.value.toString())
+
+            // don't display progress bar if job posts loaded successfully
+            _progressIndicator.value = false
         }
     }
 
-    private fun loadCompanyDetails(companyId: String, jobDetails: CreateJobPost, onDataPassed: () -> Unit) {
+    private fun loadCompanyDetails(
+        companyId: String,
+        jobDetails: CreateJobPost,
+        onDataPassed: () -> Unit
+    ) {
         FirebaseRead().getCompanyDetails(companyId) { companyDetails ->
             _companyDetails.value = companyDetails
             jobDetails.companyName = companyDetails.companyName
@@ -65,11 +74,35 @@ class ApplierViewModel : ViewModel() {
 
     fun loadJobCompanyDetails(jobId: String) {
         FirebaseRead().getJobPostById(jobId) { jobDetails ->
-            loadCompanyDetails(jobDetails.companyId, jobDetails){
+            loadCompanyDetails(jobDetails.companyId, jobDetails) {
                 _jobDetails.value = jobDetails
             }
             Log.d("job", _jobDetails.value.toString())
         }
     }
 
+    // get company name by job id
+    fun getCompanyName(jobId: String, namePassed: (String) -> Unit) {
+        // Initialize Firebase Auth
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser  // for current user
+        val database = Firebase.database.reference
+
+        database.child("job_posts").child(jobId).child("companyId").addValueEventListener(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val companyId = snapshot.getValue(String::class.java).toString()
+                    FirebaseRead().getCompanyDetails(companyId) {
+                        namePassed(it.companyName)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("company_name_err", error.message)
+                }
+
+            }
+        )
+
+    }
 }
