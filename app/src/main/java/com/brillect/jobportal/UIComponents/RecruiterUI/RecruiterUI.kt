@@ -107,8 +107,10 @@ fun LogoutDialog(showDialog: MutableState<Boolean>) {
         confirmButton = {
             TextButton(onClick = {
                 Firebase.auth.signOut()
-                activity.startActivity(Intent(activity, Login::class.java))
                 activity.finish()
+                val intent = Intent(activity, Login::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                activity.startActivity(intent)
             }) {
                 Text(text = "Logout")
             }
