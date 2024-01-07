@@ -78,7 +78,8 @@ dependencies {
     // view model for compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-
+    // firebase storage
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))

@@ -30,7 +30,7 @@ class RecruiterViewModel : ViewModel() {
     private val currentUser = auth.currentUser  // for current user
     private val database = Firebase.database.reference
 
-    // for remembering the state and opening the view accordingly
+    // remember the state and opening the view accordingly
     val _selectedState =
         MutableStateFlow(1)  // to record selected state among create-job-post, applications and company profile
     val selectedState: Flow<Int>
@@ -44,10 +44,18 @@ class RecruiterViewModel : ViewModel() {
 
     // progress bar status
     private val _progressIndicatorAppliedCan = MutableStateFlow(true)
-    val progressIndicatorAppliedCan : StateFlow<Boolean> = _progressIndicatorAppliedCan
+    val progressIndicatorAppliedCan: StateFlow<Boolean> = _progressIndicatorAppliedCan
+
+    // first name of user
+    private val _firstName = MutableStateFlow("")
+    val firstName: StateFlow<String> = _firstName
+
+    private fun updateFirstName(firstName: String) {
+        _firstName.value = firstName
+    }
 
     // update progress status
-    fun updateProgressStatus(status: Boolean){
+    fun updateProgressStatus(status: Boolean) {
         _progressIndicatorAppliedCan.value = status
     }
 
@@ -78,6 +86,12 @@ class RecruiterViewModel : ViewModel() {
             "Mention you company website"
         } else {
             "yes"
+        }
+    }
+
+    fun getFirstName(userType: String) {
+        FirebaseRead().getUserName(userType) { firstName ->
+            updateFirstName(firstName)
         }
     }
 
@@ -124,7 +138,7 @@ class RecruiterViewModel : ViewModel() {
 
                                     updateProgressStatus(false)
 
-                                } else{
+                                } else {
                                     updateProgressStatus(false)
                                 }
                             }

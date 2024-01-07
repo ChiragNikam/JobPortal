@@ -54,7 +54,11 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 val textFontFamily = FontFamily(Font(R.font.product_sans))
 
 @Composable
-fun SingleLineTextField(description: String, textSingleLine: String = "", modifier: Modifier = Modifier): String {
+fun SingleLineTextField(
+    description: String,
+    textSingleLine: String = "",
+    modifier: Modifier = Modifier
+): String {
     var textEntered = ""
     Column(modifier = modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
@@ -275,10 +279,10 @@ fun radioButtonRecruiterApplier(): String {
 }
 
 @Composable
-fun HelloUserNameProfilePhoto(onImageClick: () -> Unit) {
+fun HelloUserNameProfilePhoto(userName: String, onImageClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.weight(1f)) {
-            TextUserName(name = "Kabira")
+            TextUserName(name = userName)
         }
         Column {
             Image(

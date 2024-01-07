@@ -159,5 +159,34 @@ class FirebaseRead {
 
             })
     }
+
+    // first name for user
+    fun getFirstName(fullName: String): String {
+        val names = fullName.split(" ")
+        return if (names.isNotEmpty()) names[0] else ""
+    }
+
+    // get user name of current user
+    fun getUserName(userType: String, firstNamePassed: (String) -> Unit) {
+        currentUser.let { user ->
+            if (user != null)
+                database.child("user").child(userType).child(user.uid).child("u_name")
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                val userName = snapshot.getValue(String::class.java)
+                                val firstName = getFirstName(userName.toString())
+                                firstNamePassed(firstName)
+//                                updateFirstName(firstName)
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e("u_name", error.message)
+                        }
+
+                    })
+        }
+    }
 }
 

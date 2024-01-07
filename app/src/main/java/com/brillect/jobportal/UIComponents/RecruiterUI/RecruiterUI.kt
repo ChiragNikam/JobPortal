@@ -46,7 +46,12 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
     val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
 
     Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
-        HelloUserNameProfilePhoto {// Top Bar with User name and
+        viewModel.getFirstName("recruiter")
+
+        // observe user name
+        val userName by viewModel.firstName.collectAsState()
+
+        HelloUserNameProfilePhoto (userName){// Top Bar with User name
             showLogoutDialog.value = !showLogoutDialog.value
         }
         Spacer(modifier = Modifier.height(24.dp))
