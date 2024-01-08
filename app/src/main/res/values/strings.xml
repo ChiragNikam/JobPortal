@@ -16,4 +16,5 @@
     <string name="title_activity_job_company_description">JobCompanyDescription</string>
     <string name="title_dialog_logout">Logout</string>
     <string name="text_dialog_logout">Are you sure you want to logout?</string>
+    <string name="title_activity_applied_canditate_info">AppliedCanditateInfo</string>
 </resources>

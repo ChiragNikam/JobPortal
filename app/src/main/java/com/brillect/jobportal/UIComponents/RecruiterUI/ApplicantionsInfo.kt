@@ -1,7 +1,9 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,12 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.Data.AppliersByJob
 import com.brillect.jobportal.FirebaseRead
 import com.brillect.jobportal.R
+import com.brillect.jobportal.Recruiter.AppliedCandidateInfo
 import com.brillect.jobportal.Recruiter.RecruiterViewModel
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.SingleLineTextField
@@ -92,6 +96,8 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel) {
 
 @Composable
 fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob) {
+    val context = LocalContext.current
+
     Spacer(modifier = Modifier.height(20.dp))
     // Job Position
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -106,6 +112,11 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
                     color = Color(0xFF2B2B2B),
                     shape = RoundedCornerShape(size = 8.dp)
                 )
+                .clickable {
+                    context.startActivity(Intent(context, AppliedCandidateInfo::class.java).apply {
+                        putExtra("emp_id", applier.applierId)
+                    })
+                }
                 .padding(start = 14.dp, top = 23.dp, bottom = 23.dp, end = 16.dp)
         ) {
             Row(modifier = Modifier.weight(1f)) {

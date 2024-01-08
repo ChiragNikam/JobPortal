@@ -15,22 +15,27 @@
         android:theme="@style/Theme.JobPortal"
         tools:targetApi="31">
         <activity
+            android:name=".Recruiter.AppliedCandidateInfo"
+            android:exported="false"
+            android:label="@string/title_activity_applied_canditate_info"
+            android:theme="@style/Theme.JobPortal" />
+        <activity
             android:name=".Applier.JobCompanyDescription"
             android:exported="false"
             android:label="@string/title_activity_applier_profile"
-            android:theme="@style/Theme.JobPortal"/>
+            android:theme="@style/Theme.JobPortal" />
         <activity
             android:name=".Applier.ApplierProfile"
             android:exported="false"
             android:label="@string/title_activity_applier_profile"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Recruiter.RecruiterHome"
             android:exported="false"
             android:label="@string/title_activity_recruiter"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Auth.Register"
             android:exported="false"
@@ -42,7 +47,7 @@
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.JobPortal"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Auth.Login"
             android:exported="true"

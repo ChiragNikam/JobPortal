@@ -51,7 +51,7 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
         // observe user name
         val userName by viewModel.firstName.collectAsState()
 
-        HelloUserNameProfilePhoto (userName){// Top Bar with User name
+        HelloUserNameProfilePhoto (userName){   // Top Bar with User name
             showLogoutDialog.value = !showLogoutDialog.value
         }
         Spacer(modifier = Modifier.height(24.dp))
