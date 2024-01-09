@@ -112,11 +112,6 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
                     color = Color(0xFF2B2B2B),
                     shape = RoundedCornerShape(size = 8.dp)
                 )
-                .clickable {
-                    context.startActivity(Intent(context, AppliedCandidateInfo::class.java).apply {
-                        putExtra("emp_id", applier.applierId)
-                    })
-                }
                 .padding(start = 14.dp, top = 23.dp, bottom = 23.dp, end = 16.dp)
         ) {
             Row(modifier = Modifier.weight(1f)) {
@@ -146,7 +141,11 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
                     .align(Alignment.CenterVertically)
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        context.startActivity(Intent(context, AppliedCandidateInfo::class.java).apply {
+                            putExtra("emp_id", applier.applierId)
+                        })
+                    },
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.size(56.dp),
                     contentPadding = PaddingValues(16.dp)

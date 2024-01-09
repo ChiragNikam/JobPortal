@@ -25,12 +25,11 @@ fun CandidateProfile(viewModel: AppliedCandidateViewModel) {
     Column(
         modifier = Modifier
             .background(
-                color = BackgroundColor,
-                shape = RoundedCornerShape(8.dp)
+                color = BackgroundColor
             )
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(start = 24.dp, top = 75.dp, end = 24.dp)
+            .padding(start = 24.dp, top = 24.dp, end = 24.dp)
     ) {
         val userProfile by viewModel.candidateInfo.collectAsState()
 

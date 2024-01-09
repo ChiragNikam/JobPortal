@@ -120,7 +120,7 @@ fun CreateCompany() {
             )
             if (validationResult == "yes") {
                 FirebaseWrite().writeCompanyDetails(companyDetails)
-                Toast.makeText(activity, "Company Details Saved Sucessfully", Toast.LENGTH_SHORT)
+                Toast.makeText(activity, "Company Details Saved Successfully", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 Toast.makeText(activity, validationResult, Toast.LENGTH_SHORT).show()

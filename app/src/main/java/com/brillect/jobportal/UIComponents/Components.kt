@@ -69,12 +69,12 @@ fun SingleLineTextField(
 }
 
 @Composable
-fun MultiLineTextField(description: String, textMultiLine: String = ""): String {
+fun MultiLineTextField(description: String, textMultiLine: String = "", readOnlyMode: Boolean = false): String {
     var textEntered = ""
     Column(modifier = Modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
-        textEntered = customTextFieldMultiLine(textMultiLine)
+        textEntered = customTextFieldMultiLine(textMultiLine, readOnlyMode)
     }
     return textEntered
 }
@@ -146,7 +146,7 @@ fun TextUserName(name: String) {
 
 @Preview
 @Composable
-fun customTextFieldSingleLine(textSingleLine: String = ""): String {
+fun customTextFieldSingleLine(textSingleLine: String = "", readOnlyMode: Boolean = false): String {
     var fullName by rememberSaveable {
         mutableStateOf(textSingleLine)
     }
@@ -172,7 +172,8 @@ fun customTextFieldSingleLine(textSingleLine: String = ""): String {
                     fontSize = 14.sp
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                singleLine = true
+                singleLine = true,
+                readOnly = readOnlyMode
             )
         }
     }
@@ -180,7 +181,7 @@ fun customTextFieldSingleLine(textSingleLine: String = ""): String {
 }
 
 @Composable
-fun customTextFieldMultiLine(textMultiLine: String = ""): String {
+fun customTextFieldMultiLine(textMultiLine: String = "", readOnlyMode: Boolean = false): String {
     var fullName by rememberSaveable {
         mutableStateOf(textMultiLine)
     }
@@ -206,8 +207,10 @@ fun customTextFieldMultiLine(textMultiLine: String = ""): String {
                 textStyle = TextStyle(
                     color = PrimaryColor, fontFamily = textFontFamily,
                     fontSize = 14.sp
-                ), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                singleLine = false
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                singleLine = false,
+                readOnly = readOnlyMode
             )
         }
     }

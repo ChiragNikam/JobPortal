@@ -24,10 +24,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.UIComponents.RecruiterUI.CandidateProfile
+import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.JobPortalTheme
+import com.brillect.jobportal.ui.theme.PrimaryColor
+import com.brillect.jobportal.ui.theme.TextFieldColor
 
 class AppliedCandidateInfo : ComponentActivity() {
     private var empId = ""
@@ -35,7 +39,7 @@ class AppliedCandidateInfo : ComponentActivity() {
     // list of items in tab row
     private val tabItems = listOf("Profile", "Resume")
 
-    val viewModel : AppliedCandidateViewModel by lazy{ViewModelProvider(this)[AppliedCandidateViewModel::class.java]}
+    val viewModel: AppliedCandidateViewModel by lazy { ViewModelProvider(this)[AppliedCandidateViewModel::class.java] }
 
     override fun onStart() {
         super.onStart()
@@ -62,11 +66,11 @@ class AppliedCandidateInfo : ComponentActivity() {
                     tabItems.size
                 }
                 // update the horizontal pager state if item clicked in tab row
-                LaunchedEffect(selectedTabIndex){
+                LaunchedEffect(selectedTabIndex) {
                     pagerState.animateScrollToPage(selectedTabIndex)
                 }
                 // update selected tab index on scrolling of horizontal pager
-                LaunchedEffect(pagerState.currentPage){
+                LaunchedEffect(pagerState.currentPage) {
                     selectedTabIndex = pagerState.currentPage
                 }
 
@@ -78,7 +82,8 @@ class AppliedCandidateInfo : ComponentActivity() {
                     Column(modifier = Modifier.fillMaxSize()) {
                         TabRow(
                             selectedTabIndex = selectedTabIndex,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            containerColor = TextFieldColor
                         ) {
                             tabItems.forEachIndexed { index, item ->
                                 Tab(
@@ -88,7 +93,9 @@ class AppliedCandidateInfo : ComponentActivity() {
                                     },
                                     text = {
                                         Text(text = item)
-                                    }
+                                    },
+                                    selectedContentColor = MaterialTheme.colorScheme.primary,
+                                    unselectedContentColor = PrimaryColor
                                 )
                             }
                         }
@@ -97,16 +104,11 @@ class AppliedCandidateInfo : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f)
-                        ) {index->
-                            Box(
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Text(text = tabItems[index])
-                                if (index == 0){
-                                    CandidateProfile(viewModel = viewModel)
-                                } else {
+                        ) { index ->
+                            if (index == 0) {
+                                CandidateProfile(viewModel = viewModel)
+                            } else {
 
-                                }
                             }
                         }
                     }
