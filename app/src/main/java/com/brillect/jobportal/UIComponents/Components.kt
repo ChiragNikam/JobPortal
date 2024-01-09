@@ -57,19 +57,24 @@ val textFontFamily = FontFamily(Font(R.font.product_sans))
 fun SingleLineTextField(
     description: String,
     textSingleLine: String = "",
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    readOnlyMode: Boolean = false
 ): String {
     var textEntered = ""
     Column(modifier = modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
-        textEntered = customTextFieldSingleLine(textSingleLine)
+        textEntered = customTextFieldSingleLine(textSingleLine, readOnlyMode)
     }
     return textEntered
 }
 
 @Composable
-fun MultiLineTextField(description: String, textMultiLine: String = "", readOnlyMode: Boolean = false): String {
+fun MultiLineTextField(
+    description: String,
+    textMultiLine: String = "",
+    readOnlyMode: Boolean = false
+): String {
     var textEntered = ""
     Column(modifier = Modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)

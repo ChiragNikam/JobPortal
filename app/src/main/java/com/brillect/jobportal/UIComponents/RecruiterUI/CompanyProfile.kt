@@ -37,7 +37,7 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 @Composable
 fun CompanyProfile(viewModel: RecruiterViewModel) {
     Column(horizontalAlignment = Alignment.Start) {
-        var selectedState = viewModel.selectedStateCompany.collectAsState(initial = 1)
+        val selectedState = viewModel.selectedStateCompany.collectAsState(initial = 1)
         Spacer(modifier = Modifier.height(24.dp))
         BtnCustom(
             onClicking = {

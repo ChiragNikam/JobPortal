@@ -1,7 +1,11 @@
 package com.brillect.jobportal.UIComponents.ApplierUI
 
 import android.app.Activity
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,14 +17,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toFile
 import com.brillect.jobportal.Applier.ApplierProfileViewModel
 import com.brillect.jobportal.BtnStartSearching
 import com.brillect.jobportal.Data.ApplierProfile
@@ -78,6 +89,17 @@ fun YourProfileView(viewModel: ApplierProfileViewModel) {
 
 @Composable
 fun EditProfileView(viewModel: ApplierProfileViewModel) {
+    // selected file
+    val result = rememberSaveable { mutableStateOf<Uri?>(null) }
+
+    // set document picker
+    val singleDocPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+        onResult = { result.value = it }
+    )
+
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier.background(
             color = BackgroundColor,
@@ -104,13 +126,15 @@ fun EditProfileView(viewModel: ApplierProfileViewModel) {
         val location = SingleLineTextField(description = "Location", applierProfile.location)
         Spacer(modifier = Modifier.height(24.dp))
         // Profile heading
-        val profileHeading = SingleLineTextField(description = "Profile Heading", applierProfile.profileHeading)
+        val profileHeading =
+            SingleLineTextField(description = "Profile Heading", applierProfile.profileHeading)
         Spacer(modifier = Modifier.height(24.dp))
         // About Me
         val aboutMe = MultiLineTextField(description = "About Me", applierProfile.aboutMe)
         Spacer(modifier = Modifier.height(24.dp))
         // Work Experience
-        val workExperience = MultiLineTextField(description = "Work Experience", applierProfile.workExperience)
+        val workExperience =
+            MultiLineTextField(description = "Work Experience", applierProfile.workExperience)
         Spacer(modifier = Modifier.height(24.dp))
         // Education
         val education = MultiLineTextField(description = "Education", applierProfile.education)
@@ -119,7 +143,19 @@ fun EditProfileView(viewModel: ApplierProfileViewModel) {
         val skills = MultiLineTextField(description = "Skills", applierProfile.skills)
         Spacer(modifier = Modifier.height(24.dp))
         // Resume
-        InfoBlock(label = "Resume", description = "")
+        SingleLineTextField(description = "Resume", "Choose Your Resume", Modifier.clickable {
+            singleDocPickerLauncher.launch(arrayOf("application/pdf"))
+        }, true)
+        // Button to upload resume
+        TextButton(onClick = {
+            if(result.value!=null){
+                viewModel.uploadResume(result.value!!)
+            } else {
+                Toast.makeText(context, "Choose a pdf", Toast.LENGTH_SHORT).show()
+            }
+        }, modifier = Modifier.align(Alignment.End)) {
+            Text(text = "Upload")
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -136,13 +172,14 @@ fun EditProfileView(viewModel: ApplierProfileViewModel) {
                 skills = skills
             )
 
-            if(u_name.isEmpty()){   // validate if any important field is empty
+            if (u_name.isEmpty()) {   // validate if any important field is empty
                 Toast.makeText(context, "Please enter user name.", Toast.LENGTH_SHORT).show()
-            } else if(email.isEmpty()){
+            } else if (email.isEmpty()) {
                 Toast.makeText(context, "Please enter user name.", Toast.LENGTH_SHORT).show()
-            } else if(phoneNo.isEmpty()){
-                Toast.makeText(context, "Please enter your valid Phone No.", Toast.LENGTH_SHORT).show()
-            } else if(profileHeading.isEmpty()){
+            } else if (phoneNo.isEmpty()) {
+                Toast.makeText(context, "Please enter your valid Phone No.", Toast.LENGTH_SHORT)
+                    .show()
+            } else if (profileHeading.isEmpty()) {
                 Toast.makeText(context, "Please write a profile heading", Toast.LENGTH_SHORT).show()
             } else {    // write profile to db
                 // set or update used profile data to view model

@@ -140,7 +140,10 @@ class FirebaseWrite {
     }
 
     // write profile details of applier
-    fun writeProfileDetails(profileDetails: ApplierProfile, writeStatus: (Boolean, String) -> Unit) {
+    fun writeProfileDetails(
+        profileDetails: ApplierProfile,
+        writeStatus: (Boolean, String) -> Unit
+    ) {
         currentUser.let { user ->
             if (user != null) {
                 database.child("user").child("applier").child(user.uid).setValue(profileDetails)
@@ -152,6 +155,15 @@ class FirebaseWrite {
                         }
                     }
             }
+        }
+    }
+
+    // add resume dpf url link to db
+    fun writeResumeLink(url: String) {
+        currentUser.let { user ->
+            if (user != null)
+                database.child("user").child("applier").child(user.uid).child("resumeUrl")
+                    .setValue(url)
         }
     }
 }
