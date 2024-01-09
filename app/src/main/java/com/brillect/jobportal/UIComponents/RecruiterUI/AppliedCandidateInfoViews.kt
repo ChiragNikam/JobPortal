@@ -10,15 +10,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.brillect.jobportal.Applier.ApplierProfileViewModel
 import com.brillect.jobportal.Recruiter.AppliedCandidateViewModel
 import com.brillect.jobportal.UIComponents.InfoBlock
 import com.brillect.jobportal.ui.theme.BackgroundColor
+import com.rizzi.bouquet.HorizontalPDFReader
+import com.rizzi.bouquet.HorizontalPdfReaderState
+import com.rizzi.bouquet.ResourceType
 
 @Composable
 fun CandidateProfile(viewModel: AppliedCandidateViewModel) {
@@ -68,5 +75,36 @@ fun CandidateProfile(viewModel: AppliedCandidateViewModel) {
             description = userProfile.skills
         )
         Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+fun CandidateResume(viewModel: AppliedCandidateViewModel, applierId: String){
+    val resumeUrl by viewModel.resumeUrl.collectAsState()
+
+    // pdf reader state
+    val pdfHorizontalReaderState = remember {
+        mutableStateOf(
+            HorizontalPdfReaderState(
+                resource = ResourceType.Remote(resumeUrl),
+                isZoomEnable = true,
+                isAccessibleEnable = true
+            )
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .background(
+                color = BackgroundColor
+            )
+            .fillMaxSize()
+    ) {
+        HorizontalPDFReader(
+            state = pdfHorizontalReaderState.value,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.surfaceVariant)
+        )
     }
 }

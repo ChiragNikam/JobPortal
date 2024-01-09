@@ -19,10 +19,6 @@ class ApplierProfileViewModel : ViewModel() {
     private val _writeStatusProfile = MutableStateFlow(false)
     val writeStatusProfile: StateFlow<Boolean> = _writeStatusProfile
 
-    // pdf url
-    private val _pdfUrl = MutableStateFlow("")
-    val pdfUrl: StateFlow<String> = _pdfUrl
-
     fun updateUserProfileObj(profile: ApplierProfile) {
         _userProfile.value = profile
     }

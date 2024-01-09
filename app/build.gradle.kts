@@ -80,6 +80,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     // firebase storage
     implementation("com.google.firebase:firebase-storage:20.3.0")
+    // pdf reader
+    implementation ("io.github.grizzi91:bouquet:1.1.2")
 
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))

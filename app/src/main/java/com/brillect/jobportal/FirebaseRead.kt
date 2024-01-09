@@ -188,5 +188,26 @@ class FirebaseRead {
                     })
         }
     }
+
+    // resume url
+    fun getResumeUrlOfApplier(id: String, passUrl:(String) -> Unit){
+        currentUser.let { user ->
+            if (user != null)
+                database.child("user").child("applier").child(id).child("resumeUrl")
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                val resumeUrl = snapshot.getValue(String::class.java).toString()
+                                passUrl(resumeUrl)
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e("u_name", error.message)
+                        }
+
+                    })
+        }
+    }
 }
 
