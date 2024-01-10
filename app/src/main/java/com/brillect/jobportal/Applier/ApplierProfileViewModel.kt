@@ -27,9 +27,9 @@ class ApplierProfileViewModel : ViewModel() {
         _writeStatusProfile.value = status
     }
 
-    fun uploadProfileDetails() {
+    fun uploadProfileDetails(passUploadStatus:(Boolean, String) -> Unit) {
         FirebaseWrite().writeProfileDetails(_userProfile.value) { status, message ->
-            updateWriteStatus(status)
+            passUploadStatus(status, message)
             Log.d("writeProfile", message)
         }
     }
@@ -40,13 +40,13 @@ class ApplierProfileViewModel : ViewModel() {
         }
     }
 
-    fun uploadResume(fileToUpload: Uri) {
+    fun uploadResume(fileToUpload: Uri, uploadSuccess:(Boolean) -> Unit) {
         FirebaseFiles().uploadDoc(fileToUpload, { url ->
             // write resume url to the db
             FirebaseWrite().writeResumeLink(url)
         }, { progress ->
             if (progress == 100){
-
+                uploadSuccess(true)
             }
         })
     }

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.Data.JobType
 import com.brillect.jobportal.Data.WorkPlace
 import com.brillect.jobportal.R
+import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.PrimaryColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
 
@@ -149,9 +151,8 @@ fun TextUserName(name: String) {
     )
 }
 
-@Preview
 @Composable
-fun customTextFieldSingleLine(textSingleLine: String = "", readOnlyMode: Boolean = false): String {
+fun customTextFieldSingleLine(textSingleLine: String = "", readOnlyMode: Boolean): String {
     var fullName by rememberSaveable {
         mutableStateOf(textSingleLine)
     }
@@ -179,6 +180,38 @@ fun customTextFieldSingleLine(textSingleLine: String = "", readOnlyMode: Boolean
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 singleLine = true,
                 readOnly = readOnlyMode
+            )
+        }
+    }
+    return fullName
+}
+
+@Composable
+fun customTextFieldSingleLineReadOnly(textSingleLine: String = "", modifier: Modifier): String {
+    var fullName = textSingleLine
+    Box(
+        modifier = modifier
+            .background(Color.Black, shape = RoundedCornerShape(8.dp))
+            .padding(bottom = 1.dp, end = 1.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .background(TextFieldColor, shape = RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+        ) {
+            BasicTextField(
+                value = fullName,
+                onValueChange = { fullName = it },
+                modifier = Modifier
+                    .height(44.dp)
+                    .fillMaxWidth()
+                    .padding(top = 11.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
+                textStyle = TextStyle(
+                    color = PrimaryColor, fontFamily = textFontFamily,
+                    fontSize = 14.sp
+                ),
+                enabled = false,
+                readOnly = true
             )
         }
     }
@@ -480,4 +513,13 @@ fun customTextFieldWithDropdownWorkplace(): String {
     }
 
     return workPlace.label
+}
+
+@Composable
+fun ProgressBar(){
+    LinearProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth(),
+        trackColor = BackgroundColor
+    )
 }
