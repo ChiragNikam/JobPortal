@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brillect.jobportal.Data.JobType
 import com.brillect.jobportal.Data.WorkPlace
+import com.brillect.jobportal.FirebaseRead
 import com.brillect.jobportal.R
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.PrimaryColor
@@ -342,9 +343,15 @@ fun HelloUserNameProfilePhoto(userName: String, onImageClick: () -> Unit) {
 
 @Composable
 fun HelloUserNameProfilePhotoClickable(onClick: () -> Unit) {
+    var firstName by rememberSaveable {
+        mutableStateOf("")
+    }
+    FirebaseRead().getUserName("applier"){
+        firstName = it
+    }
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.weight(1f)) {
-            TextUserName(name = "Kabira")
+            TextUserName(name = firstName)
         }
         Column {
             Image(
