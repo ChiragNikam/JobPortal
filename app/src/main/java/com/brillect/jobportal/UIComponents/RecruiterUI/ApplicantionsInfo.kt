@@ -88,7 +88,9 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel) {
         DisposableEffect(key1 = Unit){
             viewModel.getAllCandidatesId()
 
-            onDispose {  }
+            onDispose {
+                viewModel._appliedCandidatesToJobList.value.clear()
+            }
         }
 
     }

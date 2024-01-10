@@ -128,7 +128,6 @@ class FirebaseRead {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userName = snapshot.getValue(String::class.java)
-                    Log.d("user_name", "User Name: $userName")
                     namePassed(userName.toString())
                 }
 

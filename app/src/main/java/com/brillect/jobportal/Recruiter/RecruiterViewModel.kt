@@ -96,7 +96,7 @@ class RecruiterViewModel : ViewModel() {
     }
 
     // get list of appliers who had applied to the job post by there job position name
-    private var _appliedCandidatesToJobList = MutableStateFlow(mutableListOf<AppliersByJob>())
+    var _appliedCandidatesToJobList = MutableStateFlow(mutableListOf<AppliersByJob>())
     val appliedCandidatesToJobList: StateFlow<List<AppliersByJob>> = _appliedCandidatesToJobList
 
     // get all applied candidates(id's) to the job posts of company
