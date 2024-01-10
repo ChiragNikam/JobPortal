@@ -70,42 +70,34 @@ fun AvailableJobs(
     onClickSearch: () -> Unit,
     onImageClick: () -> Unit
 ) {
-    JobPortalTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            color = BackgroundColor
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(start = 24.dp, top = 75.dp, end = 24.dp)
-            ) {
-                HelloUserNameProfilePhotoClickable {
-                    onImageClick()
-                }
-                Spacer(modifier = Modifier.height(35.dp))
-                SingleLineTextField(description = "Search by Company/Post")
-                Spacer(modifier = Modifier.height(16.dp))
-                BtnCustom(onClicking = {
-                    onClickSearch()
-                }, text = "Search", padStart = 0, padEnd = 220)
-                Spacer(modifier = Modifier.height(30.dp))
-
-                // progress bar
-                val progressIndicator by viewModel.progressIndicator.collectAsState()
-                if (progressIndicator) {    // only show if content is loaded
-                    LinearProgressIndicator(
-                        modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally),
-                        trackColor = BackgroundColor
-                    )
-                }
-
-                // load all available jobs
-                AvailableCompaniesList(viewModel)
-            }
+    Column(
+        modifier = Modifier
+            .padding(start = 24.dp, top = 75.dp, end = 24.dp)
+    ) {
+        HelloUserNameProfilePhotoClickable {
+            onImageClick()
         }
+        Spacer(modifier = Modifier.height(35.dp))
+        SingleLineTextField(description = "Search by Company/Post")
+        Spacer(modifier = Modifier.height(16.dp))
+        BtnCustom(onClicking = {
+            onClickSearch()
+        }, text = "Search", padStart = 0, padEnd = 220)
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // progress bar
+        val progressIndicator by viewModel.progressIndicator.collectAsState()
+        if (progressIndicator) {    // only show if content is loaded
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(alignment = Alignment.CenterHorizontally),
+                trackColor = BackgroundColor
+            )
+        }
+
+        // load all available jobs
+        AvailableCompaniesList(viewModel)
     }
 }
 

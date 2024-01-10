@@ -3,6 +3,7 @@ package com.brillect.jobportal.UIComponents.RecruiterUI
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -43,17 +44,15 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
 
     val selectedState =
         viewModel.selectedState.collectAsState(initial = 1) // selected state for views
-    val showLogoutDialog = remember { mutableStateOf(false) }   // to show sign-out dialog
 
-    Column(modifier = Modifier.padding(start = 24.dp, top = 75.dp, end = 24.dp)) {
+    Column(
+        modifier = Modifier
+            .background(BackgroundColor)
+            .padding(start = 24.dp, top = 75.dp, end = 24.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
         viewModel.getFirstName("recruiter")
 
-        // observe user name
-        val userName by viewModel.firstName.collectAsState()
-
-        HelloUserNameProfilePhoto (userName){   // Top Bar with User name
-            showLogoutDialog.value = !showLogoutDialog.value
-        }
         Spacer(modifier = Modifier.height(24.dp))
         BtnCustom(onClicking = {
             viewModel._selectedState.value = 1
@@ -81,9 +80,6 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
             }
         }
 
-    }
-    if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
-        LogoutDialog(showLogoutDialog)
     }
 }
 

@@ -86,6 +86,8 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

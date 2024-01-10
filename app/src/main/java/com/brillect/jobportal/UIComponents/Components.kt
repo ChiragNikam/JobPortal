@@ -322,7 +322,12 @@ fun radioButtonRecruiterApplier(): String {
 
 @Composable
 fun HelloUserNameProfilePhoto(userName: String, onImageClick: () -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 24.dp, end = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Column(modifier = Modifier.weight(1f)) {
             TextUserName(name = userName)
         }
@@ -346,7 +351,7 @@ fun HelloUserNameProfilePhotoClickable(onClick: () -> Unit) {
     var firstName by rememberSaveable {
         mutableStateOf("")
     }
-    FirebaseRead().getUserName("applier"){
+    FirebaseRead().getUserName("applier") {
         firstName = it
     }
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -523,7 +528,7 @@ fun customTextFieldWithDropdownWorkplace(): String {
 }
 
 @Composable
-fun ProgressBar(){
+fun ProgressBar() {
     LinearProgressIndicator(
         modifier = Modifier
             .fillMaxWidth(),
