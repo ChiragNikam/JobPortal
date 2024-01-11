@@ -47,6 +47,7 @@ import com.brillect.jobportal.Data.RegisterData
 import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.UIComponents.HelloUserNameProfilePhoto
 import com.brillect.jobportal.UIComponents.RecruiterUI.LogoutDialog
+import com.brillect.jobportal.UIComponents.RecruiterUI.ProfileAndHistoryUI
 import com.brillect.jobportal.UIComponents.RecruiterUI.RecruiterUI
 import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.ui.theme.BackgroundColor
@@ -56,6 +57,7 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 class RecruiterHome : ComponentActivity() {
     // view model instance
     private val viewModel: RecruiterViewModel by lazy { ViewModelProvider(this)[RecruiterViewModel::class.java] }
+    private val viewModelProfile: RecruiterProfileViewModel by lazy { ViewModelProvider(this)[RecruiterProfileViewModel::class.java] }
 
     // register recruiter details
     private var register = false
@@ -70,6 +72,11 @@ class RecruiterHome : ComponentActivity() {
         if (register) { // if user just created account save it to db on coming to this activity
             AuthViewModel().writeUserToDb(RegisterData(uName, email, pass), profile)
         }
+
+        // set data for profile card view
+        viewModelProfile.setDataForProfileCard()
+
+        viewModelProfile.setListOfAllJobPosts()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +105,8 @@ class RecruiterHome : ComponentActivity() {
                             selectedIcon = Icons.Filled.Home,
                             unselectedIcon = Icons.Outlined.Home
                         ), BottomNavigationItem(
-                            title = "History",
-                            route = "history",
+                            title = "Profile",
+                            route = "profile",
                             selectedIcon = Icons.Filled.AccountCircle,
                             unselectedIcon = Icons.Outlined.AccountCircle
                         )
@@ -115,7 +122,6 @@ class RecruiterHome : ComponentActivity() {
                             Column(
                                 Modifier.fillMaxSize(),
                             ) {
-                                Spacer(modifier = Modifier.height(25.dp))
                                 HelloUserNameProfilePhoto(userName) {   // Top Bar with User name
                                     showLogoutDialog.value = !showLogoutDialog.value
                                 }
@@ -132,7 +138,7 @@ class RecruiterHome : ComponentActivity() {
                         containerColor = BackgroundColor
                     ) {
                         val pad = it
-                        Navigation(navController = navController, viewModel)
+                        Navigation(navController = navController, viewModel, viewModelProfile)
                     }
 
                     if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
@@ -185,17 +191,15 @@ fun BottomNav(
 }
 
 @Composable
-fun Navigation(navController: NavHostController, viewModel: RecruiterViewModel) {
+fun Navigation(navController: NavHostController, viewModel: RecruiterViewModel, viewModelProfile: RecruiterProfileViewModel) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             Box(Modifier.fillMaxSize()) {
                 RecruiterUI(viewModel)
             }
         }
-        composable("history") {
-            Box(Modifier.fillMaxSize()) {
-                Text(text = "History")
-            }
+        composable("profile") {
+            ProfileAndHistoryUI(viewModelProfile)
         }
     }
 }

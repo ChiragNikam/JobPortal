@@ -325,9 +325,11 @@ fun HelloUserNameProfilePhoto(userName: String, onImageClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, end = 24.dp),
+            .background(BackgroundColor)
+            .padding(top = 15.dp, bottom = 15.dp, start = 24.dp, end = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         Column(modifier = Modifier.weight(1f)) {
             TextUserName(name = userName)
         }

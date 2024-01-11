@@ -147,7 +147,7 @@ class FirebaseRead {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val profile = snapshot.getValue(ApplierProfile::class.java)
-                    if(profile!=null){
+                    if (profile != null) {
                         profilePassed(profile)
                     }
                 }
@@ -166,7 +166,11 @@ class FirebaseRead {
     }
 
     // get user name of current user
-    fun getUserName(userType: String, firstNamePassed: (String) -> Unit) {
+    fun getUserName(
+        userType: String,
+        firstNameOnly: Boolean = true,
+        firstNamePassed: (String) -> Unit
+    ) {
         currentUser.let { user ->
             if (user != null)
                 database.child("user").child(userType).child(user.uid).child("u_name")
@@ -175,7 +179,11 @@ class FirebaseRead {
                             if (snapshot.exists()) {
                                 val userName = snapshot.getValue(String::class.java)
                                 val firstName = getFirstName(userName.toString())
-                                firstNamePassed(firstName)
+                                if (firstNameOnly) {
+                                    firstNamePassed(firstName)
+                                } else {
+                                    firstNamePassed(userName.toString())
+                                }
 //                                updateFirstName(firstName)
                             }
                         }
@@ -189,7 +197,7 @@ class FirebaseRead {
     }
 
     // resume url
-    fun getResumeUrlOfApplier(id: String, passUrl:(String) -> Unit){
+    fun getResumeUrlOfApplier(id: String, passUrl: (String) -> Unit) {
         currentUser.let { user ->
             if (user != null)
                 database.child("user").child("applier").child(id).child("resumeUrl")

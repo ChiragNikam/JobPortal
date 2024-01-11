@@ -41,8 +41,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -183,7 +185,7 @@ fun AvailableCompanyView(
 fun OutlinedInfoText(description: String) {
     Box(
         modifier = Modifier
-            .border(1.dp, color = PrimaryColor, shape = RoundedCornerShape(10.dp))
+            .border(1.dp, color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(10.dp))
             .padding(top = 2.dp, bottom = 2.dp, start = 16.dp, end = 16.dp)
     ) {
         TextCustom(textToShow = description, weight = 400, fontSize = 12)

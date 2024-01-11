@@ -41,18 +41,19 @@ fun CompanyProfile(viewModel: RecruiterViewModel) {
         Spacer(modifier = Modifier.height(24.dp))
         BtnCustom(
             onClicking = {
-                viewModel._selectedStateCompany.value = 1
+                viewModel._selectedStateCompany.value = 2
             },
-            text = "Create Company",
+            text = "Company Details",
             padStart = 45,
             padEnd = 67
         )
         Spacer(modifier = Modifier.height(10.dp))
         BtnCustom(
             onClicking = {
-                viewModel._selectedStateCompany.value = 2
+                viewModel._selectedStateCompany.value = 1
+
             },
-            text = "Company Details",
+            text = "Create Company",
             padStart = 45,
             padEnd = 67
         )
@@ -70,8 +71,7 @@ fun CompanyProfile(viewModel: RecruiterViewModel) {
             } else if (selectedState.value == 2) {
                 Column {
                     CompanyDetails()
-                    BtnCustom(onClicking = { }, text = "Remove Company", padStart = 0, padEnd = 152)
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(84.dp))
                 }
             }
         }

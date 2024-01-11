@@ -51,8 +51,6 @@ class ApplierViewModel : ViewModel() {
             // Update the StateFlow with the new list
             _showJobPosts.value = updatedList.toMutableList()
 
-            Log.d("job_post", _showJobPosts.value.toString())
-
             if(_showJobPosts.value.isEmpty()){
                 _progressIndicator.value = false
             }

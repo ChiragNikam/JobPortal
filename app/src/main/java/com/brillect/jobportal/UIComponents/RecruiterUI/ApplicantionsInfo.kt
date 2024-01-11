@@ -49,31 +49,26 @@ import com.brillect.jobportal.ui.theme.BackgroundColor
 fun ApplicantsInfo(viewModel: RecruiterViewModel) {
     Column(horizontalAlignment = Alignment.Start) {
         Spacer(modifier = Modifier.height(22.dp))
-        SingleLineTextField(description = "Search Applicants")
-        Spacer(modifier = Modifier.height(16.dp))
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 112.dp)
-        ) {
-            BtnCustom(onClicking = { }, text = "Search", 0, 112)
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            TextCustom(textToShow = "All Applicants", weight = 400, fontSize = 20)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Spacer(
-            modifier = Modifier
-                .height(2.dp)
-                .background(color = Color.Black, shape = RectangleShape)
-        )
-        val progressBarStatus by viewModel.progressIndicatorAppliedCan.collectAsState()
-        if (progressBarStatus){
-            LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally),
-                trackColor = BackgroundColor
-            )
-        }
 
         // observe and load all available applications to the job post
         val listOfAppliersByJob by viewModel.appliedCandidatesToJobList.collectAsState()
+
+        val progressBarStatus by viewModel.progressIndicatorAppliedCan.collectAsState()
+        if (progressBarStatus){
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(alignment = Alignment.CenterHorizontally),
+                trackColor = BackgroundColor
+            )
+        } else if(!progressBarStatus && listOfAppliersByJob.isEmpty()){
+            TextCustom(textToShow = "Appliers not applied yet", weight = 400, fontSize = 14)
+        }
+
         Log.d("applier_details", listOfAppliersByJob.toString())
         LazyColumn(
             modifier = Modifier.height((listOfAppliersByJob.size * 250).dp),
@@ -102,8 +97,8 @@ fun ApplicantDetails(viewModel: RecruiterViewModel, appliersByJob: AppliersByJob
 
     Spacer(modifier = Modifier.height(20.dp))
     // Job Position
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        TextCustom(textToShow = appliersByJob.jobName, weight = 700, fontSize = 20)
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+        TextCustom(textToShow = "Post: " + appliersByJob.jobName, weight = 700, fontSize = 18)
     }
     Spacer(modifier = Modifier.height(16.dp))
     // Applier's Details
