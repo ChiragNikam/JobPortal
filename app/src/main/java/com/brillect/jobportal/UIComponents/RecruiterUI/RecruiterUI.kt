@@ -48,12 +48,12 @@ fun RecruiterUI(viewModel: RecruiterViewModel) {
     Column(
         modifier = Modifier
             .background(BackgroundColor)
-            .padding(start = 24.dp, top = 75.dp, end = 24.dp)
+            .padding(start = 24.dp, end = 24.dp)
             .verticalScroll(rememberScrollState())
     ) {
         viewModel.getFirstName("recruiter")
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(75.dp))
         BtnCustom(onClicking = {
             viewModel._selectedState.value = 1
         }, "Applications", 45, 67)

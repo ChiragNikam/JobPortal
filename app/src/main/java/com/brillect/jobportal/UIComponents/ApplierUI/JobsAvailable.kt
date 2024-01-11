@@ -32,6 +32,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -74,17 +75,26 @@ fun AvailableJobs(
 ) {
     Column(
         modifier = Modifier
-            .padding(start = 24.dp, top = 75.dp, end = 24.dp)
+            .padding(start = 24.dp, end = 24.dp)
     ) {
+        var query by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        // for search result
+        LaunchedEffect(query){
+            viewModel.updateFilteredJobPosts(query)
+        }
+
+        Spacer(modifier = Modifier.height(60.dp))
         HelloUserNameProfilePhotoClickable {
             onImageClick()
         }
         Spacer(modifier = Modifier.height(35.dp))
-        SingleLineTextField(description = "Search by Company/Post")
+
+        query = SingleLineTextField(description = "Search by Post")
         Spacer(modifier = Modifier.height(16.dp))
-        BtnCustom(onClicking = {
-            onClickSearch()
-        }, text = "Search", padStart = 0, padEnd = 220)
+
         Spacer(modifier = Modifier.height(30.dp))
 
         // progress bar
@@ -108,7 +118,7 @@ fun AvailableCompaniesList(viewModel: ApplierViewModel) {
     // Get the current context
     val context = LocalContext.current
 
-    val jobList by viewModel.showJobPost.collectAsState()
+    val jobList by viewModel.filteredJobPosts.collectAsState()
 
     Log.d("job_list", jobList.toString())
     LazyColumn(
@@ -185,7 +195,11 @@ fun AvailableCompanyView(
 fun OutlinedInfoText(description: String) {
     Box(
         modifier = Modifier
-            .border(1.dp, color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(10.dp))
+            .border(
+                1.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(10.dp)
+            )
             .padding(top = 2.dp, bottom = 2.dp, start = 16.dp, end = 16.dp)
     ) {
         TextCustom(textToShow = description, weight = 400, fontSize = 12)

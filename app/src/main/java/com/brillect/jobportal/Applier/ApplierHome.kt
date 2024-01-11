@@ -58,12 +58,7 @@ class ApplierHome : ComponentActivity() {
                     AvailableJobs(
                         viewModel,
                         onClickSearch = {
-                            startActivity(
-                                Intent(
-                                    this,
-                                    JobCompanyDescription::class.java
-                                )
-                            )
+
                         },
                         onImageClick = { startActivity(Intent(this, ApplierProfile::class.java)) },
                     )

@@ -22,8 +22,6 @@ class ApplierViewModel : ViewModel() {
     private var _showJobPosts = MutableStateFlow(mutableListOf<JobPostsApplier>())
     val showJobPost: StateFlow<List<JobPostsApplier>> = _showJobPosts
 
-    private val _companyNames = MutableStateFlow(mutableListOf<String>())
-
     private var _companyDetails = MutableStateFlow(Company())
     val companyDetails: StateFlow<Company> = _companyDetails
 
@@ -33,6 +31,19 @@ class ApplierViewModel : ViewModel() {
     // progress bar indicator
     private var _progressIndicator = MutableStateFlow(true)
     val progressIndicator: StateFlow<Boolean> = _progressIndicator
+
+    private var _filteredJobPosts = MutableStateFlow(mutableListOf<JobPostsApplier>())
+    val filteredJobPosts: StateFlow<List<JobPostsApplier>> = _filteredJobPosts
+
+    fun updateFilteredJobPosts(query: String) {
+        if (query.isEmpty()) {
+            _filteredJobPosts.value = _showJobPosts.value
+        } else {
+            _filteredJobPosts.value = _showJobPosts.value.filter {
+                it.jobPosition.contains(query, ignoreCase = true)
+            }.toMutableList()
+        }
+    }
 
     fun loadJobPosts() {    // Load the list of Job Posts
         val companyNames = mutableListOf<String>()
@@ -51,7 +62,7 @@ class ApplierViewModel : ViewModel() {
             // Update the StateFlow with the new list
             _showJobPosts.value = updatedList.toMutableList()
 
-            if(_showJobPosts.value.isEmpty()){
+            if (_showJobPosts.value.isEmpty()) {
                 _progressIndicator.value = false
             }
             // don't display progress bar if job posts loaded successfully

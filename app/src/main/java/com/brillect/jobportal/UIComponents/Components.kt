@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -63,7 +64,9 @@ fun SingleLineTextField(
     modifier: Modifier = Modifier,
     readOnlyMode: Boolean = false
 ): String {
-    var textEntered = ""
+    var textEntered by remember{
+        mutableStateOf("")
+    }
     Column(modifier = modifier.fillMaxWidth()) {
         Text_18_White(textToShow = description, 400)
         Spacer(modifier = Modifier.height(22.dp))
@@ -324,7 +327,8 @@ fun radioButtonRecruiterApplier(): String {
 fun HelloUserNameProfilePhoto(userName: String, onImageClick: () -> Unit) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .shadow(elevation = 5.dp)
             .background(BackgroundColor)
             .padding(top = 15.dp, bottom = 15.dp, start = 24.dp, end = 24.dp),
         verticalAlignment = Alignment.CenterVertically
