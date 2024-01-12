@@ -77,6 +77,7 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel) {
             items(listOfAppliersByJob) { applierByJob ->
                 ApplicantDetails(viewModel, applierByJob)
             }
+            Log.d("applicants_home", listOfAppliersByJob.toString())
         }
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -87,7 +88,6 @@ fun ApplicantsInfo(viewModel: RecruiterViewModel) {
                 viewModel._appliedCandidatesToJobList.value.clear()
             }
         }
-
     }
 }
 

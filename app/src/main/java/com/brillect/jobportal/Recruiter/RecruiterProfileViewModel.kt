@@ -78,7 +78,13 @@ class RecruiterProfileViewModel : ViewModel() {
         }
     }
 
-    fun deleteJobPost(jobPostId: String){
-        database.child("job_posts").child(jobPostId).removeValue()
+    fun deleteJobPost(jobPostId: String, postDeleted: (Boolean) -> Unit){
+        database.child("job_posts").child(jobPostId).removeValue().addOnCompleteListener{task->
+            if (task.isSuccessful){
+                postDeleted(true)
+            } else {
+                Log.d("post_delete", task.exception?.message.toString())
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.brillect.jobportal.UIComponents.RecruiterUI
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,26 +25,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.R
 import com.brillect.jobportal.Recruiter.RecruiterProfileViewModel
@@ -54,9 +44,6 @@ import com.brillect.jobportal.UIComponents.Text_18_White
 import com.brillect.jobportal.UIComponents.textFontFamily
 import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.brillect.jobportal.ui.theme.TextFieldColor
-import kotlinx.coroutines.flow.MutableStateFlow
-import java.time.format.TextStyle
-
 @Composable
 fun ProfileAndHistoryUI(viewModel: RecruiterProfileViewModel) {
     val context = LocalContext.current
@@ -100,9 +87,7 @@ fun ProfileAndHistoryUI(viewModel: RecruiterProfileViewModel) {
 
 @Composable
 fun ListOfJobPosts(jobPostsList: List<CreateJobPost>, viewModel: RecruiterProfileViewModel) {
-    val listHeight = remember {
-        mutableStateOf(30.dp)
-    }
+
     LazyColumn(
         modifier = Modifier.height(((jobPostsList.size * 190) + (jobPostsList.size * 15)).dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -110,27 +95,20 @@ fun ListOfJobPosts(jobPostsList: List<CreateJobPost>, viewModel: RecruiterProfil
         userScrollEnabled = false
     ) {
         items(jobPostsList) { jobPost ->
-            listHeight.value = jobPostsViews(jobPost, viewModel = viewModel)
+            JobPostsViews(jobPost, viewModel = viewModel)
         }
     }
 }
 
 @Composable
-fun jobPostsViews(jobPost: CreateJobPost, viewModel: RecruiterProfileViewModel): Dp {
+fun JobPostsViews(jobPost: CreateJobPost, viewModel: RecruiterProfileViewModel) {
     // Get local density from composable
-    val localDensity = LocalDensity.current
-
-    var viewHeight by remember {
-        mutableStateOf(10.dp)
-    }
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .background(color = Color.Black, shape = RoundedCornerShape(8.dp))
-            .padding(bottom = 1.dp, end = 1.dp)
-            .onGloballyPositioned {
-                viewHeight = with(localDensity) { it.size.height.toDp() }
-            },
+            .padding(bottom = 1.dp, end = 1.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         Column(
@@ -160,7 +138,12 @@ fun jobPostsViews(jobPost: CreateJobPost, viewModel: RecruiterProfileViewModel):
                 OutlinedInfoText(description = jobPost.jobType)
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
                     TextButton(onClick = {  // delete job post
-                        viewModel.deleteJobPost(jobPost.jobPostId)
+                        viewModel.deleteJobPost(jobPost.jobPostId){isDeleted->
+                            if (isDeleted)
+                                Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show()
+                            else
+                                Toast.makeText(context, "Unable to delete Post", Toast.LENGTH_SHORT).show()
+                        }
                     }) {
                         Text(
                             text = "Delete",
@@ -172,7 +155,6 @@ fun jobPostsViews(jobPost: CreateJobPost, viewModel: RecruiterProfileViewModel):
             }
         }
     }
-    return viewHeight
 }
 
 @Composable

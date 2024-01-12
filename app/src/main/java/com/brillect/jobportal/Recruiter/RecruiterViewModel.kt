@@ -125,7 +125,6 @@ class RecruiterViewModel : ViewModel() {
                         .addValueEventListener(object :
                             ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-
                                 if (snapshot.exists()) {
                                     for (data in snapshot.children) {
                                         val application =
