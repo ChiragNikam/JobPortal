@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -19,19 +20,23 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -49,6 +54,7 @@ import com.brillect.jobportal.Auth.AuthViewModel
 import com.brillect.jobportal.Data.RegisterData
 import com.brillect.jobportal.FirebaseWrite
 import com.brillect.jobportal.UIComponents.HelloUserNameProfilePhoto
+import com.brillect.jobportal.UIComponents.RecruiterUI.EditCompanyBottomSheet
 import com.brillect.jobportal.UIComponents.RecruiterUI.LogoutDialog
 import com.brillect.jobportal.UIComponents.RecruiterUI.ProfileAndHistoryUI
 import com.brillect.jobportal.UIComponents.RecruiterUI.RecruiterUI
@@ -82,6 +88,7 @@ class RecruiterHome : ComponentActivity() {
         viewModelProfile.setListOfAllJobPosts()
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -99,6 +106,8 @@ class RecruiterHome : ComponentActivity() {
                         .fillMaxSize()
                 ) {
                     val navController = rememberNavController()
+
+                    val sheetState = rememberModalBottomSheetState()    // Bottom sheet state
 
                     // list of items to show for bottom navigation
                     val items = listOf(
@@ -141,7 +150,20 @@ class RecruiterHome : ComponentActivity() {
                         containerColor = BackgroundColor
                     ) {
                         val pad = it
+
                         Navigation(navController = navController, viewModel, viewModelProfile)
+
+                        // Bottom sheet for updating company details
+                        val isSheetOpen by viewModel.editCompanyBottomSheet.collectAsState()
+                        if (isSheetOpen) {
+                            ModalBottomSheet(
+                                containerColor = BackgroundColor,
+                                sheetState = sheetState,
+                                onDismissRequest = { viewModel.updateCompanyBottomSheet(false) }
+                            ) {
+                                    EditCompanyBottomSheet(viewModel = viewModel)
+                            }
+                        }
                     }
 
                     if (showLogoutDialog.value) {   // if user clicked on profile pic logout dialog will apire
@@ -194,7 +216,11 @@ fun BottomNav(
 }
 
 @Composable
-fun Navigation(navController: NavHostController, viewModel: RecruiterViewModel, viewModelProfile: RecruiterProfileViewModel) {
+fun Navigation(
+    navController: NavHostController,
+    viewModel: RecruiterViewModel,
+    viewModelProfile: RecruiterProfileViewModel
+) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             Box(Modifier.fillMaxSize()) {

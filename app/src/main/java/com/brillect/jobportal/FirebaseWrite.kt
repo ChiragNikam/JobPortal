@@ -8,6 +8,9 @@ import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.Data.MyDateFormat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -76,6 +79,23 @@ class FirebaseWrite {
                     }
                 }
         }
+    }
+
+    // update company details by taking company id
+    fun updateCompanyDetails(
+        companyId: String,
+        updatedDetails: Company,
+        taskSuccessful: (Boolean) -> Unit
+    ) {
+        database.child("companies").child(companyId).setValue(updatedDetails)
+            .addOnCompleteListener {task->
+                if (task.isSuccessful){
+                    taskSuccessful(true)
+                } else {
+                    taskSuccessful(false)
+                    task.exception?.message?.let { Log.d("update_company" , it) }
+                }
+            }
     }
 
     // write applications to job post

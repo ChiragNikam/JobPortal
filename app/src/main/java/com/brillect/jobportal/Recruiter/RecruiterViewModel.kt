@@ -12,6 +12,7 @@ import com.brillect.jobportal.Data.AppliersByJob
 import com.brillect.jobportal.Data.Company
 import com.brillect.jobportal.Data.CreateJobPost
 import com.brillect.jobportal.FirebaseRead
+import com.brillect.jobportal.FirebaseWrite
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -153,4 +154,27 @@ class RecruiterViewModel : ViewModel() {
         }
     }
 
+    // for bottom sheet visibility
+    private val _editCompanyBottomSheet = MutableStateFlow(false)
+    val editCompanyBottomSheet: StateFlow<Boolean> = _editCompanyBottomSheet
+
+    // details to be edited at bottom sheet for a company
+    private val _updateCompanyDetails = MutableStateFlow(Company())
+    val updateCompanyDetails: StateFlow<Company> = _updateCompanyDetails
+
+    fun setCompanyDetailsForBottomSheet(details: Company) {
+        _updateCompanyDetails.value = details
+    }
+
+    fun updateCompanyBottomSheet(show: Boolean) {
+        _editCompanyBottomSheet.value = show
+    }
+
+    fun updateCompanyDetails(updatedDetails: Company, updateSuccess: (Boolean) -> Unit) {
+        FirebaseRead().getCompanyId { companyId ->
+            FirebaseWrite().updateCompanyDetails(companyId, updatedDetails) { updated ->
+                updateSuccess(updated)  // details are updated or not
+            }
+        }
+    }
 }
