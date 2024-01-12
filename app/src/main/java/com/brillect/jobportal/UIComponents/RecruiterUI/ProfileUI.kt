@@ -72,7 +72,11 @@ fun ProfileAndHistoryUI(viewModel: RecruiterProfileViewModel) {
 
         val profileData by viewModel.adminProfileCardDetails.collectAsState()
 
-        RecruiterInfoCard(companyName = profileData.companyName, userName = profileData.userName, email = profileData.email)
+        RecruiterInfoCard(
+            companyName = profileData.companyName,
+            userName = profileData.userName,
+            email = profileData.email
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -99,12 +103,12 @@ fun ListOfJobPosts(jobPostsList: List<CreateJobPost>) {
         mutableStateOf(30.dp)
     }
     LazyColumn(
-        modifier = Modifier.height(((jobPostsList.size * listHeight.value.value) + (jobPostsList.size * 15)).dp),
+        modifier = Modifier.height(((jobPostsList.size * 170) + (jobPostsList.size * 15)).dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp),
         userScrollEnabled = false
     ) {
-        items(jobPostsList) {jobPost ->
+        items(jobPostsList) { jobPost ->
             listHeight.value = jobPostsViews(jobPost)
         }
     }

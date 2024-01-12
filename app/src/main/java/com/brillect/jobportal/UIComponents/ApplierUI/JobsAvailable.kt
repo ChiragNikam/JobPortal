@@ -70,7 +70,6 @@ import com.brillect.jobportal.ui.theme.TextFieldColor
 @Composable
 fun AvailableJobs(
     viewModel: ApplierViewModel,
-    onClickSearch: () -> Unit,
     onImageClick: () -> Unit
 ) {
     Column(
