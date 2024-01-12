@@ -93,29 +93,30 @@ fun ProfileAndHistoryUI(viewModel: RecruiterProfileViewModel) {
 
         // list of all created job posts
         val jobPostsList by viewModel.listOfJobPostsHistory.collectAsState()
-        ListOfJobPosts(jobPostsList)
+        ListOfJobPosts(jobPostsList, viewModel)
+
     }
 }
 
 @Composable
-fun ListOfJobPosts(jobPostsList: List<CreateJobPost>) {
+fun ListOfJobPosts(jobPostsList: List<CreateJobPost>, viewModel: RecruiterProfileViewModel) {
     val listHeight = remember {
         mutableStateOf(30.dp)
     }
     LazyColumn(
-        modifier = Modifier.height(((jobPostsList.size * 170) + (jobPostsList.size * 15)).dp),
+        modifier = Modifier.height(((jobPostsList.size * 190) + (jobPostsList.size * 15)).dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp),
         userScrollEnabled = false
     ) {
         items(jobPostsList) { jobPost ->
-            listHeight.value = jobPostsViews(jobPost)
+            listHeight.value = jobPostsViews(jobPost, viewModel = viewModel)
         }
     }
 }
 
 @Composable
-fun jobPostsViews(jobPost: CreateJobPost): Dp {
+fun jobPostsViews(jobPost: CreateJobPost, viewModel: RecruiterProfileViewModel): Dp {
     // Get local density from composable
     val localDensity = LocalDensity.current
 
@@ -158,7 +159,9 @@ fun jobPostsViews(jobPost: CreateJobPost): Dp {
             ) {
                 OutlinedInfoText(description = jobPost.jobType)
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-                    TextButton(onClick = { }) {
+                    TextButton(onClick = {  // delete job post
+                        viewModel.deleteJobPost(jobPost.jobPostId)
+                    }) {
                         Text(
                             text = "Delete",
                             fontWeight = FontWeight(700),
@@ -167,8 +170,6 @@ fun jobPostsViews(jobPost: CreateJobPost): Dp {
                     }
                 }
             }
-
-
         }
     }
     return viewHeight

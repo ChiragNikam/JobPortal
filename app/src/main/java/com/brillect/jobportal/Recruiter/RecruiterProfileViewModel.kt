@@ -77,4 +77,8 @@ class RecruiterProfileViewModel : ViewModel() {
                 })
         }
     }
+
+    fun deleteJobPost(jobPostId: String){
+        database.child("job_posts").child(jobPostId).removeValue()
+    }
 }
