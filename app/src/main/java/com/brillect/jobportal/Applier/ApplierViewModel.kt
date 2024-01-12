@@ -35,6 +35,14 @@ class ApplierViewModel : ViewModel() {
     private var _filteredJobPosts = MutableStateFlow(mutableListOf<JobPostsApplier>())
     val filteredJobPosts: StateFlow<List<JobPostsApplier>> = _filteredJobPosts
 
+    // applier resume url
+    private var _resumeUrl = MutableStateFlow("")
+    val resumeUrl : StateFlow<String> = _resumeUrl
+
+    fun setResumeUrl(url: String){
+        _resumeUrl.value = url
+    }
+
     fun updateFilteredJobPosts(query: String) {
         if (query.isEmpty()) {
             _filteredJobPosts.value = _showJobPosts.value

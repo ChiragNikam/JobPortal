@@ -15,6 +15,11 @@
         android:theme="@style/Theme.JobPortal"
         tools:targetApi="31">
         <activity
+            android:name=".Applier.ViewResume"
+            android:exported="false"
+            android:label="@string/title_activity_view_resume"
+            android:theme="@style/Theme.JobPortal" />
+        <activity
             android:name=".Recruiter.AppliedCandidateInfo"
             android:exported="false"
             android:label="@string/title_activity_applied_canditate_info"

@@ -9,5 +9,6 @@ data class ApplierProfile (
     val aboutMe: String = "",
     val workExperience: String = "",
     val education: String = "",
-    val skills: String = ""
+    val skills: String = "",
+    val resumeUrl: String = ""
 )

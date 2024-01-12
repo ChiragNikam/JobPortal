@@ -1,9 +1,13 @@
 package com.brillect.jobportal.UIComponents.ApplierUI
 
+import android.R.attr.label
+import android.R.attr.text
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -30,14 +33,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toFile
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.documentfile.provider.DocumentFile
 import com.brillect.jobportal.Applier.ApplierProfileViewModel
-import com.brillect.jobportal.BtnStartSearching
+import com.brillect.jobportal.Applier.ViewResume
 import com.brillect.jobportal.Data.ApplierProfile
 import com.brillect.jobportal.UIComponents.BtnCustom
 import com.brillect.jobportal.UIComponents.InfoBlock
@@ -51,6 +55,7 @@ import com.brillect.jobportal.ui.theme.BackgroundColor
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
+
 @Composable
 fun YourProfileView(viewModel: ApplierProfileViewModel) {
     Column(
@@ -60,6 +65,10 @@ fun YourProfileView(viewModel: ApplierProfileViewModel) {
         )
     ) {
         val userProfile by viewModel.userProfile.collectAsState()
+
+        val context = LocalContext.current
+
+        val clipboardManager = LocalClipboardManager.current
 
         // About User
         InfoBlock(
@@ -86,7 +95,27 @@ fun YourProfileView(viewModel: ApplierProfileViewModel) {
         Spacer(modifier = Modifier.height(24.dp))
 
         // Resume
-        InfoBlock(label = "Resume", description = "")
+        InfoBlock(label = "Resume", description = userProfile.resumeUrl)
+
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+            Row {
+                TextButton(onClick = {
+                    clipboardManager.setText(AnnotatedString(userProfile.resumeUrl))
+                    Toast.makeText(context, "Download link copied successfully", Toast.LENGTH_SHORT).show()
+                }) {
+                    Text(text = "Copy")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = {
+                    context.startActivity(Intent(context, ViewResume::class.java).apply {
+                        putExtra("resume_url", userProfile.resumeUrl)
+                    })
+                }) {
+                    Text(text = "View")
+                }
+            }
+
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 

@@ -17,4 +17,5 @@
     <string name="title_dialog_logout">Logout</string>
     <string name="text_dialog_logout">Are you sure you want to logout?</string>
     <string name="title_activity_applied_canditate_info">AppliedCanditateInfo</string>
+    <string name="title_activity_view_resume">ViewResume</string>
 </resources>
