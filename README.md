@@ -22,7 +22,7 @@ Getting Started
     Clone the Repository:
     Bash
 
-    git clone (https://github.com/ChiragNikam/JobPortal.git)
+    git clone https://github.com/ChiragNikam/JobPortal.git
 
     Use code with caution.
 
@@ -37,20 +37,20 @@ Getting Started
 
 Screenshots
 
-    Login Screen: ![Screenshot_20240611_105508](https://github.com/user-attachments/assets/d3895fef-859f-4f90-9e9d-64a13e4774c9)
+    Login Screen: https://github.com/user-attachments/assets/d3895fef-859f-4f90-9e9d-64a13e4774c9
     
-    Job Posting Screen: ![Screenshot_20240611_105558](https://github.com/user-attachments/assets/2422432a-1790-43ae-bb48-52d06ef1e124)
+    Job Posting Screen: https://github.com/user-attachments/assets/2422432a-1790-43ae-bb48-52d06ef1e124
 
-    Applicant List Screen: ![Screenshot_20240611_105713](https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737)
+    Applicant List Screen: https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737
 
-    Applicant Profile Screen: ![Screenshot_20240611_105833](https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88)
+    Applicant Profile Screen: https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88
 
-    Company Profile Screen: ![Screenshot_20240611_110243](https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb)
+    Company Profile Screen: https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb
     
-    Resume Viewer Screen: ![Screenshot_20240611_110223](https://github.com/user-attachments/assets/c26205ca-240f-4ffa-a0a8-68b61f481baa)
+    Resume Viewer Screen: https://github.com/user-attachments/assets/c26205ca-240f-4ffa-a0a8-68b61f481baa
 
-    Search Screen: ![Screenshot_20240611_105713](https://github.com/user-attachments/assets/23b2b395-6533-4c2e-a28f-f7d208eadaf5)
+    Search Screen: https://github.com/user-attachments/assets/23b2b395-6533-4c2e-a28f-f7d208eadaf5
     
-    Recruiter Dashboard Screen: ![Screenshot_20240611_110145](https://github.com/user-attachments/assets/5f7d0f5a-9b57-4061-bbf1-65ffecc2c3fc)
+    Recruiter Dashboard Screen: https://github.com/user-attachments/assets/5f7d0f5a-9b57-4061-bbf1-65ffecc2c3fc
 
 
