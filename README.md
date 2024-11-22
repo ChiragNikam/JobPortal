@@ -35,22 +35,30 @@ Getting Started
         Configure build settings and dependencies as needed.
         Build and run the app on an emulator or physical device.
 
-Screenshots
+# Screenshots
 
-    Login Screen: ![Login Screen](https://github.com/user-attachments/assets/d3895fef-859f-4f90-9e9d-64a13e4774c9)
+<h3>Login Screen:<h3>
+<img src = "https://github.com/user-attachments/assets/d3895fef-859f-4f90-9e9d-64a13e4774c9" width="300" height="700">
     
-    Job Posting Screen: ![Posting Screen](https://github.com/user-attachments/assets/2422432a-1790-43ae-bb48-52d06ef1e124)
+<h3>Job Posting Screen:<h3>
+    <img src = "https://github.com/user-attachments/assets/2422432a-1790-43ae-bb48-52d06ef1e124" width="300" height="700">
 
-    Applicant List Screen: ![Applicant List Screen](https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737)
+<h3>Applicant List Screen:<h3>
+    <img src = "https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737" width="300" height="700">
 
-    Applicant Profile Screen: ![Profile Screen](https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88)
+<h3>Applicant Profile Screen:<h3>
+    <img src = "https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88" width="300" height="700">
 
-    Company Profile Screen: ![Company Profile Screen](https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb)
+<h3>Company Profile Screen:<h3>
+    <img src = "https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb" width="300" height="700">
     
-    Resume Viewer Screen: https://github.com/user-attachments/assets/c26205ca-240f-4ffa-a0a8-68b61f481baa
+<h3>Resume Viewer Screen: <h3>
+    <img src = "https://github.com/user-attachments/assets/c26205ca-240f-4ffa-a0a8-68b61f481baa" width="300" height="700">
 
-    Search Screen: https://github.com/user-attachments/assets/23b2b395-6533-4c2e-a28f-f7d208eadaf5
+<h3>Search Screen: <h3>
+    <img src = "https://github.com/user-attachments/assets/23b2b395-6533-4c2e-a28f-f7d208eadaf5" width="300" height="700">
     
-    Recruiter Dashboard Screen: https://github.com/user-attachments/assets/5f7d0f5a-9b57-4061-bbf1-65ffecc2c3fc
+<h3>Recruiter Dashboard Screen: <h3>
+    <img src = "https://github.com/user-attachments/assets/5f7d0f5a-9b57-4061-bbf1-65ffecc2c3fc" width="300" height="700">
 
-
+    
