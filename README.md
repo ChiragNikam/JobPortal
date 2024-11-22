@@ -22,7 +22,7 @@ Getting Started
     Clone the Repository:
     Bash
 
-    git clone https://github.com/your-username/job-portal-app.git
+    git clone (https://github.com/ChiragNikam/JobPortal.git)
 
     Use code with caution.
 
