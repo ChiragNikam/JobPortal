@@ -6,11 +6,11 @@ This Android app is a comprehensive job portal designed to streamline the recrui
 
 Key Features
 
-    **Seamless Job Posting**: Effortlessly publish new job listings with detailed descriptions, attracting qualified candidates.
-    **Applicant Management**: View and manage applications for your posted jobs. Easily shortlist and filter applicants based on your criteria.
-    **Real-time Updates**: Receive instant notifications for new applications and stay updated on the hiring process.
-    **Secure Communication**: Contact shortlisted applicants directly through the app for efficient communication.
-    **Company Profile Management**: Create and maintain your company profile, showcasing your brand and attracting top talent.
+    Seamless Job Posting: Effortlessly publish new job listings with detailed descriptions, attracting qualified candidates.
+    Applicant Management: View and manage applications for your posted jobs. Easily shortlist and filter applicants based on your criteria.
+    Real-time Updates: Receive instant notifications for new applications and stay updated on the hiring process.
+    Secure Communication: Contact shortlisted applicants directly through the app for efficient communication.
+    Company Profile Management: Create and maintain your company profile, showcasing your brand and attracting top talent.
 
 Technology Stack
 
@@ -44,8 +44,8 @@ Screenshots
     Applicant List Screen: ![Screenshot_20240611_105713](https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737)
 
     Applicant Profile Screen: ![Screenshot_20240611_105833](https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88)
-    
-    Company Profile Screen: 
+
+    Company Profile Screen: ![Screenshot_20240611_110243](https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb)
     
     Resume Viewer Screen: ![Screenshot_20240611_110223](https://github.com/user-attachments/assets/c26205ca-240f-4ffa-a0a8-68b61f481baa)
 
