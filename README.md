@@ -37,15 +37,15 @@ Getting Started
 
 Screenshots
 
-    Login Screen: https://github.com/user-attachments/assets/d3895fef-859f-4f90-9e9d-64a13e4774c9
+    Login Screen: ![Login Screen](https://github.com/user-attachments/assets/d3895fef-859f-4f90-9e9d-64a13e4774c9)
     
-    Job Posting Screen: https://github.com/user-attachments/assets/2422432a-1790-43ae-bb48-52d06ef1e124
+    Job Posting Screen: ![Posting Screen](https://github.com/user-attachments/assets/2422432a-1790-43ae-bb48-52d06ef1e124)
 
-    Applicant List Screen: https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737
+    Applicant List Screen: ![Applicant List Screen](https://github.com/user-attachments/assets/0aea0d7d-3cf9-48c7-abae-43128838a737)
 
-    Applicant Profile Screen: https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88
+    Applicant Profile Screen: ![Profile Screen](https://github.com/user-attachments/assets/672ccdab-8687-4650-ace6-a5fefe73ec88)
 
-    Company Profile Screen: https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb
+    Company Profile Screen: ![Company Profile Screen](https://github.com/user-attachments/assets/5b53fdde-8a6b-4277-909a-2c6ec0e094eb)
     
     Resume Viewer Screen: https://github.com/user-attachments/assets/c26205ca-240f-4ffa-a0a8-68b61f481baa
 
