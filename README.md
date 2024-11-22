@@ -1,32 +1,32 @@
 # Job Portal App
 
-Overview
+<h3>Overview</h3>
 
 This Android app is a comprehensive job portal designed to streamline the recruitment process for recruiters. Built using Jetpack Compose, it leverages Firebase for real-time data updates, secure user authentication, and resume storage.
 
-Key Features
+<h3>Key Features</h3>
 
-    Seamless Job Posting: Effortlessly publish new job listings with detailed descriptions, attracting qualified candidates.
+<p>Seamless Job Posting: Effortlessly publish new job listings with detailed descriptions, attracting qualified candidates.
     Applicant Management: View and manage applications for your posted jobs. Easily shortlist and filter applicants based on your criteria.
     Real-time Updates: Receive instant notifications for new applications and stay updated on the hiring process.
     Secure Communication: Contact shortlisted applicants directly through the app for efficient communication.
-    Company Profile Management: Create and maintain your company profile, showcasing your brand and attracting top talent.
+    Company Profile Management: Create and maintain your company profile, showcasing your brand and attracting top talent.</p>
 
-Technology Stack
+<h3>Technology Stack</h3>
 
-    Frontend: Jetpack Compose
-    Backend: Firebase Realtime Database, Firebase Authentication, Firebase Storage
+<p><b>Frontend</b>: Jetpack Compose<br>
+<b>Backend</b>: Firebase Realtime Database, Firebase Authentication, Firebase Storage</p>
 
-Getting Started
+<h3>Getting Started</h3>
 
-    Clone the Repository:
+<p>Clone the Repository:
     Bash
-
+        
     git clone https://github.com/ChiragNikam/JobPortal.git
 
-    Use code with caution.
+Use code with caution.
 
-    Set Up Firebase:
+Set Up Firebase:
         Create a Firebase project and add your Android app to it.
         Enable Firebase Realtime Database, Firebase Authentication, and Firebase Storage.
         Add the Firebase configuration file to your Android project.
@@ -34,6 +34,7 @@ Getting Started
         Open the project in Android Studio.
         Configure build settings and dependencies as needed.
         Build and run the app on an emulator or physical device.
+</p>
 
 # Screenshots
 
